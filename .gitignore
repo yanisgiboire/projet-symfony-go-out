@@ -7,6 +7,7 @@
 /public/bundles/
 /var/
 /vendor/
+/.vscode/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
@@ -23,3 +24,5 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+$ git config --global user.name "John Doe"
+$ git config --global user.email johndoe@example.com
