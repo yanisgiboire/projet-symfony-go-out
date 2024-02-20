@@ -53,6 +53,7 @@ final class ParticipantFactory extends ModelFactory
             'phoneNumber' => self::faker()->phoneNumber(1),
             'surname' => self::faker()->name(50),
             'site' => SiteFactory::random(),
+            'user' => UserFactory::random()
         ];
     }
 
