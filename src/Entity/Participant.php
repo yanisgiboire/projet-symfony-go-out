@@ -22,7 +22,7 @@ class Participant
     #[ORM\Column(length: 50)]
     private ?string $firstName = null;
 
-    #[ORM\Column(length: 15)]
+    #[ORM\Column(length: 50)]
     private ?string $phoneNumber = null;
 
     #[ORM\Column(length: 50)]

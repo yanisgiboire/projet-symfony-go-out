@@ -22,8 +22,8 @@ class GoOut
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $startDateTime = null;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTimeInterface $duration = null;
+    #[ORM\Column]
+    private ?int $duration = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $limitDateInscription = null;
@@ -87,16 +87,14 @@ class GoOut
         return $this;
     }
 
-    public function getDuration(): ?\DateTimeInterface
+    public function getDuration(): ?int
     {
         return $this->duration;
     }
 
-    public function setDuration(\DateTimeInterface $duration): static
+    public function setDuration(?int $duration): void
     {
         $this->duration = $duration;
-
-        return $this;
     }
 
     public function getLimitDateInscription(): ?\DateTimeInterface
