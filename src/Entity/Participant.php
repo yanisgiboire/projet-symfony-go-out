@@ -6,6 +6,7 @@ use App\Repository\ParticipantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\Unique;
 
 #[ORM\Entity(repositoryClass: ParticipantRepository::class)]
 class Participant
@@ -25,6 +26,7 @@ class Participant
     private ?string $phoneNumber = null;
 
     #[ORM\Column(length: 50)]
+    #[Unique]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -37,9 +39,13 @@ class Participant
     #[ORM\JoinColumn(nullable: false)]
     private ?Site $site = null;
 
+    #[ORM\OneToMany(targetEntity: GoOut::class, mappedBy: 'participant')]
+    private Collection $goOut;
+
     public function __construct()
     {
         $this->participantGoOuts = new ArrayCollection();
+        $this->goOut = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -145,6 +151,36 @@ class Participant
     public function setSite(?Site $site): static
     {
         $this->site = $site;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GoOut>
+     */
+    public function getGoOut(): Collection
+    {
+        return $this->goOut;
+    }
+
+    public function addGoOut(GoOut $goOut): static
+    {
+        if (!$this->goOut->contains($goOut)) {
+            $this->goOut->add($goOut);
+            $goOut->setParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGoOut(GoOut $goOut): static
+    {
+        if ($this->goOut->removeElement($goOut)) {
+            // set the owning side to null (unless already changed)
+            if ($goOut->getParticipant() === $this) {
+                $goOut->setParticipant(null);
+            }
+        }
 
         return $this;
     }

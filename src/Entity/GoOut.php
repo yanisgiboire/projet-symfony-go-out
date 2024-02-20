@@ -49,6 +49,10 @@ class GoOut
     #[ORM\JoinColumn(nullable: false)]
     private ?Site $site = null;
 
+    #[ORM\ManyToOne(inversedBy: 'goOut')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Participant $participant = null;
+
     public function __construct()
     {
         $this->participantGoOuts = new ArrayCollection();
@@ -193,6 +197,18 @@ class GoOut
     public function setSite(?Site $site): static
     {
         $this->site = $site;
+
+        return $this;
+    }
+
+    public function getParticipant(): ?Participant
+    {
+        return $this->participant;
+    }
+
+    public function setParticipant(?Participant $participant): static
+    {
+        $this->participant = $participant;
 
         return $this;
     }
