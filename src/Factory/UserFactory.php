@@ -54,7 +54,6 @@ final class UserFactory extends ModelFactory
             'username' => self::faker()->unique()->firstName(),
             'password' => 'test',
             'roles' => ['ROLE_USER'],
-            'participant' => ParticipantFactory::random()
         ];
     }
 

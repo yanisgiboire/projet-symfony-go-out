@@ -42,6 +42,10 @@ class Participant
     #[ORM\OneToMany(targetEntity: GoOut::class, mappedBy: 'participant')]
     private Collection $goOut;
 
+    #[ORM\OneToOne(inversedBy: 'participant', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->participantGoOuts = new ArrayCollection();
@@ -184,4 +188,15 @@ class Participant
 
         return $this;
     }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): void
+    {
+        $this->user = $user;
+    }
+
 }
