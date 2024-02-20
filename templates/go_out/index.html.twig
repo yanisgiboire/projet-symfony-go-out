@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GoOut index{% endblock %}
+
+{% block body %}
+    <h1>GoOut index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>StartDateTime</th>
+                <th>Duration</th>
+                <th>LimitDateInscription</th>
+                <th>MaxNbInscriptions</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for go_out in go_outs %}
+            <tr>
+                <td>{{ go_out.id }}</td>
+                <td>{{ go_out.name }}</td>
+                <td>{{ go_out.startDateTime ? go_out.startDateTime|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ go_out.duration ? go_out.duration|date('H:i:s') : '' }}</td>
+                <td>{{ go_out.limitDateInscription ? go_out.limitDateInscription|date('Y-m-d') : '' }}</td>
+                <td>{{ go_out.maxNbInscriptions }}</td>
+                <td>{{ go_out.description }}</td>
+                <td>
+                    <a href="{{ path('app_go_out_show', {'id': go_out.id}) }}">Show</a>
+                    <a href="{{ path('app_go_out_edit', {'id': go_out.id}) }}">Edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">No go out soon</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_go_out_new') }}">Create new</a>
+{% endblock %}
