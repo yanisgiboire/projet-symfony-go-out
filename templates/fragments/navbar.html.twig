@@ -1,49 +1,59 @@
 {% block body %}
-<link rel="stylesheet" href="{{ asset('css/style.css') }}">
-	<nav
-		class="navbar navbar-expand-lg px-5 navbar-dark">
+	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+	<nav class="navbar navbar-expand-lg px-5 navbar-dark">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="#">
 				<img src="{{ asset('img/logo.png') }}" alt="logo" height="150">
 			</a>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-				<ul class="navbar-nav ms-auto">
-					{% if app.user %}
-						<li class="nav-item">
-							<a class="nav-link active" aria-current="page" href="#">Home</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">Cities</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">Areas</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="{{ path("app_user_show", {'id': app.user.id}) }}">My profile</a>
-						</li>
-						<li class="nav-item">
-							<p class="nav-link text-white">Hello, {{ app.user.username }} </p>
-						</li>
-					{% else %}
-						<li class="nav-item">
-							<a class="nav-link" href="{{ path("app_register") }}">Inscription</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="{{ path("app_login") }}">Connexion</a>
-						</li>
-					{% endif %}
-					<!-- Ajouter l'élément pour afficher la date -->
+			{% if app.user %}
+			<ul class="navbar-nav">
+				<li class="nav-item date-item">
+					<p class="nav-link disabled date">{{ "now"|date("l j F Y") }}</p>
+				</li>
+				<li class="nav-item logout-item">
+					<a href="{{ path("app_logout") }}" class="nav-link ">Log out</a>
+				</li>
+			</ul>
+		{% endif %}
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+			<ul class="navbar-nav ms-auto">
+				{% if app.user %}
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page" href="#">Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Cities</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Areas</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path("app_user_show", {'id': app.user.id}) }}">My profile</a>
+					</li>
+					<li class="nav-item">
+						<p class="nav-link text-white">Hello,
+							{{ app.user.username }}
+						</p>
+					</li>
 					<li class="nav-item date-item">
 						<p class="nav-link disabled date">{{ "now"|date("l j F Y") }}</p>
 					</li>
-          <li class="nav-item logout-item">
-          <a href="{{ path("app_logout") }}" class="nav-link ">Log out</a>
-          </li>
-				</ul>
-			</div>
+					<li class="nav-item logout-item">
+						<a href="{{ path("app_logout") }}" class="nav-link ">Log out</a>
+					</li>
+				{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path("app_register") }}">Inscription</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path("app_login") }}">Connexion</a>
+					</li>
+				{% endif %}
+			</ul>
 		</div>
-	</nav>
-{% endblock %}
+	</div>
+</nav>{% endblock %}
+
