@@ -17,7 +17,8 @@
 			{% endblock %}
 		{% endblock %}
 	</head>
-	<body>
+	<body>{% include "fragments/navbar.html.twig" %}
+		{% block body %}{% endblock %}
 		<div class="background">
 			<span></span>
 			<span></span>
@@ -30,8 +31,7 @@
 			<span></span>
 			<span></span>
 			<span></span>
-			{% include "fragments/navbar.html.twig" %}
-			{% block body %}{% endblock %}
 		</div>
 	</body>
 </html>
+
