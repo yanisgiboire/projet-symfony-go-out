@@ -3,17 +3,20 @@
 {% block title %}User{% endblock %}
 
 {% block body %}
-    <h2>Votre compte utilisateur</h2>
+<div class="goCard">
+    <h2 class="text-white text-center">Your user account :</h2>
     <table class="table">
         <tbody>
             <tr>
                 <th>Username</th>
                 <td>{{ user.username }}</td>
             </tr>
-            <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit compte utilisateur</a>
+            <a href="{{ path('app_user_edit', {'id': user.id}) }}">Edit user profile</a>
         </tbody>
     </table>
-    <h2>Votre profile participant</h2>
+</div>
+<div class="goCard">
+    <h2 class="text-white text-center">Participant account :</h2>
     <table class="table">
         <tbody>
         <tr>
@@ -22,10 +25,16 @@
             <td>{{ user.participant.firstname }}</td>
             <td>{{ user.participant.phoneNumber }}</td>
             <td>{{ user.participant.email }}</td>
+            <td>
+                {% if user.participant.imageProfileName != null %}
+                    <img src="{{ asset('uploads/profile_image/' ~ user.participant.imageProfileName ) }}" alt="Image profile">
+                {% endif %}
+            </td>
         </tr>
         </tbody>
-        <a href="{{ path('app_participant_edit', {'id': user.participant.id}) }}">edit profile participant</a>
+        <a href="{{ path('app_participant_edit', {'id': user.participant.id}) }}">Edit participant profile</a>
     </table>
+</div>
 
 {#    {{ include('user/_delete_form.html.twig') }}#}
 {% endblock %}

@@ -4,7 +4,7 @@
 
 {% block body %}
 <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-<form method="post">
+<form method="post" class="goCard">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}

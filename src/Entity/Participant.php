@@ -47,6 +47,9 @@ class Participant
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageProfileName = null;
+
     public function __construct()
     {
         $this->participantGoOuts = new ArrayCollection();
@@ -198,6 +201,18 @@ class Participant
     public function setUser(?User $user): void
     {
         $this->user = $user;
+    }
+
+    public function getImageProfileName(): ?string
+    {
+        return $this->imageProfileName;
+    }
+
+    public function setImageProfileName(?string $imageProfileName): static
+    {
+        $this->imageProfileName = $imageProfileName;
+
+        return $this;
     }
 
 }

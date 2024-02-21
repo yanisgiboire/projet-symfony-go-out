@@ -1,3 +1,6 @@
+body {
+
+}
 .navbar-brand img {
     margin-bottom: 60px;
     margin-left: 20px;
@@ -7,25 +10,33 @@
     text-decoration: none;
     color: rgb(38, 36, 65);
 }
+a {
+    text-decoration: none;
+}
 
 form {
   width: 400px; /* Taille du formulaire */
   margin: auto; /* Centrage horizontal */
   text-align: center; /* Centrage du texte */
-  /* From https://css.glass */
+}
+
+.goCard {
 background: rgba(255, 255, 255, 0.15);
 border-radius: 16px;
 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 backdrop-filter: blur(4.9px);
 -webkit-backdrop-filter: blur(4.9px);
 border: 1px solid rgba(255, 255, 255, 0.6);
+margin: 40px;
+padding: 20px;
 }
+
+
 label, input[type="text"], input[type="password"], .btn-primary {
   color: white; /* Texte en blanc */
 }
 input[type="text"], input[type="password"] {
   background-color: transparent; /* Fond transparent pour les champs de saisie */
-  border: 1px solid white; /* Bordure inférieure blanche */
   margin-bottom: 20px; /* Espacement entre les champs */
 
 }
@@ -44,7 +55,18 @@ input:focus {
   color: white; /* Bordure rose pour le bouton */
 }
 
-::placeholder {
-  color: white;
-  opacity: 0.5;
+
+.date-item {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-right: 60px;
+  margin-top: 20px;
+}
+.logout-item {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-right: 60px;
+  margin-top: 40px;
 }
