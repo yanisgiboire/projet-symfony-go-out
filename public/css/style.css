@@ -2,9 +2,15 @@ body {
 
 }
 .navbar-brand img {
-    margin-bottom: 60px;
     margin-left: 20px;
+    margin-bottom: 0;
   }
+
+  .goNav {
+    padding: 20px;
+
+  }
+
 
   .logout-link {
     text-decoration: none;
@@ -15,9 +21,8 @@ a {
 }
 
 form {
-  width: 400px; /* Taille du formulaire */
-  margin: auto; /* Centrage horizontal */
-  text-align: center; /* Centrage du texte */
+  margin: auto; 
+  text-align: center;
 }
 
 .goCard {
@@ -27,7 +32,7 @@ box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 backdrop-filter: blur(4.9px);
 -webkit-backdrop-filter: blur(4.9px);
 border: 1px solid rgba(255, 255, 255, 0.6);
-margin: 40px;
+margin: 20px;
 padding: 20px;
 }
 
@@ -60,13 +65,30 @@ input:focus {
   position: absolute;
   top: 0;
   right: 0;
-  margin-right: 60px;
+  margin-right: 20px;
   margin-top: 20px;
 }
 .logout-item {
   position: absolute;
   top: 0;
   right: 0;
-  margin-right: 60px;
+  margin-right: 20px;
   margin-top: 40px;
+}
+
+.edit-link {
+  color: white;
+  text-decoration: none;
+}
+
+.table>:not(caption)>*>* {
+  background-color: transparent;
+  border-bottom-width: 0;
+}
+
+
+@media (min-width: 1200px) {
+  .col-md-6 {
+      min-width: 400px;
+  }
 }

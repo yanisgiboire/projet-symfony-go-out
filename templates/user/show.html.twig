@@ -3,38 +3,44 @@
 {% block title %}User{% endblock %}
 
 {% block body %}
-<div class="goCard">
-    <h2 class="text-white text-center">Your user account :</h2>
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Username</th>
-                <td>{{ user.username }}</td>
-            </tr>
-            <a href="{{ path('app_user_edit', {'id': user.id}) }}">Edit user profile</a>
-        </tbody>
-    </table>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-9">
+            <div class="goCard mx-auto text-white">
+                <h2 class="text-white text-center">Your user account :</h2>
+                <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="edit-link position-absolute top-0 end-0 m-4">Edit</a>
+                <div class="mb-3">
+                    <strong>Username:</strong> {{ user.username }}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div class="goCard">
-    <h2 class="text-white text-center">Participant account :</h2>
-    <table class="table">
-        <tbody>
-        <tr>
-            <th>Username</th>
-            <td>{{ user.participant.surname }}</td>
-            <td>{{ user.participant.firstname }}</td>
-            <td>{{ user.participant.phoneNumber }}</td>
-            <td>{{ user.participant.email }}</td>
-            <td>
+<<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-9">
+            <div class="goCard mx-auto text-white">
+                <h2 class="text-white text-center">Your participant account :</h2>
+                <a href="{{ path('app_participant_edit', {'id': user.participant.id}) }}" class="edit-link position-absolute top-0 end-0 m-4">Edit</a>
+                <div class="mb-3">
+                    <strong>Username:</strong> {{ user.participant.surname }}
+                </div>
+                <div class="mb-3">
+                    <strong>First Name:</strong> {{ user.participant.firstname }}
+                </div>
+                <div class="mb-3">
+                    <strong>Phone Number:</strong> {{ user.participant.phoneNumber }}
+                </div>
+                <div class="mb-3">
+                    <strong>Email:</strong> {{ user.participant.email }}
+                </div>
                 {% if user.participant.imageProfileName != null %}
-                    <img src="{{ asset('uploads/profile_image/' ~ user.participant.imageProfileName ) }}" alt="Image profile">
+                    <div class="mb-3">
+                        <img src="{{ asset('uploads/profile_image/' ~ user.participant.imageProfileName ) }}" alt="Image profile">
+                    </div>
                 {% endif %}
-            </td>
-        </tr>
-        </tbody>
-        <a href="{{ path('app_participant_edit', {'id': user.participant.id}) }}">Edit participant profile</a>
-    </table>
+            </div>
+        </div>
+    </div>
 </div>
-
-{#    {{ include('user/_delete_form.html.twig') }}#}
 {% endblock %}
