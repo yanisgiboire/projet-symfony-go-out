@@ -32,9 +32,9 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        SiteFactory::createMany(10);
-        ParticipantFactory::createMany(10);
+        SiteFactory::createOne();
         UserFactory::createOne();
+        ParticipantFactory::createOne();
         CityFactory::createMany(10);
         PlaceFactory::createMany(10);
         StatusFactory::createOne(['libelle' => 'Ouverte']);
