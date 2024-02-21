@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/user', name: 'app_user_')]
+#[Route('/user', name: 'app_')]
 class HomeController extends AbstractController
 {
     #[Route('/home', name: 'home')]
