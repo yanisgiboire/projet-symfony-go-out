@@ -19,15 +19,6 @@ class ParticipantType extends AbstractType
             ->add('firstName')
             ->add('phoneNumber')
             ->add('email')
-            ->add('active')
-            ->add('site', EntityType::class, [
-                'class' => Site::class,
-'choice_label' => 'id',
-            ])
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-'choice_label' => 'id',
-            ])
         ;
     }
 
