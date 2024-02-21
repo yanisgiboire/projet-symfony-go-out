@@ -23,7 +23,7 @@
 							<a class="nav-link" href="#">Areas</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">My profile</a>
+							<a class="nav-link" href="{{ path("app_user_show", {'id': app.user.id}) }}">My profile</a>
 						</li>
 						   <li class="nav-item">
                 <p class="nav-link text-white">Hello, {{ app.user.username }}  <span>  <a href="{{ path("app_logout") }}" class="logout-link">Log out</a></span></p>
