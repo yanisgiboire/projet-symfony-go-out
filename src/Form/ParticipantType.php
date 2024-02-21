@@ -3,12 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Participant;
-use App\Entity\Site;
-use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class ParticipantType extends AbstractType
 {
@@ -19,6 +18,22 @@ class ParticipantType extends AbstractType
             ->add('firstName')
             ->add('phoneNumber')
             ->add('email')
+            ->add('imageProfileName', FileType::class, [
+                'label' => 'Image PNG/JPEG : ',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1000k',
+                        'mimeTypes' => [
+                            'image/*',
+                            'application/pdf',
+                            'application/x-pdf',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid PNG/JPEG image',
+                    ])
+                ]
+            ])
         ;
     }
 

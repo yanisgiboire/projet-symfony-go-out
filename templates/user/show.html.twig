@@ -22,6 +22,11 @@
             <td>{{ user.participant.firstname }}</td>
             <td>{{ user.participant.phoneNumber }}</td>
             <td>{{ user.participant.email }}</td>
+            <td>
+                {% if user.participant.imageProfileName != null %}
+                    <img src="{{ asset('uploads/profile_image/' ~ user.participant.imageProfileName ) }}" alt="Image profile">
+                {% endif %}
+            </td>
         </tr>
         </tbody>
         <a href="{{ path('app_participant_edit', {'id': user.participant.id}) }}">edit profile participant</a>
