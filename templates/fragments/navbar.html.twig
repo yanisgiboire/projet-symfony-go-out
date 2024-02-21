@@ -9,8 +9,7 @@
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			<div
-				class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+			<div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
 				<ul class="navbar-nav ms-auto">
 					{% if app.user %}
 						<li class="nav-item">
@@ -25,9 +24,9 @@
 						<li class="nav-item">
 							<a class="nav-link" href="{{ path("app_user_show", {'id': app.user.id}) }}">My profile</a>
 						</li>
-						   <li class="nav-item">
-                <p class="nav-link text-white">Hello, {{ app.user.username }}  <span>  <a href="{{ path("app_logout") }}" class="logout-link">Log out</a></span></p>
-            </li>
+						<li class="nav-item">
+							<p class="nav-link text-white">Hello, {{ app.user.username }} </p>
+						</li>
 					{% else %}
 						<li class="nav-item">
 							<a class="nav-link" href="{{ path("app_register") }}">Inscription</a>
@@ -36,10 +35,15 @@
 							<a class="nav-link" href="{{ path("app_login") }}">Connexion</a>
 						</li>
 					{% endif %}
+					<!-- Ajouter l'élément pour afficher la date -->
+					<li class="nav-item date-item">
+						<p class="nav-link disabled date">{{ "now"|date("l j F Y") }}</p>
+					</li>
+          <li class="nav-item logout-item">
+          <a href="{{ path("app_logout") }}" class="nav-link ">Log out</a>
+          </li>
 				</ul>
-
 			</div>
 		</div>
 	</nav>
 {% endblock %}
-
