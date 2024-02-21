@@ -51,9 +51,9 @@ final class UserFactory extends ModelFactory
     {
 
         return [
-            'username' => self::faker()->unique()->firstName(),
-            'password' => 'test',
-            'roles' => ['ROLE_USER'],
+            'username' => 'admin',
+            'password' => 'admin',
+            'roles' => ['ROLE_ADMIN'],
         ];
     }
 

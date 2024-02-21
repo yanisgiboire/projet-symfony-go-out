@@ -20,7 +20,10 @@
     <h1 class="h2 mb-5 font-weight-normal text-white">Please sign in</h1>
     <input type="text" value="{{ last_username }}" name="username" id="inputUsername"  placeholder="Username"class="form-control" autocomplete="username" required autofocus>
     <input type="password" name="password" id="inputPassword" placeholder="Password" class="form-control" autocomplete="current-password" required>
-
+    <label>
+        <input type="checkbox" name="_remember_me" checked>
+        remember me
+    </label>
     <input type="hidden" name="_csrf_token"
            value="{{ csrf_token('authenticate') }}"
     >
