@@ -14,3 +14,12 @@ body { background: linear-gradient(-45deg, #ce6e51, #b4255c, #127599, #0ca17e);
       background-position: 0% 50%;
     }
   }
+  .navbar-nav .nav-item{
+    text-decoration: none;
+}
+
+.navbar-brand img {
+  margin-bottom: 60px;
+  margin-left: 20px;
+}
+

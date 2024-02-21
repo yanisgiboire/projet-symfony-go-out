@@ -1,51 +1,45 @@
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    .navbar {
-      color : white;
-    }
-    .navbar-brand img {
-      margin-bottom: 60px;
-      margin-left: 20px;
-    }
-</style>
+<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+	<nav
+		class="navbar navbar-expand-lg px-5 navbar-dark">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">
+				<img src="{{ asset('img/logo.png') }}" alt="logo" height="150">
+			</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div
+				class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+				<ul class="navbar-nav ms-auto">
+					{% if app.user %}
+						<li class="nav-item">
+							<a class="nav-link active" aria-current="page" href="#">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Cities</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Areas</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">My profile</a>
+						</li>
+						   <li class="nav-item">
+                <p class="nav-link text-white">Hello, {{ app.user.username }}  <span>  <a href="{{ path("app_logout") }}" class="logout-link">Log out</a></span></p>
+            </li>
+					{% else %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path("app_register") }}">Inscription</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path("app_login") }}">Connexion</a>
+						</li>
+					{% endif %}
+				</ul>
 
-<nav class="navbar navbar-expand-lg px-5 navbar-dark"> <!-- Changer la classe bg-light en bg-primary pour le fond bleu foncé -->
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">
-      <img src="{{ asset('img/logo.png') }}" alt="logo" height="150">
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent"> <!-- Aligner les éléments à droite -->
-      <ul class="navbar-nav">
-        {% if app.user %}
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Cities</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Areas</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">My profile</a>
-        </li>
-        <li>
-          <p>Hello, {{ app.user.username }} !</p>
-          <a href="{{ path("app_logout") }}">Log out</a>
-        </li>
-        {% else %}
-          <li>
-            <a href="{{ path("app_register") }}">Inscription</a>
-            <a href="{{ path("app_login") }}">Connexion</a>
-          </li>
-        {% endif %}
-      </ul>
-    </div>
-  </div>
-</nav>
+			</div>
+		</div>
+	</nav>
 {% endblock %}
+
