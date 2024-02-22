@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\ParticipantRepository;
-use PhpParser\Builder\Param;
 
 #[Route('/participant/go_out')]
 class ParticipantGoOutController extends AbstractController
@@ -37,7 +36,7 @@ class ParticipantGoOutController extends AbstractController
         $userId = $this->getUser()->getId();
 
         // Retrieve the participant based on the user ID
-        $participant = $participantRepository->find($userId);
+        $participant = $participantRepository->findOneBy(['user' => $userId]);
 
         if ($participant) {
             $participantGoOut = new ParticipantGoOut();
@@ -50,7 +49,7 @@ class ParticipantGoOutController extends AbstractController
             return $this->redirectToRoute('app_go_out_index');
         }
 
-        return $this->redirectToRoute('error_page');
+        return $this->redirectToRoute('app_login');
     }
     
 
@@ -92,7 +91,7 @@ class ParticipantGoOutController extends AbstractController
         $userId = $this->getUser()->getId();
     
         // Retrieve the participant based on the user ID
-        $participant = $participantRepository->find($userId);
+        $participant = $participantRepository->findOneBy(['user' => $userId]);
     
         if ($participant) {
             // Find and remove the ParticipantGoOut entity for the given GoOut and Participant

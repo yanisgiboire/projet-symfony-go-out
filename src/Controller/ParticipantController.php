@@ -18,14 +18,6 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[Route('/participant')]
 class ParticipantController extends AbstractController
 {
-    #[Route('/', name: 'app_participant_index', methods: ['GET'])]
-    public function index(ParticipantRepository $participantRepository): Response
-    {
-        return $this->render('participant/index.html.twig', [
-            'participants' => $participantRepository->findAll(),
-        ]);
-    }
-
     #[Route('/new', name: 'app_participant_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {

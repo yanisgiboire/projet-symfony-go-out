@@ -47,10 +47,11 @@ class DashboardController extends AbstractDashboardController
     {
         return [
             MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
+            MenuItem::linkToCrud('User', 'fa-solid fa-user',   User::class),
             MenuItem::linkToCrud('Participant', 'fa-solid fa-person', Participant::class),
             MenuItem::linkToCrud('Go out', 'fa-solid fa-person-running',   GoOut::class),
-            MenuItem::linkToCrud('User', 'fa-solid fa-person-running',   User::class),
 
+            MenuItem::linkToRoute('Back to the website', 'fa-solid fa-arrow-left', 'app_go_out_index'),
         ];
     }
 }
