@@ -8,7 +8,7 @@
 		<div class="row">
 
 
-			<div class="col-12 goCardFilter">
+			<div class="col-10 offset-1 goCardFilter mb-5">
 				<h1 class="mb-4 text-white text-center">Filters</h1>
 				<form action="{{ path('app_go_out_index') }}" method="get">
 					<div class="row">
@@ -104,8 +104,11 @@
 		</div>
 	</div>
 
-	<a href="{{ path('app_go_out_new') }}" class="btn btn-success mt-4">Create new event</a>
-	<script>
+<div class="create-event-button">
+    <a href="{{ path('app_go_out_new') }}" class="btn btn-success">Create new event</a>
+</div>
+
+<script>
 		document.addEventListener('DOMContentLoaded', function () {
 const checkboxes = document.querySelectorAll('.filter-checkbox');
 
