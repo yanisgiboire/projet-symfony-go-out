@@ -13,10 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/go_out')]
+#[Route('/user/go_out')]
 class GoOutController extends AbstractController
 {
-    #[Route('/', name: 'app_go_out_index', methods: ['GET'])]
+    #[Route(name: 'app_go_out_index', methods: ['GET'])]
     public function index(GoOutRepository $goOutRepository): Response
     {
         return $this->render('go_out/index.html.twig', [
@@ -24,7 +24,7 @@ class GoOutController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_go_out_new', methods: ['GET', 'POST'])]
+    #[Route('/organize/new', name: 'app_go_out_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
 
@@ -56,7 +56,7 @@ class GoOutController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_go_out_edit', methods: ['GET', 'POST'])]
+    #[Route('/organize/{id}/edit', name: 'app_go_out_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, GoOut $goOut, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(GoOutType::class, $goOut);
@@ -74,7 +74,7 @@ class GoOutController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_go_out_delete', methods: ['POST'])]
+    #[Route('/organize/{id}', name: 'app_go_out_delete', methods: ['POST'])]
     public function delete(Request $request, ParticipantGoOut $participantGoOut, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$participantGoOut->getId(), $request->request->get('_token'))) {
