@@ -38,6 +38,17 @@
         </tbody>
     </table>
 
+    {# je veux voir la liste de mes participant #}
+    
+    <h2>Participants</h2>
+    <ul>
+        {% for participants in go_out_participants %}
+            <li>{{ participants.participant.surname }}</li>
+        {% endfor %}
+    </ul>
+
+    {# je veux afficher la liste de mes partiicipant dans ma console  #}
+
     <a href="{{ path('app_go_out_index') }}">back to list</a>
 
     <a href="{{ path('app_go_out_edit', {'id': go_out.id}) }}">edit</a>
