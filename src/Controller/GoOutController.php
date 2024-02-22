@@ -3,9 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\GoOut;
-use App\Entity\Participant;
 use App\Entity\ParticipantGoOut;
-use App\Entity\User;
+use App\Repository\ParticipantGoOutRepository;
 use App\Form\GoOutType;
 use App\Repository\GoOutRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,10 +46,10 @@ class GoOutController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_go_out_show', methods: ['GET'])]
-    public function show(Request $request ,GoOut $goOut, GoOutRepository $goOutRepository): Response
+    public function show(Request $request ,GoOut $goOut, ParticipantGoOutRepository $participantGoOutRepository): Response
     {
         $id = $request->attributes->get('id');
-        $goOutParticipants = $goOutRepository->findBy(['id' => $id]);
+        $goOutParticipants = $participantGoOutRepository->findBy(['goOut' => $id]);
         return $this->render('go_out/show.html.twig', [
             'go_out' => $goOut,
             'go_out_participants' => $goOutParticipants
@@ -76,28 +75,14 @@ class GoOutController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_go_out_delete', methods: ['POST'])]
-    public function delete(Request $request, GoOut $goOut, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, ParticipantGoOut $participantGoOut, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$goOut->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($goOut);
+        if ($this->isCsrfTokenValid('delete'.$participantGoOut->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($participantGoOut);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_go_out_index', [], Response::HTTP_SEE_OTHER);
     }
-
-    // #[Route('/{id}', name: 'app_go_out_register', methods: ['POST'])]
-    // public function register(Request $request, GoOut $goOut, EntityManagerInterface $entityManager): Response
-    // {
-
-    //     $goOut->getParticipantGoOuts($this->getUser());
-    //     //je veux inscire mo participant avec sont id a un goout avec son id
-
-
-    //     $entityManager->persist($goOut);
-    //     $entityManager->flush();
-
-
-    //     return $this->redirectToRoute('app_go_out_index', [], Response::HTTP_SEE_OTHER);
-    // }
+    
 }
