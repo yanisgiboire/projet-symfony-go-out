@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ParticipantGoOut{% endblock %}
+
+{% block body %}
+    <h1>ParticipantGoOut</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ participant_go_out.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_participant_go_out_index') }}">back to list</a>
+
+    <a href="{{ path('app_participant_go_out_edit', {'id': participant_go_out.id}) }}">edit</a>
+
+    {{ include('participant_go_out/_delete_form.html.twig') }}
+{% endblock %}

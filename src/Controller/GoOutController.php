@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\GoOut;
+use App\Entity\ParticipantGoOut;
+use App\Repository\ParticipantGoOutRepository;
 use App\Form\GoOutType;
 use App\Repository\GoOutRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,10 +32,6 @@ class GoOutController extends AbstractController
         $form = $this->createForm(GoOutType::class, $goOut);
         $form->handleRequest($request);
 
-        // je veux preremplir le champs participant_id avec l'id du participant connecté
-        $goOut->setParticipant($this->getUser());
-        
-
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($goOut);
             $entityManager->flush();
@@ -48,10 +46,13 @@ class GoOutController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_go_out_show', methods: ['GET'])]
-    public function show(GoOut $goOut): Response
+    public function show(Request $request ,GoOut $goOut, ParticipantGoOutRepository $participantGoOutRepository): Response
     {
+        $id = $request->attributes->get('id');
+        $goOutParticipants = $participantGoOutRepository->findBy(['goOut' => $id]);
         return $this->render('go_out/show.html.twig', [
             'go_out' => $goOut,
+            'go_out_participants' => $goOutParticipants
         ]);
     }
 
@@ -74,13 +75,14 @@ class GoOutController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_go_out_delete', methods: ['POST'])]
-    public function delete(Request $request, GoOut $goOut, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, ParticipantGoOut $participantGoOut, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$goOut->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($goOut);
+        if ($this->isCsrfTokenValid('delete'.$participantGoOut->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($participantGoOut);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_go_out_index', [], Response::HTTP_SEE_OTHER);
     }
+    
 }
