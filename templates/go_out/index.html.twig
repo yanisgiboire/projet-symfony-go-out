@@ -3,44 +3,45 @@
 {% block title %}GoOut index{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="row">
-        <div class="col-12 goCard">
-				<h1 class="mb-4 text-white text-center">Filters</h1>
-				<p>Filter by date</p>
-                <p>Filter by date</p>
-                <p>Filter by date</p>
-                <p>Filter by date</p>
-				<form action="{{ path('app_go_out_index') }}" method="get">
-					<div class="form-group">
-						<label for="startDateTime">Start Date</label>
-						<input type="date" id="startDateTime" name="startDateTime" class="form-control" value="{{ app.request.query.get('startDateTime') }}" placeholder="yyyy-mm-dd">
-					</div>
-				</form>
-			</div>
-            {% for go_out in go_outs %}
-                <div class="col-12 col-md-12 col-lg-4 mb-4">
-                    <div class="card custom-card">
-                        <a href="{{ path('app_go_out_show', {'id': go_out.id}) }}" class="card-link">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ go_out.name }}</h5>
-                                <p class="card-text">Start Date: {{ go_out.startDateTime ? go_out.startDateTime|date('Y-m-d H:i:s') : '' }}</p>
-                                <p class="card-text">Duration: {{ go_out.duration ? go_out.duration|date('H:i:s') : '' }}</p>
-                                <p class="card-text">Limit Date for Inscription: {{ go_out.limitDateInscription ? go_out.limitDateInscription|date('Y-m-d') : '' }}</p>
-                                <p class="card-text">Max Number of Inscriptions: {{ go_out.maxNbInscriptions }}</p>
-                                <p class="card-text">{{ go_out.description }}</p>
-                            </div>
-                            <div class="card-footer">
-                                <a href="{{ path('app_go_out_edit', {'id': go_out.id}) }}" class="btn btn-secondary w-100">Edit</a>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            {% else %}
-                <p class="col-12">Come back soon</p>
-            {% endfor %}
-        </div>
-    </div>
+    <h1>GoOut index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>StartDateTime</th>
+                <th>Duration</th>
+                <th>LimitDateInscription</th>
+                <th>MaxNbInscriptions</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for go_out in go_outs %}
+            <tr>
+                <td>{{ go_out.id }}</td>
+                <td>{{ go_out.name }}</td>
+                <td>{{ go_out.startDateTime ? go_out.startDateTime|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ go_out.duration ? go_out.duration|date('H:i:s') : '' }}</td>
+                <td>{{ go_out.limitDateInscription ? go_out.limitDateInscription|date('Y-m-d') : '' }}</td>
+                <td>{{ go_out.maxNbInscriptions }}</td>
+                <td>{{ go_out.description }}</td>
+                <td>
+                    <a href="{{ path('app_go_out_show', {'id': go_out.id}) }}">Show</a>
+                    <a href="{{ path('app_go_out_edit', {'id': go_out.id}) }}">Edit</a>
+                    <a href="{{ path('app_participant_go_out_new', {'id': go_out.id}) }}">Register</a>
+                    <a href="{{ path('app_participant_go_out_delete', {'id': go_out.id}) }}">Remove from List</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">No go out soon</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
     <a href="{{ path('app_go_out_new') }}" class="btn btn-success mt-4">Create new event</a>
 {% endblock %}
