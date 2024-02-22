@@ -90,8 +90,10 @@
 									{{ go_out.maxNbInscriptions }}</p>
 								<p class="card-text">{{ go_out.description }}</p>
 							</div>
-							<div class="card-footer">
-								<a href="{{ path('app_go_out_edit', {'id': go_out.id}) }}" class="btn btn-secondary w-100">Edit</a>
+							<div class="card-footer my-2">
+								<a href="{{ path('app_go_out_edit', {'id': go_out.id}) }}" class="btn btn-secondary w-100 my-1">Edit</a>
+								<a href="{{ path('app_participant_go_out_new', {'id': go_out.id}) }}" class="btn btn-primary w-100 my-1">Register</a>
+								<a href="{{ path('app_participant_go_out_delete', {'id': go_out.id}) }}" class="btn btn-danger w-100 my-1">Remove from List</a>
 							</div>
 						</a>
 					</div>
