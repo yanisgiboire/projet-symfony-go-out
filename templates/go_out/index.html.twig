@@ -7,9 +7,9 @@
 	<div class="container">
 		<div class="row">
 
-
-			<div class="col-10 offset-1 goCardFilter mb-5">
-				<h1 class="mb-4 text-white text-center">Filters</h1>
+			<div class="col-12 px-3">
+			<div class="col-12 goCardFilter mb-5 px-3">
+			
 				<form action="{{ path('app_go_out_index') }}" method="get">
 					<div class="row">
 						<div class="col-md-6">
@@ -43,7 +43,7 @@
 							</div>
 						</div>
 						<div class="col-12 my-4">
-							<div class="btn-group-toggle space-between" data-toggle="buttons">
+							<div class="btn-group-toggle margin-auto" data-toggle="buttons">
 								<label class="btn btn-custom">
 									<input type="checkbox" class="filter-checkbox" name="filter1">
 									Which I am the organizer
@@ -68,6 +68,7 @@
 					</div>
 				</form>
 			</div>
+			</div>
 
 
 		</div>
@@ -77,7 +78,7 @@
 					<div class="card custom-card">
 						<a href="{{ path('app_go_out_show', {'id': go_out.id}) }}" class="card-link">
 							<div class="card-header">
-								<h5 class="card-title text-center my-3">{{ go_out.name }}</h5>
+								<h4 class="card-title text-center my-3">{{ go_out.name }}</h4>
 							</div>
 							<div class="card-body">
 								<p class="card-text">Start Date:
@@ -88,7 +89,6 @@
 									{{ go_out.limitDateInscription ? go_out.limitDateInscription|date('Y-m-d') : '' }}</p>
 								<p class="card-text">Max Number of Inscriptions:
 									{{ go_out.maxNbInscriptions }}</p>
-								<p class="card-text">{{ go_out.description }}</p>
 							</div>
 							<div class="card-footer my-2">
 								{% if is_granted("ROLE_ADMIN") %}
@@ -125,7 +125,7 @@ this.parentElement.classList.remove('active');
 });
 });
 });
-	</script>
+</script>
 
 {% endblock %}
 
