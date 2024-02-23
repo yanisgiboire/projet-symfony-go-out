@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Entity\Status;
 
 #[Route('/user/go_out')]
 class GoOutController extends AbstractController
@@ -84,8 +85,8 @@ class GoOutController extends AbstractController
         ]);
     }
 
-    #[Route('/organize/{id}', name: 'app_go_out_delete', methods: ['POST'])]
-    public function delete(Request $request, ParticipantGoOut $participantGoOut, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/cancel', name: 'app_go_out_cancel', methods: ['GET', 'POST'])]
+    public function cancel(Request $request, GoOut $goOut, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(GoOutCancel::class, $goOut);
         $form->handleRequest($request);
