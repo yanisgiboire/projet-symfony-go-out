@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\GoOut;
-use App\Entity\Status;
+use App\Entity\Participant;
 use App\Entity\ParticipantGoOut;
 use App\Form\GoOutCancel;
 use App\Repository\ParticipantGoOutRepository;
@@ -15,10 +15,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/go_out')]
+#[Route('/user/go_out')]
 class GoOutController extends AbstractController
 {
-    #[Route('/', name: 'app_go_out_index', methods: ['GET'])]
+    #[Route(name: 'app_go_out_index', methods: ['GET'])]
     public function index(GoOutRepository $goOutRepository): Response
     {
         return $this->render('go_out/index.html.twig', [
@@ -26,7 +26,7 @@ class GoOutController extends AbstractController
         ]);
     }
 
-    #[Route('/user/new', name: 'app_go_out_new', methods: ['GET', 'POST'])]
+    #[Route('/organize/new', name: 'app_go_out_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
 
@@ -58,7 +58,15 @@ class GoOutController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_go_out_edit', methods: ['GET', 'POST'])]
+    #[Route('/profile/participant/{id}', name: 'app_go_out_show_participant', methods: ['GET'])]
+    public function showParticipant(Participant $participant): Response
+    {
+        return $this->render('go_out/show_participant.html.twig', [
+            'participant' => $participant,
+        ]);
+    }
+
+    #[Route('/organize/{id}/edit', name: 'app_go_out_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, GoOut $goOut, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(GoOutType::class, $goOut);
@@ -76,8 +84,8 @@ class GoOutController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/cancel', name: 'app_go_out_cancel', methods: ['GET', 'POST'])]
-    public function cancel(Request $request, GoOut $goOut, EntityManagerInterface $entityManager): Response
+    #[Route('/organize/{id}', name: 'app_go_out_delete', methods: ['POST'])]
+    public function delete(Request $request, ParticipantGoOut $participantGoOut, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(GoOutCancel::class, $goOut);
         $form->handleRequest($request);

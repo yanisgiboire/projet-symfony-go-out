@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-9 card custom-card">
+                <div class="card-header">
+                    <h4 class="card-title text-center my-3">{{ participant.surname }}</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        <strong>Nom :</strong>
+                        {{ participant.firstName }}
+                    </p>
+                    <p class="card-text">
+                        <strong>Téléphone :</strong>
+                        {{ participant.phoneNumber }}
+                    </p>
+                    <p class="card-text">
+                        <strong>Email :</strong>
+                        {{ participant.email }}
+                    </p>
+                    {% if participant.imageProfileName != null %}
+                        <div class="mb-3">
+                            <img src="{{ asset('uploads/profile_image/' ~ participant.imageProfileName ) }}" alt="Image profile">
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

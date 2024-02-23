@@ -17,7 +17,9 @@
 			{% endblock %}
 		{% endblock %}
 	</head>
-	<body>{% include "fragments/navbar.html.twig" %}
+	<body>
+		<div id="world"></div>
+		{% include "fragments/navbar.html.twig" %}
 		{% block body %}{% endblock %}
 		<div class="background">
 			<span></span>

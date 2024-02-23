@@ -1,11 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New GoOut{% endblock %}
+{% block title %}New event{% endblock %}
 
 {% block body %}
-    <h1>Create new GoOut</h1>
-
-    {{ include('go_out/_form.html.twig') }}
-
-    <a href="{{ path('app_go_out_index') }}">back to list</a>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-9 card custom-card">
+                <div class="card-header">
+                    <h4 class="card-title text-center my-3">New event</h4>
+                </div>
+                <div class="card-body">
+                    {{ include('go_out/_form.html.twig') }}
+                </div>
+                <div class="card-footer my-2">
+                    <a href="{{ path('app_go_out_index') }}" class="btn btn-secondary w-100 my-1">Back to list</a>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
