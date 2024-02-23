@@ -207,6 +207,9 @@ class Participant
     public function setUser(?User $user): void
     {
         $this->user = $user;
+        if ($user->getParticipant() !== $this) {
+            $user->setParticipant($this);
+        }
     }
 
     public function getImageProfileName(): ?string

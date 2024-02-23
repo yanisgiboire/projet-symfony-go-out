@@ -47,7 +47,7 @@ final class CityFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'PostalCode' => self::faker()->text(50),
+            'postalCode' => self::faker()->postcode(),
             'name' => self::faker()->text(50),
         ];
     }

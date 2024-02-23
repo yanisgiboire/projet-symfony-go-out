@@ -51,12 +51,12 @@ class City
 
     public function getPostalCode(): ?string
     {
-        return $this->PostalCode;
+        return $this->postalCode;
     }
 
     public function setPostalCode(string $PostalCode): static
     {
-        $this->PostalCode = $PostalCode;
+        $this->postalCode = $PostalCode;
 
         return $this;
     }
