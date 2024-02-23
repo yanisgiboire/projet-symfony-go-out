@@ -18,18 +18,19 @@
 								<input type="text" id="searchInput" name="search" class="form-control" placeholder="Contains...">
 							</div>
 						</div>
+						
 						<div class="col-md-6">
 							<div class="form-group">
-								<label for="siteSelect">Select a site</label>
-								<select id="siteSelect" name="site" class="form-control">
-									<option value="">All sites</option>
-									<option value="site1">Site 1</option>
-									<option value="site2">Site 2</option>
-									<option value="site3">Site 3</option>
+								<label for="site">Select a site :</label>
+								<select id="site" name="site">
+									<option value="">Select a site</option>
+									{% for site in sites %}
+										<option value="{{ site.id }}">{{ site.name }}</option>
+									{% endfor %}
 								</select>
 							</div>
 						</div>
-
+						
 						<div class="col-md-6">
 							<div class="form-group">
 								<label for="startDatePicker">Start Date</label>
@@ -62,9 +63,22 @@
 								</label>
 							</div>
 						</div>
-						<div class="col-12">
-							<button type="submit" class="btn btn-login btn-lg btn-block w-100">GO</button>
-						</div>
+
+						<form id="searchForm" action="{{ path('app_go_out_search') }}" method="POST">
+							<input type="hidden" id="userID" name="userID">
+							<div class="col-12">
+								<button type="submit" class="btn btn-login btn-lg btn-block w-100">GO</button>
+							</div>
+						</form>
+
+						<script>
+							document.addEventListener('DOMContentLoaded', function () {
+								var participantIDInput = document.getElementById('userID');
+								var userID = {{ app.user.id ?? '' }};
+								participantIDInput.value = userID;
+							});
+						</script>
+
 					</div>
 				</form>
 			</div>
