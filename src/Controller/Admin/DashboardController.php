@@ -2,8 +2,11 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\City;
 use App\Entity\GoOut;
 use App\Entity\Participant;
+use App\Entity\Place;
+use App\Entity\Site;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -50,6 +53,9 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('User', 'fa-solid fa-user',   User::class),
             MenuItem::linkToCrud('Participant', 'fa-solid fa-person', Participant::class),
             MenuItem::linkToCrud('Go out', 'fa-solid fa-person-running',   GoOut::class),
+            MenuItem::linkToCrud('Site', 'fa-solid fa-car-side',   Site::class),
+            MenuItem::linkToCrud('Ville', 'fa-solid fa-city',   City::class),
+            MenuItem::linkToCrud('Coordonnée', 'fa-solid fa-location-dot', Place::class),
 
             MenuItem::linkToRoute('Back to the website', 'fa-solid fa-arrow-left', 'app_go_out_index'),
         ];
