@@ -7,7 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints\Unique;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: ParticipantRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -19,15 +20,20 @@ class Participant
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message:"Le nom de famille ne peut pas être vide")]
     private ?string $surname = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message:"Le prénom ne peut pas être vide")]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message:"Le numéro de téléphone ne peut pas être vide")]
     private ?string $phoneNumber = null;
 
     #[ORM\Column(length: 50, unique: true)]
+    #[Assert\NotBlank(message:"L'email ne peut pas être vide")]
+    #[Assert\Email(message:"L'email '{{ value }}' n'est pas valide.")]
     private ?string $email = null;
 
     #[ORM\Column]
