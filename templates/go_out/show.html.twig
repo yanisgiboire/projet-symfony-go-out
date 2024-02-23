@@ -32,22 +32,29 @@
                         {{ go_out.description }}</p>
 
                     <h2>Participants</h2>
-                    <ul>
-                        {% for participant in go_out_participants %}
-                            <a href="{{ path('app_go_out_show_participant', {'id': participant.participant.id }) }}">
-                                <li>{{ participant.participant.surname }}</li>
-                            </a>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <div class="card-footer my-2">
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <a href="{{ path('app_go_out_edit', {'id': go_out.id}) }}" class="btn btn-secondary w-100 my-1">Edit</a>
-                    {% endif %}
-                    <a href="{{ path('app_participant_go_out_new', {'id': go_out.id}) }}" class="btn btn-primary w-100 my-1">Register</a>
+                   <ul>
+                    {% set hasCurrentUser = false %}
+                    {% for participant in go_out_participants %}
+                        <a href="{{ path('app_go_out_show_participant', {'id': participant.participant.id }) }}">
+                            <li>{{ participant.participant.surname }}</li>
+                        </a>
+                        {% if app.user and participant.participant.surname == app.user.participant.surname %}
+                            {% set hasCurrentUser = true %}
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="card-footer my-2">
+                {% if go_out.participant.id == app.user.id %}
+                    <a href="{{ path('app_go_out_edit', {'id': go_out.id}) }}" class="btn btn-secondary w-100 my-1">Edit</a>
+                {% endif %}
+                {% if hasCurrentUser %}
                     <a href="{{ path('app_participant_go_out_delete', {'id': go_out.id}) }}" class="btn btn-danger w-100 my-1">Remove from List</a>
-                    <a href="{{ path('app_go_out_index') }}" class="btn btn-secondary w-100 my-1">Back to list</a>
-                </div>
+                {% else %}
+                <a href="{{ path('app_participant_go_out_new', {'id': go_out.id}) }}" class="btn btn-primary w-100 my-1">Register</a>
+                {% endif %}
+                <a href="{{ path('app_go_out_index') }}" class="btn btn-secondary w-100 my-1">Back to list</a>
+            </div>
             </div>
         </div>
     </div>
