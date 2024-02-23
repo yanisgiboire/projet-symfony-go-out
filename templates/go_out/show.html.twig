@@ -34,7 +34,9 @@
 					<h2>Participants</h2>
 					<ul>
 						{% for participant in go_out_participants %}
-							<li>{{ participant.participant.surname }}</li>
+							<a href="{{ path('app_go_out_show_participant', {'id': participant.participant.id }) }}">
+								<li>{{ participant.participant.surname }}</li>
+							</a>
 						{% endfor %}
 					</ul>
 				</div>

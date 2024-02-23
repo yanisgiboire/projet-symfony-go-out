@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\GoOut;
+use App\Entity\Participant;
 use App\Entity\ParticipantGoOut;
 use App\Repository\ParticipantGoOutRepository;
 use App\Form\GoOutType;
@@ -53,6 +54,14 @@ class GoOutController extends AbstractController
         return $this->render('go_out/show.html.twig', [
             'go_out' => $goOut,
             'go_out_participants' => $goOutParticipants
+        ]);
+    }
+
+    #[Route('/profile/participant/{id}', name: 'app_go_out_show_participant', methods: ['GET'])]
+    public function showParticipant(Participant $participant): Response
+    {
+        return $this->render('go_out/show_participant.html.twig', [
+            'participant' => $participant,
         ]);
     }
 
