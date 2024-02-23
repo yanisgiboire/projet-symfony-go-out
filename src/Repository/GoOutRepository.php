@@ -34,29 +34,44 @@ class GoOutRepository extends ServiceEntityRepository
 
         if (isset($searchParams['site']) && !empty($searchParams['site'])) {
             $queryBuilder
-                ->andWhere('go_out.site_id = :site')
+                ->andWhere('go_out.site = :site')
                 ->setParameter('site', $searchParams['site']);
         }
 
         if (isset($searchParams['startDate']) && !empty($searchParams['startDate'])) {
-            $queryBuilder
-                ->andWhere('go_out.start_date_time > :startDate')
-                ->setParameter('startDate', '%'.$searchParams['startDate'].'%');
+            $startDate = \DateTime::createFromFormat('Y-m-d', $searchParams['startDate']);
+            
+            if ($startDate !== false) {
+                $queryBuilder
+                    ->andWhere('go_out.startDateTime > :startDate')
+                    ->setParameter('startDate', $startDate);
+            }
         }
 
         if (isset($searchParams['endDate']) && !empty($searchParams['endDate'])) {
-            $queryBuilder
-            ->andWhere('go_out.start_date_time < :endDate')
-            ->setParameter('endDate', '%'.$searchParams['endDate'].'%');
+            $endDate = \DateTime::createFromFormat('Y-m-d', $searchParams['endDate']);
+            
+            if ($endDate !== false) {
+                $queryBuilder
+                    ->andWhere('go_out.startDateTime > :startDate')
+                    ->setParameter('startDate', $endDate);
+            }
         }
-
+        
+        //Faire en sorte que ça utilise le participant
         if (isset($searchParams['organizing']) && !empty($searchParams['organizing']) && isset($searchParams['userID']) && !empty($searchParams['userID'])) {
             $queryBuilder
             ->andWhere('go_out.user_id = :userID')
             ->setParameter('userID', '%'.$searchParams['userID '].'%');
         }
         
-        
+        //Registered for et not registered à faire
+
+        if (isset($searchParams['completed']) && !empty($searchParams['completed'])) {
+            $statusCompleted = 4; //4 correspond à passé
+            $queryBuilder->andWhere('go_out.status = :statusCompleted')
+                 ->setParameter('statusCompleted', $statusCompleted);
+        }
         
         return $queryBuilder->getQuery()->getResult();
     }

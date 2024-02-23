@@ -9,7 +9,6 @@ use App\Repository\ParticipantGoOutRepository;
 use App\Form\GoOutType;
 use App\Repository\GoOutRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use SebastianBergmann\Environment\Console;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,15 +22,11 @@ class GoOutController extends AbstractController
     public function index(GoOutRepository $goOutRepository, SiteRepository $siteRepository, SessionInterface $session ): Response
     {
         $searchParams = $session->get('search_params', []);
-        
-        dd($searchParams); 
 
-        if (empty($searchParams)) {
+        if (!empty($searchParams)) {
             $go_outs = $goOutRepository->findBySearchParams($searchParams);
-            dd($go_outs);
         } else {
             $go_outs = $goOutRepository->findAll();
-            //dd($go_outs);
         }
 
         $sites = $siteRepository->findAll();
@@ -61,6 +56,40 @@ class GoOutController extends AbstractController
             'go_out' => $goOut,
             'form' => $form,
         ]);
+    }
+
+    #[Route('/search', name: 'app_go_out_search', methods: ['GET'])]
+    public function search(Request $request, SessionInterface $session): Response
+    {
+
+        $user = $this->getUser()->getId();
+
+        $search = $request->query->get('search');
+        $siteID = $request->query->get('site');
+        $startDate = $request->query->get('startDate');
+        $endDate = $request->query->get('endDate');
+        $organizing = $request->query->get('filter1');
+        $registered = $request->query->get('filter2');
+        $notRegistered = $request->query->get('filter3');
+        $completed = $request->query->get('filter4');
+
+        //dump($request);
+
+        $searchParams = [
+            'search' => $search,
+            'site' => $siteID,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'organizing' => $organizing,
+            'registered' => $registered,
+            'notRegistered' => $notRegistered,
+            'completed' => $completed,
+        ];
+        $session->set('search_params', $searchParams);
+
+        //dd($searchParams);
+
+        return $this->redirectToRoute('app_go_out_index');
     }
 
     #[Route('/{id}', name: 'app_go_out_show', methods: ['GET'])]
@@ -103,42 +132,4 @@ class GoOutController extends AbstractController
         return $this->redirectToRoute('app_go_out_index', [], Response::HTTP_SEE_OTHER);
     }
     
-    #[Route('/', name: 'app_go_out_search', methods: ['POST'])]
-    public function search(Request $request, SessionInterface $session): Response
-    {
-        /*
-        $user = $this->getUser();
-        
-        if ($user) {
-            $userID = $user->getId();
-        } else {
-            $userID = null;
-        }
-        */
-
-        $search = $request->request->get('search');
-        $siteID = $request->request->get('site');
-        $startDate = $request->request->get('startDate');
-        $endDate = $request->request->get('endDate');
-        $userID = $request->request->get('userID');
-        $organizing = $request->request->get('filter1');
-        $registered = $request->request->get('filter2');
-        $notRegistered = $request->request->get('filter3');
-        $completed = $request->request->get('filter4');
-
-        // Stockage des valeurs de recherche en session
-        $session->set('search_params', [
-            'userID' => $userID,
-            'search' => $search,
-            'site' => $siteID,
-            'startDate' => $startDate,
-            'endDate' => $endDate,
-            'organizing' => $organizing,
-            'registered' => $registered,
-            'notRegistered' => $notRegistered,
-            'completed' => $completed,
-        ]);
-        
-        return $this->redirectToRoute('app_go_out_index');
-    }
 }

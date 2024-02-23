@@ -6,11 +6,9 @@
 {% block body %}
 	<div class="container">
 		<div class="row">
-
-
 			<div class="col-10 offset-1 goCardFilter mb-5">
 				<h1 class="mb-4 text-white text-center">Filters</h1>
-				<form action="{{ path('app_go_out_index') }}" method="get">
+				<form action="{{ path('app_go_out_search') }}" method="get">
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
@@ -63,27 +61,12 @@
 								</label>
 							</div>
 						</div>
-
-						<form id="searchForm" action="{{ path('app_go_out_search') }}" method="POST">
-							<input type="hidden" id="userID" name="userID">
-							<div class="col-12">
-								<button type="submit" class="btn btn-login btn-lg btn-block w-100">GO</button>
-							</div>
-						</form>
-
-						<script>
-							document.addEventListener('DOMContentLoaded', function () {
-								var participantIDInput = document.getElementById('userID');
-								var userID = {{ app.user.id ?? '' }};
-								participantIDInput.value = userID;
-							});
-						</script>
-
+						<div class="col-12">
+							<button type="submit" class="btn btn-login btn-lg btn-block w-100">GO</button>
+						</div>
 					</div>
 				</form>
 			</div>
-
-
 		</div>
 		<div class="row">
 			{% for go_out in go_outs %}
@@ -123,20 +106,19 @@
 </div>
 
 <script>
-		document.addEventListener('DOMContentLoaded', function () {
-const checkboxes = document.querySelectorAll('.filter-checkbox');
+	document.addEventListener('DOMContentLoaded', function () {
+		const checkboxes = document.querySelectorAll('.filter-checkbox');
 
-checkboxes.forEach(function (checkbox) {
-checkbox.addEventListener('change', function () {
-if (this.checked) {
-this.parentElement.classList.add('active');
-} else {
-this.parentElement.classList.remove('active');
-}
-});
-});
-});
-	</script>
+		checkboxes.forEach(function (checkbox) {
+			checkbox.addEventListener('change', function () {
+				if (this.checked) {
+					this.parentElement.classList.add('active');
+				} else {
+					this.parentElement.classList.remove('active');
+				}
+			});
+		});
+	});
+</script>
 
 {% endblock %}
-
