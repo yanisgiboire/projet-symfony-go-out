@@ -8,66 +8,66 @@
 		<div class="row">
 
 			<div class="col-12 px-3">
-			<div class="col-12 goCardFilter mb-5 px-3">
-			
-				<form action="{{ path('app_go_out_index') }}" method="get">
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="searchInput">Search</label>
-								<input type="text" id="searchInput" name="search" class="form-control" placeholder="Contains...">
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="siteSelect">Select a site</label>
-								<select id="siteSelect" name="site" class="form-control">
-									<option value="">All sites</option>
-									<option value="site1">Site 1</option>
-									<option value="site2">Site 2</option>
-									<option value="site3">Site 3</option>
-								</select>
-							</div>
-						</div>
+				<div class="col-12 goCardFilter mb-5 px-3">
 
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="startDatePicker">Start Date</label>
-								<input type="date" id="startDatePicker" name="startDate" class="form-control" placeholder="Start Date">
+					<form action="{{ path('app_go_out_index') }}" method="get">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="searchInput">Search</label>
+									<input type="text" id="searchInput" name="search" class="form-control" placeholder="Contains...">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="siteSelect">Select a site</label>
+									<select id="siteSelect" name="site" class="form-control">
+										<option value="">All sites</option>
+										<option value="site1">Site 1</option>
+										<option value="site2">Site 2</option>
+										<option value="site3">Site 3</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="startDatePicker">Start Date</label>
+									<input type="date" id="startDatePicker" name="startDate" class="form-control" placeholder="Start Date">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="endDatePicker">End Date</label>
+									<input type="date" id="endDatePicker" name="endDate" class="form-control" placeholder="End Date">
+								</div>
+							</div>
+							<div class="col-12 my-4">
+								<div class="btn-group-toggle margin-auto" data-toggle="buttons">
+									<label class="btn btn-custom">
+										<input type="checkbox" class="filter-checkbox" name="filter1">
+										Which I am the organizer
+									</label>
+									<label class="btn btn-custom">
+										<input type="checkbox" class="filter-checkbox" name="filter2">
+										Which i am registered for
+									</label>
+									<label class="btn btn-custom">
+										<input type="checkbox" class="filter-checkbox" name="filter3">
+										Which i am not registered
+									</label>
+									<label class="btn btn-custom">
+										<input type="checkbox" class="filter-checkbox" name="filter4">
+										Completed
+									</label>
+								</div>
+							</div>
+							<div class="col-12">
+								<button type="submit" class="btn btn-login btn-lg btn-block w-100">GO</button>
 							</div>
 						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="endDatePicker">End Date</label>
-								<input type="date" id="endDatePicker" name="endDate" class="form-control" placeholder="End Date">
-							</div>
-						</div>
-						<div class="col-12 my-4">
-							<div class="btn-group-toggle margin-auto" data-toggle="buttons">
-								<label class="btn btn-custom">
-									<input type="checkbox" class="filter-checkbox" name="filter1">
-									Which I am the organizer
-								</label>
-								<label class="btn btn-custom">
-									<input type="checkbox" class="filter-checkbox" name="filter2">
-									Which i am registered for
-								</label>
-								<label class="btn btn-custom">
-									<input type="checkbox" class="filter-checkbox" name="filter3">
-									Which i am not registered
-								</label>
-								<label class="btn btn-custom">
-									<input type="checkbox" class="filter-checkbox" name="filter4">
-									Completed
-								</label>
-							</div>
-						</div>
-						<div class="col-12">
-							<button type="submit" class="btn btn-login btn-lg btn-block w-100">GO</button>
-						</div>
-					</div>
-				</form>
-			</div>
+					</form>
+				</div>
 			</div>
 
 
@@ -92,8 +92,8 @@
 							</div>
 							<div class="card-footer my-2">
 								{% if is_granted("ROLE_ADMIN") %}
-								<a href="{{ path('app_go_out_edit', {'id': go_out.id}) }}" class="btn btn-secondary w-100 my-1">Edit</a>
-								<a href="{{ path('app_go_out_cancel', {'id': go_out.id}) }}" class="btn btn-secondary w-100 my-1">Cancel</a>								
+									<a href="{{ path('app_go_out_edit', {'id': go_out.id}) }}" class="btn btn-secondary w-100 my-1">Edit</a>
+									<a href="{{ path('app_go_out_cancel', {'id': go_out.id}) }}" class="btn btn-secondary w-100 my-1">Cancel</a>
 								{% endif %}
 								<a href="{{ path('app_participant_go_out_new', {'id': go_out.id}) }}" class="btn btn-primary w-100 my-1">Register</a>
 								<a href="{{ path('app_participant_go_out_delete', {'id': go_out.id}) }}" class="btn btn-danger w-100 my-1">Remove from List</a>
@@ -113,20 +113,25 @@
 	{% endif %}
 
 <script>
-		document.addEventListener('DOMContentLoaded', function () {
-const checkboxes = document.querySelectorAll('.filter-checkbox');
+function setupCheckboxFunctionality() {
+    const checkboxes = document.querySelectorAll('.filter-checkbox');
 
-checkboxes.forEach(function (checkbox) {
-checkbox.addEventListener('change', function () {
-if (this.checked) {
-this.parentElement.classList.add('active');
-} else {
-this.parentElement.classList.remove('active');
+    checkboxes.forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            if (this.checked) {
+                this.parentElement.classList.add('active');
+            } else {
+                this.parentElement.classList.remove('active');
+            }
+        });
+    });
 }
-});
-});
-});
+
+document.addEventListener('DOMContentLoaded', setupCheckboxFunctionality);
+
+window.addEventListener('load', setupCheckboxFunctionality);
 </script>
+
 
 {% endblock %}
 
