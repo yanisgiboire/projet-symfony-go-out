@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\GoOut;
+use App\Entity\Status;
 use App\Entity\ParticipantGoOut;
+use App\Form\GoOutCancel;
 use App\Repository\ParticipantGoOutRepository;
 use App\Form\GoOutType;
 use App\Repository\GoOutRepository;
@@ -24,7 +26,7 @@ class GoOutController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_go_out_new', methods: ['GET', 'POST'])]
+    #[Route('/user/new', name: 'app_go_out_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
 
@@ -74,15 +76,26 @@ class GoOutController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_go_out_delete', methods: ['POST'])]
-    public function delete(Request $request, ParticipantGoOut $participantGoOut, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/cancel', name: 'app_go_out_cancel', methods: ['GET', 'POST'])]
+    public function cancel(Request $request, GoOut $goOut, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$participantGoOut->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($participantGoOut);
+        $form = $this->createForm(GoOutCancel::class, $goOut);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            //$goOut->setStatus(); statut is intger 
+
+            $goOut->setStatus($entityManager->getRepository(Status::class)->find(5));
+
             $entityManager->flush();
+
+            return $this->redirectToRoute('app_go_out_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->redirectToRoute('app_go_out_index', [], Response::HTTP_SEE_OTHER);
+        return $this->render('go_out/cancel.html.twig', [
+            'go_out' => $goOut,
+            'form_cancel' => $form,
+        ]);
     }
     
 }

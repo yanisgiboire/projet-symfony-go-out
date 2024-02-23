@@ -53,6 +53,9 @@ class GoOut
     #[ORM\JoinColumn(nullable: false)]
     private ?Participant $participant = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $reason = null;
+
     public function __construct()
     {
         $this->participantGoOuts = new ArrayCollection();
@@ -207,6 +210,18 @@ class GoOut
     public function setParticipant(?Participant $participant): static
     {
         $this->participant = $participant;
+
+        return $this;
+    }
+
+    public function getReason(): ?string
+    {
+        return $this->reason;
+    }
+
+    public function setReason(?string $reason): static
+    {
+        $this->reason = $reason;
 
         return $this;
     }

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cancel GoOut{% endblock %}
+
+{% block body %}
+    <h1>Cancel GoOut</h1>
+
+    {{ include('go_out/_form_cancel.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_go_out_index') }}">back to list</a>
+
+{% endblock %}

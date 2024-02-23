@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\ParticipantRepository;
 use PhpParser\Builder\Param;
+use PhpParser\Node\Scalar\MagicConst\Dir;
 
 #[Route('/participant/go_out')]
 class ParticipantGoOutController extends AbstractController
@@ -26,6 +27,7 @@ class ParticipantGoOutController extends AbstractController
     }
 
     #[Route('/new/{id}', name: 'app_participant_go_out_new', methods: ['GET', 'POST'])]
+    
     public function new(EntityManagerInterface $entityManager, GoOut $goOut, ParticipantRepository $participantRepository): Response
     {
         // Check if the user is authenticated
@@ -40,14 +42,17 @@ class ParticipantGoOutController extends AbstractController
         $participant = $participantRepository->find($userId);
 
         if ($participant) {
-            $participantGoOut = new ParticipantGoOut();
-            $participantGoOut->setParticipant($participant);
-            $participantGoOut->setGoOut($goOut);
+            if ($goOut->getMaxNbInscriptions() <= count($goOut->getParticipantGoOuts())) {
+                if ($goOut->getLimitDateInscription() < new \DateTime()) {
+                    $participantGoOut = new ParticipantGoOut();
+                    $participantGoOut->setParticipant($participant);
+                    $participantGoOut->setGoOut($goOut);
 
-            $entityManager->persist($participantGoOut);
-            $entityManager->flush();
-
+                    $entityManager->persist($participantGoOut);
+                    $entityManager->flush();
+                }
             return $this->redirectToRoute('app_go_out_index');
+            }
         }
 
         return $this->redirectToRoute('error_page');
@@ -80,7 +85,7 @@ class ParticipantGoOutController extends AbstractController
         ]);
     }
 
-    #[Route('/remove/{id}', name: 'app_participant_go_out_delete', methods: ['GET', 'POST'])]
+    #[Route('/user/remove/{id}', name: 'app_participant_go_out_delete', methods: ['GET', 'POST'])]
     public function remove(EntityManagerInterface $entityManager, GoOut $goOut, ParticipantRepository $participantRepository): Response
     {
         // Check if the user is authenticated
