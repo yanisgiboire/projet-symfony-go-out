@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: GoOutRepository::class)]
 class GoOut
@@ -17,21 +18,30 @@ class GoOut
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message:"Le nom ne peut pas être vide")]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\NotBlank(message:"La date de début ne peut pas être vide")]
     private ?\DateTimeInterface $startDateTime = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message:"La durée ne peut pas être vide")]
+    #[Assert\Type(type:"integer", message:"La durée doit être un entier")]
     private ?int $duration = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotBlank(message:"La date limite d'inscription ne peut pas être vide")]
     private ?\DateTimeInterface $limitDateInscription = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message:"Le nombre maximum d'inscriptions ne peut pas être vide")]
+    #[Assert\Type(type:"integer", message:"Le nombre maximum d'inscriptions doit être un entier")]
+    #[Assert\GreaterThan(value:0, message:"Le nombre maximum d'inscriptions doit être supérieur à zéro")]
     private ?int $maxNbInscriptions = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"La description ne peut pas être vide")]
     private ?string $description = null;
 
     #[ORM\OneToMany(targetEntity: ParticipantGoOut::class, mappedBy: 'goOut')]

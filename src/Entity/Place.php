@@ -6,6 +6,7 @@ use App\Repository\PlaceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PlaceRepository::class)]
 class Place
@@ -16,17 +17,20 @@ class Place
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message:"Le nom de la place ne peut pas être vide")]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"Le nom de la rue ne peut pas être vide")]
     private ?string $street = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message:"La latitude ne peut pas être vide")]
     private ?float $latitude = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message:"La longitude ne peut pas être vide")]
     private ?float $longitude = null;
-
     #[ORM\ManyToOne(inversedBy: 'place')]
     #[ORM\JoinColumn(nullable: false)]
     private ?City $city = null;
