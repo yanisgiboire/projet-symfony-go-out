@@ -113,6 +113,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setParticipant(?Participant $participant): void
     {
         $this->participant = $participant;
+        if ($participant->getUser() !== $this) {
+            $participant->setUser($this);
+        }
     }
 
 }
