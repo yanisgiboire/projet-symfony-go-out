@@ -24,7 +24,7 @@ class GoOutRepository extends ServiceEntityRepository
 
     public function findBySearchParams($searchParams)
     {
-        $queryBuilder = $this->createQueryBuilder('go_out');
+        $queryBuilder = $this->createQueryBuilder('go_out');            ;
 
         if (isset($searchParams['search']) && !empty($searchParams['search'])) {
             $queryBuilder
@@ -57,15 +57,30 @@ class GoOutRepository extends ServiceEntityRepository
                     ->setParameter('startDate', $endDate);
             }
         }
-        
-        //Faire en sorte que ça utilise le participant
+
         if (isset($searchParams['organizing']) && !empty($searchParams['organizing']) && isset($searchParams['userID']) && !empty($searchParams['userID'])) {
             $queryBuilder
-            ->andWhere('go_out.user_id = :userID')
-            ->setParameter('userID', '%'.$searchParams['userID '].'%');
+            ->join('go_out.participant', 'participant')
+            ->join('participant.user', 'organizer')
+            ->andWhere('organizer.id = :userID')
+            ->setParameter('userID', $searchParams['userID']);
         }
-        
-        //Registered for et not registered à faire
+
+        if (isset($searchParams['registered']) && !empty($searchParams['registered']) && isset($searchParams['userID']) && !empty($searchParams['userID'])) {
+            $queryBuilder
+            ->join('go_out.participantGoOuts', 'pgo')
+            ->join('pgo.participant', 'p')
+            ->andWhere('p.id = :userID')
+            ->setParameter('userID', $searchParams['userID']);
+        }
+
+        if (isset($searchParams['notRegistered']) && !empty($searchParams['notRegistered']) && isset($searchParams['userID']) && !empty($searchParams['userID'])) {
+            $queryBuilder
+            ->join('go_out.participantGoOuts', 'pgo')
+            ->join('pgo.participant', 'p')
+            ->andWhere('p.id <> :userID')
+            ->setParameter('userID', $searchParams['userID']);
+        }
 
         if (isset($searchParams['completed']) && !empty($searchParams['completed'])) {
             $statusCompleted = 4; //4 correspond à passé

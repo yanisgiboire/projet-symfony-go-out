@@ -61,9 +61,7 @@ class GoOutController extends AbstractController
     #[Route('/search', name: 'app_go_out_search', methods: ['GET'])]
     public function search(Request $request, SessionInterface $session): Response
     {
-
-        $user = $this->getUser()->getId();
-
+        $userID = $this->getUser()->getId();
         $search = $request->query->get('search');
         $siteID = $request->query->get('site');
         $startDate = $request->query->get('startDate');
@@ -73,9 +71,8 @@ class GoOutController extends AbstractController
         $notRegistered = $request->query->get('filter3');
         $completed = $request->query->get('filter4');
 
-        //dump($request);
-
         $searchParams = [
+            'userID' => $userID,
             'search' => $search,
             'site' => $siteID,
             'startDate' => $startDate,
@@ -86,8 +83,6 @@ class GoOutController extends AbstractController
             'completed' => $completed,
         ];
         $session->set('search_params', $searchParams);
-
-        //dd($searchParams);
 
         return $this->redirectToRoute('app_go_out_index');
     }
