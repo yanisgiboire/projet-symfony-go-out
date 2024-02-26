@@ -47,7 +47,7 @@ final class SiteFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'name' => self::faker()->text(50),
+            'name' => "eni " . self::faker()->city(),
         ];
     }
 

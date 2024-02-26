@@ -85,6 +85,14 @@
 									{{ go_out.limitDateInscription ? go_out.limitDateInscription|date('Y-m-d') : '' }}</p>
 								<p class="card-text">Max Number of Inscriptions:
 									{{ go_out.maxNbInscriptions }}</p>
+								<p class="card-text">Organizer:
+    								{{ go_out.participant.firstname }} {{ go_out.participant.surname }}
+								<p class="card-text">Site:
+    								{{ go_out.site.name }}
+								<p class="card-text">Description:
+    								{{ go_out.description }}
+								<p class="card-text">Status:
+    								{{ go_out.status.libelle }}																						
 							</div>
 						</a>
 					</div>
@@ -94,11 +102,9 @@
 			{% endfor %}
 		</div>
 	</div>
-	{% if is_granted("ROLE_ORGANIZER") %}
-		<div class="create-event-button">
-			<a href="{{ path('app_go_out_new') }}" class="btn btn-success">Create new event</a>
-		</div>
-	{% endif %}
+	<div class="create-event-button">
+		<a href="{{ path('app_go_out_new') }}" class="btn btn-success">Create new event</a>
+	</div>
 
 <script>
 	document.addEventListener('DOMContentLoaded', function () {

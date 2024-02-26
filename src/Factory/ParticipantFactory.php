@@ -52,15 +52,6 @@ final class ParticipantFactory extends ModelFactory
      */
     protected function getDefaults(): array
     {
-        $userRepository = $this->entityManager->getRepository(User::class);
-        $queryBuilder = $userRepository->createQueryBuilder('u');
-
-        $queryBuilder
-            ->leftJoin(Participant::class, 'p', 'WITH', 'p.user = u.id')
-            ->where($queryBuilder->expr()->isNull('p.id'))
-            ->setMaxResults(1);
-
-        $userWithoutParticipant = $queryBuilder->getQuery()->getOneOrNullResult();
 
         return [
             'active' => self::faker()->boolean(),
@@ -69,7 +60,6 @@ final class ParticipantFactory extends ModelFactory
             'phoneNumber' => self::faker()->phoneNumber(1),
             'surname' => self::faker()->name(50),
             'site' => SiteFactory::random(),
-            'user' => $userWithoutParticipant ?? UserFactory::createOne(),
         ];
     }
 

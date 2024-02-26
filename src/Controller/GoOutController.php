@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\GoOut;
 use App\Entity\Participant;
 use App\Entity\ParticipantGoOut;
+use App\Entity\User;
 use App\Repository\SiteRepository;
 use App\Form\GoOutCancel;
 use App\Repository\ParticipantGoOutRepository;
@@ -18,7 +19,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Status;
 
-#[Route('/user/go_out')]
+#[Route('/goout')]
 class GoOutController extends AbstractController
 {
     #[Route('/', name: 'app_go_out_index', methods: ['GET'])]
@@ -40,14 +41,16 @@ class GoOutController extends AbstractController
         ]);
     }
 
-    #[Route('/user/new', name: 'app_go_out_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'app_go_out_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
 
         $goOut = new GoOut();
 
-        $userId = $this->getUser()->getId();
-        
+        /** @var User $user */
+        $user = $this->getUser();
+        $user->getParticipant();
+
         $form = $this->createForm(GoOutType::class, $goOut);
         $form->handleRequest($request);
 
@@ -113,7 +116,7 @@ class GoOutController extends AbstractController
         ]);
     }
 
-    #[Route('/organize/{id}/edit', name: 'app_go_out_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_go_out_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, GoOut $goOut, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(GoOutType::class, $goOut);
