@@ -104,9 +104,13 @@
 			</div>
 			</div>
 		</div>
+		{% if not is_mobile() %}
+
 		<div class="create-event-button">
 			<a href="{{ path('app_go_out_new') }}" class="btn btn-success">Create new event</a>
 		</div>
+		{% endif %}
+
 
 		<script>
 			document.addEventListener('DOMContentLoaded', function () {
