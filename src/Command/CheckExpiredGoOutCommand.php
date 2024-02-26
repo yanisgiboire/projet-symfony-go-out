@@ -10,6 +10,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Sortie;
 use App\Entity\Status;
+use SebastianBergmann\Environment\Console;
 
 class CheckExpiredGoOutCommand extends Command
 {
@@ -33,20 +34,25 @@ class CheckExpiredGoOutCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        // Logique pour vérifier les sorties expirées et celles réalisées depuis plus d'un mois
-        $allGoOuts = $this->entityManager->getRepository(GoOut::class);
+        $allGoOuts = $this->entityManager->getRepository(GoOut::class)->findAll();
         
         foreach ($allGoOuts as $goOut) {
             // Vérifier si la sortie est expirée
-            $endDateTime = clone $goOut->getStartDateTime();
-            $endDateTime->add($goOut->getDuration());
+            $endDateTime = $goOut->getStartDateTime();
+            $duration = $goOut->getDuration();
+            $interval = new \DateInterval('PT' . $duration . 'H');
+            $endDateTime->add($interval);
             $isExpired = $endDateTime < (new \DateTime())->modify('-1 month');
     
             if ($isExpired) {
                 $goOut->setStatus($this->entityManager->getRepository(Status::class)->find(2));
+                $this->entityManager->persist($goOut);
+
             }
         }
+        
 
+        $this->entityManager->flush();
 
         $io->success('Vérification des sorties expirées et réalisées depuis plus d\'un mois terminée.');
 
