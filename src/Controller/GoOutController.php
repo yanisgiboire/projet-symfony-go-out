@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Status;
+use MobileDetectBundle\DeviceDetector\MobileDetectorInterface;
 
 #[Route('/user/go_out')]
 class GoOutController extends AbstractController
@@ -28,9 +29,9 @@ class GoOutController extends AbstractController
     }
 
     #[Route('/organize/new', name: 'app_go_out_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, MobileDetectorInterface $mobileDetector): Response
     {
-
+        $mobileDetector->isMobile();
         $goOut = new GoOut();
         $form = $this->createForm(GoOutType::class, $goOut);
         $form->handleRequest($request);

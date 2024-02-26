@@ -98,31 +98,32 @@
 			{% endfor %}
 		</div>
 	</div>
-	{% if is_granted("ROLE_ORGANIZER") %}
+	{% if not is_mobile() %}
 		<div class="create-event-button">
 			<a href="{{ path('app_go_out_new') }}" class="btn btn-success">Create new event</a>
 		</div>
 	{% endif %}
 
-<script>
-function setupCheckboxFunctionality() {
-    const checkboxes = document.querySelectorAll('.filter-checkbox');
 
-    checkboxes.forEach(function (checkbox) {
-        checkbox.addEventListener('change', function () {
-            if (this.checked) {
-                this.parentElement.classList.add('active');
-            } else {
-                this.parentElement.classList.remove('active');
-            }
-        });
-    });
+	<script>
+		function setupCheckboxFunctionality() {
+const checkboxes = document.querySelectorAll('.filter-checkbox');
+
+checkboxes.forEach(function (checkbox) {
+checkbox.addEventListener('change', function () {
+if (this.checked) {
+this.parentElement.classList.add('active');
+} else {
+this.parentElement.classList.remove('active');
+}
+});
+});
 }
 
 document.addEventListener('DOMContentLoaded', setupCheckboxFunctionality);
 
 window.addEventListener('load', setupCheckboxFunctionality);
-</script>
+	</script>
 
 
 {% endblock %}

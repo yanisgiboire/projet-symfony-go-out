@@ -46,7 +46,7 @@ security:
         ROLE_ORGANIZER: ROLE_USER
 
 
-when@test:
+when@dev:
     security:
         password_hashers:
             # By default, password hashers are resource intensive and take time. This is
