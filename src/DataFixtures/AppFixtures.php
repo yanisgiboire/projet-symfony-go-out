@@ -32,22 +32,23 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        SiteFactory::createOne();
+        SiteFactory::createMany(5);
         UserFactory::createOne(['username' => 'admin', 'password' => 'admin', 'roles' => ['ROLE_ADMIN']]);
-        UserFactory::createMany(50);
-        ParticipantFactory::createMany(51);
+        UserFactory::createOne(['username' => 'user', 'password' => 'user', 'roles' => ['ROLE_USER']]);
+        UserFactory::createMany(48);
+
         CityFactory::createMany(10);
         PlaceFactory::createMany(10);
+
         StatusFactory::createOne(['libelle' => 'Ouverte']);
         StatusFactory::createOne(['libelle' => 'Clôturée']);
         StatusFactory::createOne(['libelle' => 'Activité en cours']);
         StatusFactory::createOne(['libelle' => 'passée']);
         StatusFactory::createOne(['libelle' => 'Annulée']);
 
-        PlaceFactory::createMany(10);
-
         GoOutFactory::createMany(50);
-        ParticipantGoOutFactory::createMany(100);
+
+        ParticipantGoOutFactory::createMany(10);
     }
 
 }

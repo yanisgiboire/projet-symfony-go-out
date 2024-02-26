@@ -49,11 +49,11 @@ final class GoOutFactory extends ModelFactory
     {
         return [
             'description' => self::faker()->text(255),
-            'duration' => self::faker()->randomNumber(),
+            'duration' => self::faker()->numberBetween(30, 700),
             'limitDateInscription' => self::faker()->dateTime(),
-            'maxNbInscriptions' => self::faker()->randomNumber(),
+            'maxNbInscriptions' => self::faker()->numberBetween(2, 50),
             'name' => self::faker()->text(50),
-            'startDateTime' => self::faker()->dateTime(),
+            'startDateTime' => self::faker()->dateTimeBetween('-2 week', '+2 week'),
             'status' => StatusFactory::random(),
             'place' => PlaceFactory::random(),
             'site' => SiteFactory::random(),
