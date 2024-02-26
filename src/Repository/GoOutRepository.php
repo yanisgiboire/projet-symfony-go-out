@@ -53,7 +53,7 @@ class GoOutRepository extends ServiceEntityRepository
             
             if ($endDate !== false) {
                 $queryBuilder
-                    ->andWhere('go_out.startDateTime > :startDate')
+                    ->andWhere('go_out.startDateTime < :startDate')
                     ->setParameter('startDate', $endDate);
             }
         }
