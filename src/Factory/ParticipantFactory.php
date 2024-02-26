@@ -3,7 +3,9 @@
 namespace App\Factory;
 
 use App\Entity\Participant;
+use App\Entity\User;
 use App\Repository\ParticipantRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
@@ -29,14 +31,18 @@ use Zenstruck\Foundry\RepositoryProxy;
  */
 final class ParticipantFactory extends ModelFactory
 {
+
+    private EntityManagerInterface $entityManager;
+
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
      *
      * @todo inject services if required
      */
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
         parent::__construct();
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -46,15 +52,24 @@ final class ParticipantFactory extends ModelFactory
      */
     protected function getDefaults(): array
     {
+        $userRepository = $this->entityManager->getRepository(User::class);
+        $queryBuilder = $userRepository->createQueryBuilder('u');
+
+        $queryBuilder
+            ->leftJoin(Participant::class, 'p', 'WITH', 'p.user = u.id')
+            ->where($queryBuilder->expr()->isNull('p.id'))
+            ->setMaxResults(1);
+
+        $userWithoutParticipant = $queryBuilder->getQuery()->getOneOrNullResult();
+
         return [
             'active' => self::faker()->boolean(),
-            'email' => self::faker()->email(),
+            'email' => self::faker()->unique()->email(),
             'firstName' => self::faker()->firstName(),
             'phoneNumber' => self::faker()->phoneNumber(1),
             'surname' => self::faker()->name(50),
             'site' => SiteFactory::random(),
-            // J'ai une relation OneToOne avec User, je veux que le participant soit lié à un utilisateur
-            'user' => UserFactory::random(),
+            'user' => $userWithoutParticipant ?? UserFactory::createOne(),
         ];
     }
 

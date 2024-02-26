@@ -35,7 +35,7 @@ class AppFixtures extends Fixture
         SiteFactory::createOne();
         UserFactory::createOne(['username' => 'admin', 'password' => 'admin', 'roles' => ['ROLE_ADMIN']]);
         UserFactory::createMany(50);
-        ParticipantFactory::createMany(10);
+        ParticipantFactory::createMany(51);
         CityFactory::createMany(10);
         PlaceFactory::createMany(10);
         StatusFactory::createOne(['libelle' => 'Ouverte']);
