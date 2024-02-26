@@ -293,6 +293,9 @@
             "./config/packages/uid.yaml"
         ]
     },
+    "symfony/ux-chartjs": {
+        "version": "v2.15.0"
+    },
     "symfony/ux-turbo": {
         "version": "v2.14.2"
     },
@@ -323,6 +326,9 @@
     },
     "symfonycasts/verify-email-bundle": {
         "version": "v1.16.2"
+    },
+    "tattali/mobile-detect-bundle": {
+        "version": "v2.3.0"
     },
     "twig/extra-bundle": {
         "version": "v3.8.0"
