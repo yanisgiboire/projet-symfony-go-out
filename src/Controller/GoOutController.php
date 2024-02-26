@@ -32,10 +32,14 @@ class GoOutController extends AbstractController
     {
 
         $goOut = new GoOut();
+
+        $userId = $this->getUser()->getId();
+        
         $form = $this->createForm(GoOutType::class, $goOut);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $goOut->setParticipant($entityManager->getRepository(Participant::class)->find($userId));
             $entityManager->persist($goOut);
             $entityManager->flush();
 
