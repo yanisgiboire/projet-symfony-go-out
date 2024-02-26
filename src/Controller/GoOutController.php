@@ -27,7 +27,7 @@ class GoOutController extends AbstractController
         ]);
     }
 
-    #[Route('/organize/new', name: 'app_go_out_new', methods: ['GET', 'POST'])]
+    #[Route('/user/new', name: 'app_go_out_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
 
