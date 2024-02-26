@@ -42,8 +42,8 @@ class ParticipantGoOutController extends AbstractController
         $participant = $participantRepository->find($userId);
 
         if ($participant) {
-            if ($goOut->getMaxNbInscriptions() <= count($goOut->getParticipantGoOuts())) {
-                if ($goOut->getLimitDateInscription() < new \DateTime()) {
+            if (($goOut->getMaxNbInscriptions() > count($goOut->getParticipantGoOuts()))) {
+                if ($goOut->getLimitDateInscription()->format('Y-m-d') > (new \DateTime())->format('Y-m-d')) {
                     $participantGoOut = new ParticipantGoOut();
                     $participantGoOut->setParticipant($participant);
                     $participantGoOut->setGoOut($goOut);
@@ -51,8 +51,8 @@ class ParticipantGoOutController extends AbstractController
                     $entityManager->persist($participantGoOut);
                     $entityManager->flush();
                 }
-            return $this->redirectToRoute('app_go_out_index');
             }
+            return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->redirectToRoute('error_page');
