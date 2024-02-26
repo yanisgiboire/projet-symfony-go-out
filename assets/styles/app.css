@@ -148,5 +148,13 @@ body { background: linear-gradient(-45deg, #ce6e51, #b4255c, #127599, #0ca17e);
   box-shadow: 76vmin 0 10.30162722201863vmin currentColor;
 }
 
-
-
+.flashBase {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 20px;
+  z-index: 2;
+  font-weight: bold;
+}

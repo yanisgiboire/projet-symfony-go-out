@@ -50,11 +50,19 @@ class ParticipantGoOutController extends AbstractController
                     $entityManager->persist($participantGoOut);
                     $entityManager->flush();
                 }
+
+                $this->addFlash('error', 'The registration date has passed.');
+                return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
+
             }
+            $this->addFlash('error', 'The number of registrations has been exceeded.');
+
             return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
         }
+        $this->addFlash('error', 'You must be logged in to register for an goOut.');
+        return $this->redirectToRoute('app_go_out_login', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
 
-        return $this->redirectToRoute('error_page');
+        // return $this->redirectToRoute('error_page');
     }
     
 
