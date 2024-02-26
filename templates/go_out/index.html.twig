@@ -6,121 +6,124 @@
 {% block body %}
 	<div class="container">
 		<div class="row">
-			<div class="col-10 offset-1 goCardFilter mb-5">
-				<h1 class="mb-4 text-white text-center">Filters</h1>
-				<form action="{{ path('app_go_out_search') }}" method="get">
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="searchInput">Search</label>
-								<input type="text" id="searchInput" name="search" class="form-control" placeholder="Contains...">
+			<div class="col-12 px-3">
+				<div class="col-12 goCardFilter mb-5 px-3">
+					<form action="{{ path('app_go_out_search') }}" method="get">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="searchInput">Search</label>
+									<input type="text" id="searchInput" name="search" class="form-control" placeholder="Contains...">
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="site">Select a site :</label>
+									<select id="site" name="site" class="form-control">
+										<option value="">Select a site</option>
+										{% for site in sites %}
+											<option value="{{ site.id }}">{{ site.name }}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="startDatePicker">Start Date</label>
+									<input type="date" id="startDatePicker" name="startDate" class="form-control" placeholder="Start Date">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="endDatePicker">End Date</label>
+									<input type="date" id="endDatePicker" name="endDate" class="form-control" placeholder="End Date">
+								</div>
+							</div>
+							<div class="col-12 my-4">
+								<div class="btn-group-toggle space-between" data-toggle="buttons">
+									<label class="btn btn-custom">
+										<input type="checkbox" class="filter-checkbox" name="filter1">
+										Which I am the organizer
+									</label>
+									<label class="btn btn-custom">
+										<input type="checkbox" class="filter-checkbox" name="filter2">
+										Which i am registered for
+									</label>
+									<label class="btn btn-custom">
+										<input type="checkbox" class="filter-checkbox" name="filter3">
+										Which i am not registered
+									</label>
+									<label class="btn btn-custom">
+										<input type="checkbox" class="filter-checkbox" name="filter4">
+										Completed
+									</label>
+								</div>
+							</div>
+							<div class="col-12">
+								<button type="submit" class="btn btn-login btn-lg btn-block w-100">GO</button>
 							</div>
 						</div>
-						
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="site">Select a site :</label>
-								<select id="site" name="site">
-									<option value="">Select a site</option>
-									{% for site in sites %}
-										<option value="{{ site.id }}">{{ site.name }}</option>
-									{% endfor %}
-								</select>
-							</div>
-						</div>
-						
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="startDatePicker">Start Date</label>
-								<input type="date" id="startDatePicker" name="startDate" class="form-control" placeholder="Start Date">
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label for="endDatePicker">End Date</label>
-								<input type="date" id="endDatePicker" name="endDate" class="form-control" placeholder="End Date">
-							</div>
-						</div>
-						<div class="col-12 my-4">
-							<div class="btn-group-toggle space-between" data-toggle="buttons">
-								<label class="btn btn-custom">
-									<input type="checkbox" class="filter-checkbox" name="filter1">
-									Which I am the organizer
-								</label>
-								<label class="btn btn-custom">
-									<input type="checkbox" class="filter-checkbox" name="filter2">
-									Which i am registered for
-								</label>
-								<label class="btn btn-custom">
-									<input type="checkbox" class="filter-checkbox" name="filter3">
-									Which i am not registered
-								</label>
-								<label class="btn btn-custom">
-									<input type="checkbox" class="filter-checkbox" name="filter4">
-									Completed
-								</label>
-							</div>
-						</div>
-						<div class="col-12">
-							<button type="submit" class="btn btn-login btn-lg btn-block w-100">GO</button>
+					</form>
+				</div>
+			</div>
+			<div class="row">
+				{% for go_out in go_outs %}
+					<div class="col-12 col-md-12 col-lg-4 mb-4">
+						<div class="card custom-card">
+							<a href="{{ path('app_go_out_show', {'id': go_out.id}) }}" class="card-link">
+								<div class="card-header">
+									<h4 class="card-title text-center my-3">{{ go_out.name }}</h4>
+								</div>
+								<div class="card-body">
+									<p class="card-text">Start Date:
+										{{ go_out.startDateTime ? go_out.startDateTime|date('Y-m-d H:i:s') : '' }}</p>
+									<p class="card-text">Duration:
+										{{ go_out.duration ? go_out.duration|date('H:i:s') : '' }}</p>
+									<p class="card-text">Limit Date for Inscription:
+										{{ go_out.limitDateInscription ? go_out.limitDateInscription|date('Y-m-d') : '' }}</p>
+									<p class="card-text">Max Number of Inscriptions:
+										{{ go_out.maxNbInscriptions }}</p>
+									<p class="card-text">Organizer:
+										{{ go_out.participant.firstname }}{{ go_out.participant.surname }}
+									</p>
+									<p class="card-text">Site:{{ go_out.site.name }}
+									</p>
+									<p class="card-text">Description:{{ go_out.description }}
+									</p>
+									<p class="card-text">Status:{{ go_out.status.libelle }}
+									</p>
+								</div>
+							</a>
 						</div>
 					</div>
-				</form>
+				{% else %}
+					<p class="col-12">Come back soon</p>
+				{% endfor %}
+			</div>
 			</div>
 		</div>
-		<div class="row">
-			{% for go_out in go_outs %}
-				<div class="col-12 col-md-12 col-lg-4 mb-4">
-					<div class="card custom-card">
-						<a href="{{ path('app_go_out_show', {'id': go_out.id}) }}" class="card-link">
-							<div class="card-header">
-								<h4 class="card-title text-center my-3">{{ go_out.name }}</h4>
-							</div>
-							<div class="card-body">
-								<p class="card-text">Start Date:
-									{{ go_out.startDateTime ? go_out.startDateTime|date('Y-m-d H:i:s') : '' }}</p>
-								<p class="card-text">Duration:
-									{{ go_out.duration ? go_out.duration|date('H:i:s') : '' }}</p>
-								<p class="card-text">Limit Date for Inscription:
-									{{ go_out.limitDateInscription ? go_out.limitDateInscription|date('Y-m-d') : '' }}</p>
-								<p class="card-text">Max Number of Inscriptions:
-									{{ go_out.maxNbInscriptions }}</p>
-								<p class="card-text">Organizer:
-    								{{ go_out.participant.firstname }} {{ go_out.participant.surname }}
-								<p class="card-text">Site:
-    								{{ go_out.site.name }}
-								<p class="card-text">Description:
-    								{{ go_out.description }}
-								<p class="card-text">Status:
-    								{{ go_out.status.libelle }}																						
-							</div>
-						</a>
-					</div>
-				</div>
-			{% else %}
-				<p class="col-12">Come back soon</p>
-			{% endfor %}
+		<div class="create-event-button">
+			<a href="{{ path('app_go_out_new') }}" class="btn btn-success">Create new event</a>
 		</div>
-	</div>
-	<div class="create-event-button">
-		<a href="{{ path('app_go_out_new') }}" class="btn btn-success">Create new event</a>
-	</div>
 
-<script>
-	document.addEventListener('DOMContentLoaded', function () {
-		const checkboxes = document.querySelectorAll('.filter-checkbox');
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+const checkboxes = document.querySelectorAll('.filter-checkbox');
 
-		checkboxes.forEach(function (checkbox) {
-			checkbox.addEventListener('change', function () {
-				if (this.checked) {
-					this.parentElement.classList.add('active');
-				} else {
-					this.parentElement.classList.remove('active');
-				}
-			});
-		});
-	});
-</script>
+checkboxes.forEach(function (checkbox) {
+checkbox.addEventListener('change', function () {
+if (this.checked) {
+this.parentElement.classList.add('active');
+} else {
+this.parentElement.classList.remove('active');
+}
+});
+});
+});
+		</script>
 
 
-{% endblock %}
+	{% endblock %}
+
