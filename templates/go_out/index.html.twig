@@ -6,71 +6,67 @@
 {% block body %}
 	<div class="container">
 		<div class="row">
-
-			<div class="col-12 px-3">
-				<div class="col-12 goCardFilter mb-5 px-3">
-
-					<form action="{{ path('app_go_out_index') }}" method="get">
-						<div class="row">
-							<div class="col-md-6">
-								<div class="form-group">
-									<label for="searchInput">Search</label>
-									<input type="text" id="searchInput" name="search" class="form-control" placeholder="Contains...">
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label for="siteSelect">Select a site</label>
-									<select id="siteSelect" name="site" class="form-control">
-										<option value="">All sites</option>
-										<option value="site1">Site 1</option>
-										<option value="site2">Site 2</option>
-										<option value="site3">Site 3</option>
-									</select>
-								</div>
-							</div>
-
-							<div class="col-md-6">
-								<div class="form-group">
-									<label for="startDatePicker">Start Date</label>
-									<input type="date" id="startDatePicker" name="startDate" class="form-control" placeholder="Start Date">
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label for="endDatePicker">End Date</label>
-									<input type="date" id="endDatePicker" name="endDate" class="form-control" placeholder="End Date">
-								</div>
-							</div>
-							<div class="col-12 my-4">
-								<div class="btn-group-toggle margin-auto" data-toggle="buttons">
-									<label class="btn btn-custom">
-										<input type="checkbox" class="filter-checkbox" name="filter1">
-										Which I am the organizer
-									</label>
-									<label class="btn btn-custom">
-										<input type="checkbox" class="filter-checkbox" name="filter2">
-										Which i am registered for
-									</label>
-									<label class="btn btn-custom">
-										<input type="checkbox" class="filter-checkbox" name="filter3">
-										Which i am not registered
-									</label>
-									<label class="btn btn-custom">
-										<input type="checkbox" class="filter-checkbox" name="filter4">
-										Completed
-									</label>
-								</div>
-							</div>
-							<div class="col-12">
-								<button type="submit" class="btn btn-login btn-lg btn-block w-100">GO</button>
+			<div class="col-10 offset-1 goCardFilter mb-5">
+				<h1 class="mb-4 text-white text-center">Filters</h1>
+				<form action="{{ path('app_go_out_search') }}" method="get">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="searchInput">Search</label>
+								<input type="text" id="searchInput" name="search" class="form-control" placeholder="Contains...">
 							</div>
 						</div>
-					</form>
-				</div>
+						
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="site">Select a site :</label>
+								<select id="site" name="site">
+									<option value="">Select a site</option>
+									{% for site in sites %}
+										<option value="{{ site.id }}">{{ site.name }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+						
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="startDatePicker">Start Date</label>
+								<input type="date" id="startDatePicker" name="startDate" class="form-control" placeholder="Start Date">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="endDatePicker">End Date</label>
+								<input type="date" id="endDatePicker" name="endDate" class="form-control" placeholder="End Date">
+							</div>
+						</div>
+						<div class="col-12 my-4">
+							<div class="btn-group-toggle space-between" data-toggle="buttons">
+								<label class="btn btn-custom">
+									<input type="checkbox" class="filter-checkbox" name="filter1">
+									Which I am the organizer
+								</label>
+								<label class="btn btn-custom">
+									<input type="checkbox" class="filter-checkbox" name="filter2">
+									Which i am registered for
+								</label>
+								<label class="btn btn-custom">
+									<input type="checkbox" class="filter-checkbox" name="filter3">
+									Which i am not registered
+								</label>
+								<label class="btn btn-custom">
+									<input type="checkbox" class="filter-checkbox" name="filter4">
+									Completed
+								</label>
+							</div>
+						</div>
+						<div class="col-12">
+							<button type="submit" class="btn btn-login btn-lg btn-block w-100">GO</button>
+						</div>
+					</div>
+				</form>
 			</div>
-
-
 		</div>
 		<div class="row">
 			{% for go_out in go_outs %}
@@ -105,25 +101,20 @@
 	{% endif %}
 
 <script>
-function setupCheckboxFunctionality() {
-    const checkboxes = document.querySelectorAll('.filter-checkbox');
+	document.addEventListener('DOMContentLoaded', function () {
+		const checkboxes = document.querySelectorAll('.filter-checkbox');
 
-    checkboxes.forEach(function (checkbox) {
-        checkbox.addEventListener('change', function () {
-            if (this.checked) {
-                this.parentElement.classList.add('active');
-            } else {
-                this.parentElement.classList.remove('active');
-            }
-        });
-    });
-}
-
-document.addEventListener('DOMContentLoaded', setupCheckboxFunctionality);
-
-window.addEventListener('load', setupCheckboxFunctionality);
+		checkboxes.forEach(function (checkbox) {
+			checkbox.addEventListener('change', function () {
+				if (this.checked) {
+					this.parentElement.classList.add('active');
+				} else {
+					this.parentElement.classList.remove('active');
+				}
+			});
+		});
+	});
 </script>
 
 
 {% endblock %}
-
