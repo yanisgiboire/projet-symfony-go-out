@@ -60,26 +60,28 @@ class GoOutRepository extends ServiceEntityRepository
 
         if (isset($searchParams['organizing']) && !empty($searchParams['organizing']) && isset($searchParams['userID']) && !empty($searchParams['userID'])) {
             $queryBuilder
-            ->join('go_out.participant', 'participant')
-            ->join('participant.user', 'organizer')
-            ->andWhere('organizer.id = :userID')
-            ->setParameter('userID', $searchParams['userID']);
+                ->join('go_out.participant', 'participant')
+                ->join('participant.user', 'organizer')
+                ->andWhere('organizer.id = :userID')
+                ->setParameter('userID', $searchParams['userID']);
+        }
+
+        if ((isset($searchParams['registered']) && !empty($searchParams['registered'])) || (isset($searchParams['notRegistered']) && !empty($searchParams['notRegistered']))) {
+            $queryBuilder
+                ->join('go_out.participantGoOuts', 'pgo')
+                ->join('pgo.participant', 'p');
         }
 
         if (isset($searchParams['registered']) && !empty($searchParams['registered']) && isset($searchParams['userID']) && !empty($searchParams['userID'])) {
             $queryBuilder
-            ->join('go_out.participantGoOuts', 'pgo')
-            ->join('pgo.participant', 'p')
-            ->andWhere('p.id = :userID')
-            ->setParameter('userID', $searchParams['userID']);
+                ->andWhere('p.id = :userID')
+                ->setParameter('userID', $searchParams['userID']);
         }
 
         if (isset($searchParams['notRegistered']) && !empty($searchParams['notRegistered']) && isset($searchParams['userID']) && !empty($searchParams['userID'])) {
             $queryBuilder
-            ->join('go_out.participantGoOuts', 'pgo')
-            ->join('pgo.participant', 'p')
-            ->andWhere('p.id <> :userID')
-            ->setParameter('userID', $searchParams['userID']);
+                ->andWhere('p.id <> :userID')
+                ->setParameter('userID', $searchParams['userID']);
         }
 
         if (isset($searchParams['completed']) && !empty($searchParams['completed'])) {
