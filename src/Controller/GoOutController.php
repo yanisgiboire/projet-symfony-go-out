@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Status;
+use Doctrine\ORM\Mapping\Id;
 
 #[Route('/goout')]
 class GoOutController extends AbstractController
@@ -46,7 +47,7 @@ class GoOutController extends AbstractController
         $form = $this->createForm(GoOutType::class, $goOut);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $goOut->setParticipant($participantRepository->find($user->getParticipant()));
+            $goOut->setOrganizer($participantRepository->find($user->getParticipant()));
             $entityManager->persist($goOut);
             $entityManager->flush();
 
@@ -108,7 +109,7 @@ class GoOutController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_go_out_show', methods: ['GET'])]
-    public function show(Request $request ,GoOut $goOut, ParticipantGoOutRepository $participantGoOutRepository): Response
+    public function show(Request $request, GoOut $goOut, ParticipantGoOutRepository $participantGoOutRepository): Response
     {
         $id = $request->attributes->get('id');
         $goOutParticipants = $participantGoOutRepository->findBy(['goOut' => $id]);
@@ -152,7 +153,7 @@ class GoOutController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $goOut->setStatus($entityManager->getRepository(Status::class)->findOneBy(['libelle' => 'Annulée']));
+            $goOut->setStatus($entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::class::STATUS_CANCELED ]));
             $entityManager->flush();
 
             $this->addFlash('success', 'La sortie ' . $goOut->getName() . ' a bien été annulée.');
@@ -164,5 +165,4 @@ class GoOutController extends AbstractController
             'form_cancel' => $form,
         ]);
     }
-    
 }

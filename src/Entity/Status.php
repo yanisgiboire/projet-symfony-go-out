@@ -10,6 +10,13 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: StatusRepository::class)]
 class Status
 {
+    const STATUS_CREATED = 'Créée';
+    const STATUS_OPENED = 'Ouverte';
+    const STATUS_CLOSED = 'Clôturée';
+    const STATUS_ACTIVITY_IN_PROGRESS = 'Activité en cours';
+    const STATUS_PASSED = 'Passée';
+    const STATUS_CANCELED = 'Annulée';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
