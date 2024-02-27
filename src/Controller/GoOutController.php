@@ -19,12 +19,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Status;
+use Doctrine\ORM\Mapping\Id;
 
 #[Route('/goout')]
 class GoOutController extends AbstractController
 {
     #[Route('/', name: 'app_go_out_index', methods: ['GET'])]
-    public function index(GoOutRepository $goOutRepository, SiteRepository $siteRepository, SessionInterface $session ): Response
+    public function index(GoOutRepository $goOutRepository, SiteRepository $siteRepository, SessionInterface $session): Response
     {
         $searchParams = $session->get('search_params', []);
 
@@ -96,7 +97,7 @@ class GoOutController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_go_out_show', methods: ['GET'])]
-    public function show(Request $request ,GoOut $goOut, ParticipantGoOutRepository $participantGoOutRepository): Response
+    public function show(Request $request, GoOut $goOut, ParticipantGoOutRepository $participantGoOutRepository): Response
     {
         $id = $request->attributes->get('id');
         $goOutParticipants = $participantGoOutRepository->findBy(['goOut' => $id]);
@@ -152,5 +153,4 @@ class GoOutController extends AbstractController
             'form_cancel' => $form,
         ]);
     }
-    
 }
