@@ -3,7 +3,10 @@
 {% block title %}GoOut index
 {% endblock %}
 
+
+
 {% block body %}
+
 	<div class="container">
 		<div class="row">
 			<div class="col-12 px-3">
@@ -70,8 +73,9 @@
 			</div>
 			<div class="row">
 				{% for go_out in go_outs %}
-					<div class="col-12 col-md-12 col-lg-4 mb-4">
-						<div class="card custom-card">
+					{% set libelle = go_out.status.libelle %}
+					<div class="col-12 col-md-12 col-lg-4 mb-4 ">
+						<div class="card custom-card border">
 							<a href="{{ path('app_go_out_show', {'id': go_out.id}) }}" class="card-link">
 								<div class="card-header">
 									<h4 class="card-title text-center my-3">{{ go_out.name }}</h4>
@@ -110,18 +114,18 @@
 
 		<script>
 			document.addEventListener('DOMContentLoaded', function () {
-const checkboxes = document.querySelectorAll('.filter-checkbox');
+			const checkboxes = document.querySelectorAll('.filter-checkbox');
 
-checkboxes.forEach(function (checkbox) {
-checkbox.addEventListener('change', function () {
-if (this.checked) {
-this.parentElement.classList.add('active');
-} else {
-this.parentElement.classList.remove('active');
-}
-});
-});
-});
+			checkboxes.forEach(function (checkbox) {
+				checkbox.addEventListener('change', function () {
+					if (this.checked) {
+					this.parentElement.classList.add('active');
+					} else {
+					this.parentElement.classList.remove('active');
+					}
+				});
+				});
+			});
 		</script>
 
 
