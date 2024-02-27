@@ -98,9 +98,6 @@ input:focus {
   transition: transform 0.1s;
 }
 
-.custom-card:hover {
-  transform: scale(1.01);
-}
 
 .card-link {
   display: block;
