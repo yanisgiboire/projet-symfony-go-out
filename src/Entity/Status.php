@@ -18,6 +18,7 @@ class Status
     const STATUS_CANCELED = 'Annulée';
     const STATUS_ARCHIVED = 'Archivée';
 
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
