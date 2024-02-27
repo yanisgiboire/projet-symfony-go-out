@@ -22,9 +22,25 @@ class GoOutRepository extends ServiceEntityRepository
         parent::__construct($registry, GoOut::class);
     }
 
+    private function createArchivedQueryBuilder()
+    {
+        $statusArchived = 'Archivée';
+        return $this->createQueryBuilder('go_out')
+            ->join('go_out.status', 's')
+            ->andWhere('s = :statusArchived')
+            ->setParameter('statusArchived', $statusArchived);
+    }
+
+    public function findBytempo()
+    {
+        $queryBuilder = $this->createArchivedQueryBuilder();
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
     public function findBySearchParams($searchParams)
     {
-        $queryBuilder = $this->createQueryBuilder('go_out');            ;
+        $queryBuilder = $this->createArchivedQueryBuilder();
 
         if (isset($searchParams['search']) && !empty($searchParams['search'])) {
             $queryBuilder

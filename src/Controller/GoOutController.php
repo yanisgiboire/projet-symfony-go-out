@@ -29,8 +29,10 @@ class GoOutController extends AbstractController
 
         if (!empty($searchParams)) {
             $go_outs = $goOutRepository->findBySearchParams($searchParams);
+            //dd($go_outs);
         } else {
-            $go_outs = $goOutRepository->findAll();
+            $go_outs = $goOutRepository->findBytempo();
+            //dd($go_outs);
         }
 
         $sites = $siteRepository->findAll();
@@ -44,7 +46,6 @@ class GoOutController extends AbstractController
     #[Route('/new', name: 'app_go_out_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-
         $goOut = new GoOut();
 
         /** @var User $user */
@@ -93,6 +94,14 @@ class GoOutController extends AbstractController
             'completed' => $completed,
         ];
         $session->set('search_params', $searchParams);
+
+        return $this->redirectToRoute('app_go_out_index');
+    }
+
+    #[Route('/cancelSearch', name: 'app_go_out_cancelSearch', methods: ['GET', 'POST'])]
+    public function cancelSearch(SessionInterface $session): Response
+    {
+        $session->remove('search_params');
 
         return $this->redirectToRoute('app_go_out_index');
     }
