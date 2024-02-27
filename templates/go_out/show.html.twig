@@ -12,6 +12,16 @@
                     <h4 class="card-title text-center my-3">{{ go_out.name }}</h4>
                 </div>
                 <div class="card-body">
+                    {% if go_out.participant.id == app.user.participant.id %}
+                        <p class="card-text">
+                            <strong>Vous êtes organisateur</strong>
+                    {% else %}
+                        <p class="card-text">
+                            <strong>Organisateur : </strong>
+                            <a href="{{ path('app_go_out_show_participant', {'id': go_out.participant.id }) }}">
+                                {{ go_out.participant.surname }}</a>
+                        </p>
+                    {% endif %}
                     <p class="card-text">
                         <strong>Id:</strong>
                         {{ go_out.id }}</p>
@@ -45,8 +55,9 @@
                 </ul>
             </div>
             <div class="card-footer my-2">
-                {% if go_out.participant.id == app.user.id %}
-                    <a href="{{ path('app_go_out_edit', {'id': go_out.id}) }}" class="btn btn-secondary w-100 my-1">Edit</a>
+                {% if go_out.participant.id == app.user.participant.id %}
+                    <a href="{{ path('app_go_out_edit', {'id': go_out.id}) }}" class="btn btn-secondary w-100 my-1">Editer</a>
+                    <a href="{{ path('app_go_out_cancel', {'id': go_out.id}) }}" class="btn btn-danger w-100 my-1">Supprimer</a>
                 {% endif %}
                 {% if hasCurrentUser %}
                     <a href="{{ path('app_participant_go_out_delete', {'id': go_out.id}) }}" class="btn btn-danger w-100 my-1">Remove from List</a>

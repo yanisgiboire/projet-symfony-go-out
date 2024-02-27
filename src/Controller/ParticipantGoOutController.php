@@ -32,7 +32,7 @@ class ParticipantGoOutController extends AbstractController
     {
         // Check if the user is authenticated
         if (!$this->getUser()) {
-            return $this->redirectToRoute('app_login'); // Redirect to the login page
+            return $this->redirectToRoute('app_login');
         }
 
         // Retrieve the user ID
@@ -54,7 +54,10 @@ class ParticipantGoOutController extends AbstractController
 
                     return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
                 }
-
+                if ($goOut->getParticipant() === $participantRepository->find($user->getParticipant())) {
+                    $this->addFlash('error', 'Vous ne pouvez pas vous inscrire à une sortie que vous avez créée.');
+                    return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
+                }
                 $this->addFlash('error', 'Le nombre maximum d\'inscriptions a été atteint.');
                 return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
 
