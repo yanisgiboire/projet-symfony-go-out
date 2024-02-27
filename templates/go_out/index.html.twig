@@ -77,26 +77,29 @@
 					<div class="col-12 col-md-12 col-lg-4 mb-4 ">
 						<div class="card custom-card border">
 							<a href="{{ path('app_go_out_show', {'id': go_out.id}) }}" class="card-link">
-								<div class="card-header">
+								<div class="card-header d-flex justify-content-between">
 									<h4 class="card-title text-center my-3">{{ go_out.name }}</h4>
+									<p class="card-text"><strong>Status : </strong>
+										{{ go_out.status.libelle }}
+									</p>
 								</div>
 								<div class="card-body">
-									<p class="card-text">Start Date:
-										{{ go_out.startDateTime ? go_out.startDateTime|date('Y-m-d H:i:s') : '' }}</p>
-									<p class="card-text">Duration:
+									<p class="card-text"><strong>Date de début : </strong>
+										{{ go_out.startDateTime|format_datetime(locale='fr')  }}</p>
+									<p class="card-text"><strong>Durée : </strong>
 										{{ go_out.duration ? go_out.duration|date('H:i:s') : '' }}</p>
-									<p class="card-text">Limit Date for Inscription:
-										{{ go_out.limitDateInscription ? go_out.limitDateInscription|date('Y-m-d') : '' }}</p>
-									<p class="card-text">Max Number of Inscriptions:
+									<p class="card-text"><strong>Limite d'inscription : </strong>
+										{{ go_out.limitDateInscription|format_datetime(locale='fr') }}</p>
+									<p class="card-text"><strong>Nombre max de participant(s) : </strong>
 										{{ go_out.maxNbInscriptions }}</p>
-									<p class="card-text">Organizer:
-										{{ go_out.participant.firstname }}{{ go_out.participant.surname }}
+									<p class="card-text"><strong>Organisateur : </strong>
+										{{ go_out.participant.firstname }} {{ go_out.participant.surname }}
 									</p>
-									<p class="card-text">Site:{{ go_out.site.name }}
+									<p class="card-text"><strong>Site : </strong>
+										{{ go_out.site.name }}
 									</p>
-									<p class="card-text">Description:{{ go_out.description }}
-									</p>
-									<p class="card-text">Status:{{ go_out.status.libelle }}
+									<p class="card-text"><strong>Description : </strong>
+										{{ go_out.description }}
 									</p>
 								</div>
 							</a>
