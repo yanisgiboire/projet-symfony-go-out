@@ -23,28 +23,29 @@
                         </p>
                     {% endif %}
                     <p class="card-text">
-                        <strong>Id:</strong>
-                        {{ go_out.id }}</p>
-                    <p class="card-text">
-                        <strong>Start Date:</strong>
+                        <strong>Date de début : </strong>
                         {{ go_out.startDateTime ? go_out.startDateTime|date('Y-m-d H:i:s') : '' }}</p>
                     <p class="card-text">
-                        <strong>Duration:</strong>
+                        <strong>Durée : </strong>
                         {{ go_out.duration ? go_out.duration|date('H:i:s') : '' }}</p>
                     <p class="card-text">
-                        <strong>Limit Date for Inscription:</strong>
+                        <strong>Limte de date d'inscription : </strong>
                         {{ go_out.limitDateInscription ? go_out.limitDateInscription|date('Y-m-d') : '' }}</p>
                     <p class="card-text">
-                        <strong>Max Number of Inscriptions:</strong>
+                        <strong>Nombre max de participant(s) : </strong>
                         {{ go_out.maxNbInscriptions }}</p>
                     <p class="card-text">
-                        <strong>Description:</strong>
+                        <strong>Description : </strong>
                         {{ go_out.description }}</p>
 
                     <h2>Participants</h2>
                    <ul>
                     {% set hasCurrentUser = false %}
                     {% for participant in go_out_participants %}
+                        <p class="card-text">
+                            <strong>Nombre de participant(s) : </strong>
+                            {{ participant|length }}
+                        </p>
                         <a href="{{ path('app_go_out_show_participant', {'id': participant.participant.id }) }}">
                             <li>{{ participant.participant.surname }}</li>
                         </a>
@@ -57,7 +58,7 @@
             <div class="card-footer my-2">
                 {% if go_out.participant.id == app.user.participant.id %}
                     <a href="{{ path('app_go_out_edit', {'id': go_out.id}) }}" class="btn btn-secondary w-100 my-1">Editer</a>
-                    <a href="{{ path('app_go_out_cancel', {'id': go_out.id}) }}" class="btn btn-danger w-100 my-1">Supprimer</a>
+                    <a href="{{ path('app_go_out_cancel', {'id': go_out.id}) }}" class="btn btn-danger w-100 my-1">Annuler</a>
                 {% endif %}
                 {% if hasCurrentUser %}
                     <a href="{{ path('app_participant_go_out_delete', {'id': go_out.id}) }}" class="btn btn-danger w-100 my-1">Remove from List</a>

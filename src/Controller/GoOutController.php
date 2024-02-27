@@ -139,12 +139,10 @@ class GoOutController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //$goOut->setStatus(); statut is intger 
-
-            $goOut->setStatus($entityManager->getRepository(Status::class)->find(5));
-
+            $goOut->setStatus($entityManager->getRepository(Status::class)->findOneBy(['libelle' => 'Annulée']));
             $entityManager->flush();
 
+            $this->addFlash('success', 'La sortie ' . $goOut->getName() . ' a bien été annulée.');
             return $this->redirectToRoute('app_go_out_index', [], Response::HTTP_SEE_OTHER);
         }
 
