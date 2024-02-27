@@ -65,7 +65,7 @@ final class GoOutFactory extends ModelFactory
             'status' => StatusFactory::random(),
             'place' => PlaceFactory::random(),
             'site' => SiteFactory::random(),
-            'participant' => ParticipantFactory::random(),
+            'organizer' => ParticipantFactory::random(),
         ];
     }
 

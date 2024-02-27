@@ -12,12 +12,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\ParticipantRepository;
-use PhpParser\Builder\Param;
-use PhpParser\Node\Scalar\MagicConst\Dir;
 
 #[Route('/participant_goout')]
 class ParticipantGoOutController extends AbstractController
 {
+
     #[Route('/', name: 'app_participant_go_out_index', methods: ['GET'])]
     public function index(ParticipantGoOutRepository $participantGoOutRepository): Response
     {
@@ -30,12 +29,10 @@ class ParticipantGoOutController extends AbstractController
 
     public function new(EntityManagerInterface $entityManager, GoOut $goOut, ParticipantRepository $participantRepository): Response
     {
-        // Check if the user is authenticated
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
-        // Retrieve the user ID
         /** @var User $user */
         $user = $this->getUser();
         $participant = $user->getParticipant();
@@ -54,7 +51,7 @@ class ParticipantGoOutController extends AbstractController
 
                     return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
                 }
-                if ($goOut->getParticipant() === $participantRepository->find($user->getParticipant())) {
+                if ($goOut->getOrganizer() === $participantRepository->find($user->getParticipant())) {
                     $this->addFlash('error', 'Vous ne pouvez pas vous inscrire à une sortie que vous avez créée.');
                     return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
                 }

@@ -181,7 +181,7 @@ class Participant
     {
         if (!$this->goOut->contains($goOut)) {
             $this->goOut->add($goOut);
-            $goOut->setParticipant($this);
+            $goOut->setOrganizer($this);
         }
 
         return $this;
@@ -191,8 +191,8 @@ class Participant
     {
         if ($this->goOut->removeElement($goOut)) {
             // set the owning side to null (unless already changed)
-            if ($goOut->getParticipant() === $this) {
-                $goOut->setParticipant(null);
+            if ($goOut->getOrganizer() === $this) {
+                $goOut->setOrganizer(null);
             }
         }
 

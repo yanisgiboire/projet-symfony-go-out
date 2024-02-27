@@ -54,7 +54,7 @@ class GoOutController extends AbstractController
         $form = $this->createForm(GoOutType::class, $goOut);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $goOut->setParticipant($participantRepository->find($user->getParticipant()));
+            $goOut->setOrganizer($participantRepository->find($user->getParticipant()));
             $entityManager->persist($goOut);
             $entityManager->flush();
 
@@ -141,7 +141,7 @@ class GoOutController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $goOut->setStatus($entityManager->getRepository(Status::class)->findOneBy(['libelle' => 'Annulée']));
+            $goOut->setStatus($entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::class::STATUS_CANCELED ]));
             $entityManager->flush();
 
             $this->addFlash('success', 'La sortie ' . $goOut->getName() . ' a bien été annulée.');

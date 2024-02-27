@@ -40,11 +40,12 @@ class AppFixtures extends Fixture
         CityFactory::createMany(10);
         PlaceFactory::createMany(10);
 
-        StatusFactory::createOne(['libelle' => 'Ouverte']);
-        StatusFactory::createOne(['libelle' => 'Clôturée']);
-        StatusFactory::createOne(['libelle' => 'Activité en cours']);
-        StatusFactory::createOne(['libelle' => 'passée']);
-        StatusFactory::createOne(['libelle' => 'Annulée']);
+        StatusFactory::createOne(['libelle' => Status::class::STATUS_CREATED]);
+        StatusFactory::createOne(['libelle' => Status::class::STATUS_OPENED]);
+        StatusFactory::createOne(['libelle' => Status::class::STATUS_CLOSED]);
+        StatusFactory::createOne(['libelle' => Status::class::STATUS_ACTIVITY_IN_PROGRESS]);
+        StatusFactory::createOne(['libelle' => Status::class::STATUS_PASSED]);
+        StatusFactory::createOne(['libelle' => Status::class::STATUS_CANCELED]);
 
         $date = GoOutFactory::faker()->dateTimeBetween('-3month', '-2month');
         GoOutFactory::createOne([
