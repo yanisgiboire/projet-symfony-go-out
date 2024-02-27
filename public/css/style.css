@@ -125,10 +125,6 @@ input:focus {
   transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
 
-.btn-custom input[type="checkbox"] {
-  display: none;
-}
-
 .btn-custom.active {
   background-color:rgb(201, 27, 70);
   border-color: #ffffff;

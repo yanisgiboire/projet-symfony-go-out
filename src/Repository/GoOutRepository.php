@@ -27,13 +27,20 @@ class GoOutRepository extends ServiceEntityRepository
         $statusArchived = 'Archivée';
         return $this->createQueryBuilder('go_out')
             ->join('go_out.status', 's')
-            ->andWhere('s = :statusArchived')
+            ->andWhere('s.libelle <> :statusArchived')
             ->setParameter('statusArchived', $statusArchived);
     }
 
-    public function findBytempo()
+    public function findForIndex()
     {
         $queryBuilder = $this->createArchivedQueryBuilder();
+
+        $monthAgoDate = new \DateTime();
+        $monthAgoDate->modify('first day of last month')->setTime(0, 0, 0);
+
+        $queryBuilder
+            ->andWhere('go_out.startDateTime > :monthAgoDate')
+            ->setParameter('monthAgoDate', $monthAgoDate);
 
         return $queryBuilder->getQuery()->getResult();
     }
@@ -101,9 +108,10 @@ class GoOutRepository extends ServiceEntityRepository
         }
 
         if (isset($searchParams['completed']) && !empty($searchParams['completed'])) {
-            $statusCompleted = 4; //4 correspond à passé
-            $queryBuilder->andWhere('go_out.status = :statusCompleted')
-                 ->setParameter('statusCompleted', $statusCompleted);
+            $statusCompleted = 'Passée';
+            $queryBuilder
+                ->andWhere('s.libelle <> :statusCompleted')
+                ->setParameter('statusCompleted', $statusCompleted);
         }
         
         return $queryBuilder->getQuery()->getResult();

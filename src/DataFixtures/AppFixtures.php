@@ -43,7 +43,7 @@ class AppFixtures extends Fixture
         StatusFactory::createOne(['libelle' => 'Ouverte']);
         StatusFactory::createOne(['libelle' => 'Clôturée']);
         StatusFactory::createOne(['libelle' => 'Activité en cours']);
-        StatusFactory::createOne(['libelle' => 'passée']);
+        StatusFactory::createOne(['libelle' => 'Passée']);
         StatusFactory::createOne(['libelle' => 'Annulée']);
 
         $date = GoOutFactory::faker()->dateTimeBetween('-3month', '-2month');
