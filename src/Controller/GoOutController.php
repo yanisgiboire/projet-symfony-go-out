@@ -122,6 +122,7 @@ class GoOutController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
+            $this->addFlash('success', 'La sortie ' . $goOut->getName() . ' a bien été edité.');
 
             return $this->redirectToRoute('app_go_out_index', [], Response::HTTP_SEE_OTHER);
         }
