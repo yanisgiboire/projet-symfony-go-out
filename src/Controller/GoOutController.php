@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping\Id;
 class GoOutController extends AbstractController
 {
     #[Route('/', name: 'app_go_out_index', methods: ['GET'])]
-    public function index(GoOutRepository $goOutRepository, SiteRepository $siteRepository, SessionInterface $session): Response
+    public function index(GoOutRepository $goOutRepository, SiteRepository $siteRepository, SessionInterface $session, ParticipantGoOutRepository $participantGoOutRepository): Response
     {
         $searchParams = $session->get('search_params', []);
 
@@ -36,10 +36,12 @@ class GoOutController extends AbstractController
         }
 
         $sites = $siteRepository->findAll();
+        $allParticipant = $participantGoOutRepository->findAll();
 
         return $this->render('go_out/index.html.twig', [
             'go_outs' => $go_outs,
             'sites' => $sites,
+            'participantGoOut' => $allParticipant
         ]);
     }
 
