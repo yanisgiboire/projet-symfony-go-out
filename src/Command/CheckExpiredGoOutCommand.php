@@ -45,7 +45,7 @@ class CheckExpiredGoOutCommand extends Command
             $isExpired = $endDateTime < (new \DateTime())->modify('-1 month');
     
             if ($isExpired) {
-                $goOut->setStatus($this->entityManager->getRepository(Status::class)->find(2));
+                $goOut->setStatus($this->entityManager->getRepository(Status::class)->findOneBy(['libelle' => 'Ouverte']));
                 $this->entityManager->persist($goOut);
 
             }
