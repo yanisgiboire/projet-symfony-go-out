@@ -36,10 +36,9 @@ class ParticipantGoOutController extends AbstractController
         }
 
         // Retrieve the user ID
-        $userId = $this->getUser()->getId();
-
-        // Retrieve the participant based on the user ID
-        $participant = $participantRepository->find($userId);
+        /** @var User $user */
+        $user = $this->getUser();
+        $participant = $user->getParticipant();
 
         if ($participant) {
             if (($goOut->getMaxNbInscriptions() > count($goOut->getParticipantGoOuts()))) {
@@ -51,11 +50,19 @@ class ParticipantGoOutController extends AbstractController
                     $entityManager->persist($participantGoOut);
                     $entityManager->flush();
                 }
+
+                $this->addFlash('error', 'The registration date has passed.');
+                return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
+
             }
+            $this->addFlash('error', 'The number of registrations has been exceeded.');
+
             return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
         }
+        $this->addFlash('error', 'You must be logged in to register for an goOut.');
+        return $this->redirectToRoute('app_go_out_login', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
 
-        return $this->redirectToRoute('error_page');
+        // return $this->redirectToRoute('error_page');
     }
     
 
@@ -93,16 +100,14 @@ class ParticipantGoOutController extends AbstractController
             return $this->redirectToRoute('app_login'); // Redirect to the login page
         }
     
-        // Retrieve the user ID
-        $userId = $this->getUser()->getId();
+        /** @var User $user */
+        $user = $this->getUser();
+        $user->getParticipant();
     
-        // Retrieve the participant based on the user ID
-        $participant = $participantRepository->find($userId);
-    
-        if ($participant) {
+        if ($user) {
             // Find and remove the ParticipantGoOut entity for the given GoOut and Participant
             $participantGoOut = $entityManager->getRepository(ParticipantGoOut::class)->findOneBy([
-                'participant' => $participant,
+                'participant' => $user,
                 'goOut' => $goOut,
             ]);
     
