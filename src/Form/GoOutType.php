@@ -9,9 +9,6 @@ use App\Entity\Site;
 use App\Entity\Status;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,27 +20,26 @@ class GoOutType extends AbstractType
             ->add('name')
             ->add('startDateTime', DateTimeType::class, [
                 'widget' => 'single_text',
+                'html5' => true,
+                'attr' => ['min' => (new \DateTime())->format('Y-m-d\TH:i')],
             ])
-            ->add('duration', null, [
-                'attr' => [
-                    'min' => 1,
-                    'max' => 24,
-                ],
-            ])
+            ->add('duration')
             ->add('limitDateInscription', DateTimeType::class, [
                 'widget' => 'single_text',
-            ])
-            ->add('maxNbInscriptions', NumberType::class, [
+                'html5' => true,
                 'attr' => [
-                    'min' => 1,
-                    'max' => 100,
+                    'min' => (new \DateTime())->format('Y-m-d\TH:i'),
+                    'max' => '{{ data.form.startDateTime.value }}',
+                ],
+                'constraints' => [
+                    new LimitDateInscription(),
                 ],
             ])
-            ->add('description', TextareaType::class, [
-                'attr' => [
-                    'rows' => 5,
-                ],
+            ->add('maxNbInscriptions')
+            ->add('description', null, [
+                'attr' => ['rows' => 5],
             ])
+
             ->add('place', EntityType::class, [
                 'class' => Place::class,
                 'choice_label' => 'name',
