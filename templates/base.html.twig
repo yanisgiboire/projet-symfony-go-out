@@ -20,9 +20,7 @@
 	<body>
 		<div id="world"></div>
 		{% include "fragments/navbar.html.twig" %}
-		<div class="flashBase">
-			{% include "fragments/flash.html.twig" %}
-		</div>
+		{% include "fragments/flash.html.twig" %}
 		{% block body %}{% endblock %}
 		<div class="background">
 			<span></span>
