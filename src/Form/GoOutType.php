@@ -9,6 +9,9 @@ use App\Entity\Site;
 use App\Entity\Status;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,16 +21,29 @@ class GoOutType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('startDateTime')
-            ->add('duration')
-            ->add('limitDateInscription')
-            ->add('maxNbInscriptions')
-            ->add('description')
-            ->add('status', EntityType::class, [
-                'class' => Status::class,
-                'choice_label' => 'libelle',
+            ->add('startDateTime', DateTimeType::class, [
+                'widget' => 'single_text',
             ])
-
+            ->add('duration', null, [
+                'attr' => [
+                    'min' => 1,
+                    'max' => 24,
+                ],
+            ])
+            ->add('limitDateInscription', DateTimeType::class, [
+                'widget' => 'single_text',
+            ])
+            ->add('maxNbInscriptions', NumberType::class, [
+                'attr' => [
+                    'min' => 1,
+                    'max' => 100,
+                ],
+            ])
+            ->add('description', TextareaType::class, [
+                'attr' => [
+                    'rows' => 5,
+                ],
+            ])
             ->add('place', EntityType::class, [
                 'class' => Place::class,
                 'choice_label' => 'name',
