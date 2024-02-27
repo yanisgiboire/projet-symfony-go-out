@@ -16,6 +16,8 @@ class Status
     const STATUS_ACTIVITY_IN_PROGRESS = 'Activité en cours';
     const STATUS_PASSED = 'Passée';
     const STATUS_CANCELED = 'Annulée';
+    const STATUS_ARCHIVED = 'Archivée';
+
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
