@@ -118,8 +118,8 @@ class ParticipantGoOutController extends AbstractController
                 return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
             }
         }
-    
-        return $this->redirectToRoute('error_page');
+
+        return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
     }
     
 }

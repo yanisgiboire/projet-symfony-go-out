@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\GoOut;
+use App\Service\CheckGoOutStatusService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,13 +15,9 @@ use SebastianBergmann\Environment\Console;
 
 class CheckExpiredGoOutCommand extends Command
 {
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private readonly CheckGoOutStatusService $checkService)
     {
         parent::__construct();
-
-        $this->entityManager = $entityManager;
     }
 
     protected function configure(): void
@@ -34,25 +31,7 @@ class CheckExpiredGoOutCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $allGoOuts = $this->entityManager->getRepository(GoOut::class)->findAll();
-        
-        foreach ($allGoOuts as $goOut) {
-            // Vérifier si la sortie est expirée
-            $endDateTime = $goOut->getStartDateTime();
-            $duration = $goOut->getDuration();
-            $interval = new \DateInterval('PT' . $duration . 'H');
-            $endDateTime->add($interval);
-            $isExpired = $endDateTime < (new \DateTime())->modify('-1 month');
-    
-            if ($isExpired) {
-                $goOut->setStatus($this->entityManager->getRepository(Status::class)->findOneBy(['libelle' => 'Ouverte']));
-                $this->entityManager->persist($goOut);
-
-            }
-        }
-        
-
-        $this->entityManager->flush();
+        $this->checkService->checkGoOutStatus();
 
         $io->success('Vérification des sorties expirées et réalisées depuis plus d\'un mois terminée.');
 

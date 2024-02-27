@@ -45,7 +45,7 @@
                 </ul>
             </div>
             <div class="card-footer my-2">
-                {% if go_out.participant.id == app.user.id %}
+                {% if go_out.participant == app.user.participant %}
                     <a href="{{ path('app_go_out_edit', {'id': go_out.id}) }}" class="btn btn-secondary w-100 my-1">Edit</a>
                 {% endif %}
                 {% if hasCurrentUser %}

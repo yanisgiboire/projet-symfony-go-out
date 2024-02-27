@@ -47,14 +47,22 @@ final class GoOutFactory extends ModelFactory
      */
     protected function getDefaults(): array
     {
+        // Générer une date de début aléatoire
+        $startDateTime = self::faker()->dateTimeBetween('2023-01-01', '+1 years');
+        // Générer une date de clôture un mois avant la date de début
+        $limitDateInscription = (clone $startDateTime)->modify('-'.self::faker()->numberBetween(10, 60).' day');
+        // génération de l'état
+        $defaultState = StatusFactory::find(['libelle' => 'Ouverte']);
+        $state = self::faker()->optional(0.7, StatusFactory::find(['libelle' => 'Annulée']))->passthrough($defaultState);
+
         return [
             'description' => self::faker()->text(255),
+            'limitDateInscription' => $limitDateInscription,
+            'startDateTime' => $startDateTime,
             'duration' => self::faker()->numberBetween(30, 700),
-            'limitDateInscription' => self::faker()->dateTime(),
             'maxNbInscriptions' => self::faker()->numberBetween(2, 50),
             'name' => self::faker()->text(50),
-            'startDateTime' => self::faker()->dateTimeBetween('-2 week', '+2 week'),
-            'status' => StatusFactory::random(),
+            'status' => $state,
             'place' => PlaceFactory::random(),
             'site' => SiteFactory::random(),
             'participant' => ParticipantFactory::random(),
