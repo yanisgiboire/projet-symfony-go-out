@@ -49,6 +49,8 @@ class ParticipantGoOutController extends AbstractController
 
                     $entityManager->persist($participantGoOut);
                     $entityManager->flush();
+
+                    return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
                 }
 
                 $this->addFlash('error', 'The registration date has passed.');
