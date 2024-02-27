@@ -15,7 +15,7 @@ use App\Repository\ParticipantRepository;
 use PhpParser\Builder\Param;
 use PhpParser\Node\Scalar\MagicConst\Dir;
 
-#[Route('/participant/go_out')]
+#[Route('/participant_goout')]
 class ParticipantGoOutController extends AbstractController
 {
     #[Route('/', name: 'app_participant_go_out_index', methods: ['GET'])]
@@ -27,19 +27,18 @@ class ParticipantGoOutController extends AbstractController
     }
 
     #[Route('/new/{id}', name: 'app_participant_go_out_new', methods: ['GET', 'POST'])]
-    
+
     public function new(EntityManagerInterface $entityManager, GoOut $goOut, ParticipantRepository $participantRepository): Response
     {
         // Check if the user is authenticated
         if (!$this->getUser()) {
-            return $this->redirectToRoute('app_login'); // Redirect to the login page
+            return $this->redirectToRoute('app_login');
         }
 
         // Retrieve the user ID
-        $userId = $this->getUser()->getId();
-
-        // Retrieve the participant based on the user ID
-        $participant = $participantRepository->find($userId);
+        /** @var User $user */
+        $user = $this->getUser();
+        $participant = $user->getParticipant();
 
         if ($participant) {
             if (($goOut->getMaxNbInscriptions() > count($goOut->getParticipantGoOuts()))) {
@@ -50,14 +49,28 @@ class ParticipantGoOutController extends AbstractController
 
                     $entityManager->persist($participantGoOut);
                     $entityManager->flush();
+
+                    $this->addFlash('success', 'Vous êtes inscrit à la sortie ' . $goOut->getName() . '.');
+
+                    return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
                 }
+                if ($goOut->getParticipant() === $participantRepository->find($user->getParticipant())) {
+                    $this->addFlash('error', 'Vous ne pouvez pas vous inscrire à une sortie que vous avez créée.');
+                    return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
+                }
+                $this->addFlash('error', 'Le nombre maximum d\'inscriptions a été atteint.');
+                return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
+
             }
+            $this->addFlash('error', 'Le nombre maximum d\'inscriptions a été atteint.');
+
             return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
         }
+        $this->addFlash('error', 'Vous ne pouvez pas vous inscrire à une sortie si vous n\'êtes pas inscrit.');
+        return $this->redirectToRoute('app_login');
 
-        return $this->redirectToRoute('error_page');
     }
-    
+
 
     #[Route('/{id}', name: 'app_participant_go_out_show', methods: ['GET'])]
     public function show(ParticipantGoOut $participantGoOut): Response
@@ -76,6 +89,7 @@ class ParticipantGoOutController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            $this->addFlash('success', 'Votre inscription a bien été modifiée.');
             return $this->redirectToRoute('app_participant_go_out_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -85,36 +99,29 @@ class ParticipantGoOutController extends AbstractController
         ]);
     }
 
-    #[Route('/user/remove/{id}', name: 'app_participant_go_out_delete', methods: ['GET', 'POST'])]
-    public function remove(EntityManagerInterface $entityManager, GoOut $goOut, ParticipantRepository $participantRepository): Response
+    #[Route('/remove/{id}', name: 'app_participant_go_out_delete', methods: ['GET', 'POST'])]
+    public function remove(EntityManagerInterface $entityManager, GoOut $goOut, ParticipantGoOutRepository $participantGoOutRepository): Response
     {
-        // Check if the user is authenticated
         if (!$this->getUser()) {
-            return $this->redirectToRoute('app_login'); // Redirect to the login page
+            return $this->redirectToRoute('app_login');
         }
-    
-        // Retrieve the user ID
-        $userId = $this->getUser()->getId();
-    
-        // Retrieve the participant based on the user ID
-        $participant = $participantRepository->find($userId);
-    
-        if ($participant) {
-            // Find and remove the ParticipantGoOut entity for the given GoOut and Participant
-            $participantGoOut = $entityManager->getRepository(ParticipantGoOut::class)->findOneBy([
-                'participant' => $participant,
-                'goOut' => $goOut,
-            ]);
-    
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if ($user) {
+            $participantGoOut = $participantGoOutRepository->findOneBy(['participant' => $user->getParticipant(), 'goOut' => $goOut]);
             if ($participantGoOut) {
                 $entityManager->remove($participantGoOut);
                 $entityManager->flush();
-    
+
+                $this->addFlash('success', 'Vous vous êtes désinscrit de la sortie ' . $goOut->getName() . '.');
                 return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
             }
         }
-    
-        return $this->redirectToRoute('error_page');
+        $this->addFlash('error', 'Vous ne pouvez pas vous désinscrire d\'une sortie à laquelle vous n\'êtes pas inscrit.');
+
+        return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
     }
-    
+
 }

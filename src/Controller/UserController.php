@@ -5,12 +5,14 @@ namespace App\Controller;
 use App\Entity\Participant;
 use App\Entity\User;
 use App\Form\ParticipantType;
+use App\Form\PasswordUserType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -80,6 +82,31 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/edit.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/password/{id}/edit', name: 'app_user_password_edit', methods: ['GET', 'POST'])]
+    public function editPassword(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        $currentUser = $this->getUser();
+
+        if ($currentUser !== $user) {
+            throw new AccessDeniedException("Vous n'êtes pas autorisé à accéder à cette page.");
+        }
+
+        $form = $this->createForm(PasswordUserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+            $this->addFlash('success', 'Votre mot de passe a bien été modifié.');
+
+            return $this->redirectToRoute('app_user_show',  ['id' => $user->getId()], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('user/edit_password.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);

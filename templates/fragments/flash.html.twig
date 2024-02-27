@@ -1,0 +1,11 @@
+{% block body %}
+        {% for label,messages in app.flashes %}
+            {% for message in messages %}
+            <div class="flashBase">
+                <div class="alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            </div>
+            {% endfor %}
+        {% endfor %}
+{% endblock %}

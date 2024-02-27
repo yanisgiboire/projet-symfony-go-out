@@ -5,6 +5,7 @@ namespace App\Factory;
 use App\Entity\GoOut;
 use App\Entity\Status;
 use App\Repository\GoOutRepository;
+use App\Service\DateService;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
@@ -30,14 +31,16 @@ use Zenstruck\Foundry\RepositoryProxy;
  */
 final class GoOutFactory extends ModelFactory
 {
+
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
      *
      * @todo inject services if required
      */
-    public function __construct()
+    public function __construct(DateService $dateService)
     {
         parent::__construct();
+        $this->dateService = $dateService;
     }
 
     /**
@@ -47,13 +50,18 @@ final class GoOutFactory extends ModelFactory
      */
     protected function getDefaults(): array
     {
+        $faker = self::faker();
+        $dateService = $this->dateService;
+        $startDateTime = $faker->dateTimeBetween('-2 week', '+2 week');
+        $limitDateInscription = $dateService->generateLimitDate($startDateTime);
+
         return [
-            'description' => self::faker()->text(255),
-            'duration' => self::faker()->numberBetween(30, 700),
-            'limitDateInscription' => self::faker()->dateTime(),
-            'maxNbInscriptions' => self::faker()->numberBetween(2, 50),
-            'name' => self::faker()->text(50),
-            'startDateTime' => self::faker()->dateTimeBetween('-2 week', '+2 week'),
+            'description' => $faker->text(255),
+            'duration' => $faker->numberBetween(30, 700),
+            'limitDateInscription' => $limitDateInscription,
+            'maxNbInscriptions' => $faker->numberBetween(2, 50),
+            'name' => $faker->text(50),
+            'startDateTime' => $startDateTime,
             'status' => StatusFactory::random(),
             'place' => PlaceFactory::random(),
             'site' => SiteFactory::random(),

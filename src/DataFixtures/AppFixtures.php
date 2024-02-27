@@ -46,7 +46,32 @@ class AppFixtures extends Fixture
         StatusFactory::createOne(['libelle' => 'passée']);
         StatusFactory::createOne(['libelle' => 'Annulée']);
 
-        GoOutFactory::createMany(50);
+        $date = GoOutFactory::faker()->dateTimeBetween('-3month', '-2month');
+        GoOutFactory::createOne([
+            'startDateTime' => $date,
+            'limitDateInscription' => (clone $date)->modify('-2 weeks'),
+            'duration' => 50,
+        ]);
+        $date = new \DateTime();
+        GoOutFactory::createOne([
+            'startDateTime' => $date,
+            'limitDateInscription' => (clone $date)->modify('-2 weeks'),
+            'duration' => 9999,
+        ]);
+        $date = GoOutFactory::faker()->dateTimeBetween('-1month', '-1day');
+        GoOutFactory::createOne([
+            'startDateTime' => $date,
+            'limitDateInscription' => (clone $date)->modify('-2 weeks'),
+            'duration' => 1,
+        ]);
+        GoOutFactory::createOne([
+            'startDateTime' => $date,
+            'limitDateInscription' => (clone $date)->modify('-2 weeks'),
+            'duration' => 60,
+            'status' => StatusFactory::find(['libelle' => 'Annulée']),
+        ]);
+
+        GoOutFactory::createMany(20);
 
         ParticipantGoOutFactory::createMany(10);
     }

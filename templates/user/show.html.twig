@@ -7,23 +7,25 @@
     <div class="row justify-content-center">
         <div class="col-md-9">
             <div class="goCard mx-auto text-white">
-                <h2 class="text-white text-center">Your user account :</h2>
-                <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="edit-link position-absolute top-0 end-0 m-4">Edit</a>
+                <h2 class="text-white text-center">Mon compte :</h2>
+                <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="edit-link position-absolute top-0 end-0 m-4 btn btn-primary">
+                    <i class="fa-solid fa-pen"></i>
+                </a>
                 <div class="mb-3">
                     <div class="mb-3">
-                        <strong>Username:</strong> {{ user.username }}
+                        <strong>Nom d'utilisateur : </strong> {{ user.username }}
                     </div>
                     <div class="mb-3">
-                        <strong>Surname:</strong> {{ user.participant.surname }}
+                        <strong>Surnom : </strong> {{ user.participant.surname }}
                     </div>
                     <div class="mb-3">
-                        <strong>First Name:</strong> {{ user.participant.firstname }}
+                        <strong>Nom :</strong> {{ user.participant.firstname }}
                     </div>
                     <div class="mb-3">
-                        <strong>Phone Number:</strong> {{ user.participant.phoneNumber }}
+                        <strong>Numéro de téléphone : </strong> {{ user.participant.phoneNumber }}
                     </div>
                     <div class="mb-3">
-                        <strong>Email:</strong> {{ user.participant.email }}
+                        <strong>Email : </strong> {{ user.participant.email }}
                     </div>
                     {% if user.participant.imageProfileName != null %}
                         <div class="mb-3">
@@ -31,6 +33,7 @@
                         </div>
                     {% endif %}
                 </div>
+                <a class=" btn  btn-primary text-white" href="{{ path('app_user_password_edit', {'id': user.id}) }}">Modifier mon mot de passe</a>
             </div>
         </div>
     </div>
