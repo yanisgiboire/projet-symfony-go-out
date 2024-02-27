@@ -11,6 +11,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use App\Validator\Constraints\LimitDateInscription;
 
 class GoOutType extends AbstractType
 {
@@ -18,20 +20,30 @@ class GoOutType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('startDateTime')
-            ->add('duration')
-            ->add('limitDateInscription')
-            ->add('maxNbInscriptions')
-            ->add('description')
-            ->add('status', EntityType::class, [
-                'class' => Status::class,
-                'choice_label' => 'libelle',
+            ->add('startDateTime', DateTimeType::class, [
+                'widget' => 'single_text',
+                'html5' => true,
+                'attr' => ['min' => (new \DateTime())->format('Y-m-d\TH:i')],
             ])
-
+            ->add('duration')
+            ->add('limitDateInscription', DateTimeType::class, [
+                'widget' => 'single_text',
+                'html5' => true,
+                'attr' => [
+                    'min' => (new \DateTime())->format('Y-m-d\TH:i'),
+                    'max' => '{{ data.form.startDateTime.value }}',
+                ],
+                'constraints' => [
+                    new LimitDateInscription(),
+                ],
+            ])
+            ->add('maxNbInscriptions')
+            ->add('description', null, [
+                'attr' => ['rows' => 5],
+            ])
             ->add('place', EntityType::class, [
                 'class' => Place::class,
                 'choice_label' => 'name',
-
             ])
             ->add('site', EntityType::class, [
                 'class' => Site::class,
