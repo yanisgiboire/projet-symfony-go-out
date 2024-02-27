@@ -6,6 +6,7 @@ use App\Entity\GoOut;
 use App\Entity\Status;
 use App\Repository\GoOutRepository;
 use App\Service\DateService;
+use App\Service\StatusService;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
@@ -37,10 +38,9 @@ final class GoOutFactory extends ModelFactory
      *
      * @todo inject services if required
      */
-    public function __construct(DateService $dateService)
+    public function __construct()
     {
         parent::__construct();
-        $this->dateService = $dateService;
     }
 
     /**
@@ -50,19 +50,22 @@ final class GoOutFactory extends ModelFactory
      */
     protected function getDefaults(): array
     {
-        $faker = self::faker();
-        $dateService = $this->dateService;
-        $startDateTime = $faker->dateTimeBetween('-2 week', '+2 week');
-        $limitDateInscription = $dateService->generateLimitDate($startDateTime);
+        // Générer une date de début aléatoire
+        $startDateTime = self::faker()->dateTimeBetween('2023-01-01', '+1 years');
+        // Générer une date de clôture un mois avant la date de début
+        $limitDateInscription = (clone $startDateTime)->modify('-'.self::faker()->numberBetween(10, 60).' day');
+        // génération de l'état
+        $defaultState = StatusFactory::find(['libelle' => Status::STATUS_OPENED]);
+        $state = self::faker()->optional(0.7, StatusFactory::find(['libelle' => Status::STATUS_CANCELED]))->passthrough($defaultState);
 
         return [
-            'description' => $faker->text(255),
-            'duration' => $faker->numberBetween(30, 700),
+            'description' => self::faker()->text(255),
             'limitDateInscription' => $limitDateInscription,
-            'maxNbInscriptions' => $faker->numberBetween(2, 50),
-            'name' => $faker->text(50),
             'startDateTime' => $startDateTime,
-            'status' => StatusFactory::random(),
+            'duration' => self::faker()->numberBetween(30, 700),
+            'maxNbInscriptions' => self::faker()->numberBetween(2, 50),
+            'name' => self::faker()->text(50),
+            'status' => $state,
             'place' => PlaceFactory::random(),
             'site' => SiteFactory::random(),
             'organizer' => ParticipantFactory::random(),
