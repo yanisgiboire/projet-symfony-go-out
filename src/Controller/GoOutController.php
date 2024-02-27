@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping\Id;
 class GoOutController extends AbstractController
 {
     #[Route('/', name: 'app_go_out_index', methods: ['GET'])]
-    public function index(GoOutRepository $goOutRepository, SiteRepository $siteRepository, SessionInterface $session): Response
+    public function index(GoOutRepository $goOutRepository, SiteRepository $siteRepository, SessionInterface $session, ParticipantGoOutRepository $participantGoOutRepository): Response
     {
         $searchParams = $session->get('search_params', []);
 
@@ -36,10 +36,12 @@ class GoOutController extends AbstractController
         }
 
         $sites = $siteRepository->findAll();
+        $allParticipant = $participantGoOutRepository->findAll();
 
         return $this->render('go_out/index.html.twig', [
             'go_outs' => $go_outs,
             'sites' => $sites,
+            'participantGoOut' => $allParticipant
         ]);
     }
 
@@ -54,7 +56,7 @@ class GoOutController extends AbstractController
         $form = $this->createForm(GoOutType::class, $goOut);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $goOut->setParticipant($participantRepository->find($user->getParticipant()));
+            $goOut->setOrganizer($participantRepository->find($user->getParticipant()));
             $entityManager->persist($goOut);
             $entityManager->flush();
 
@@ -141,7 +143,7 @@ class GoOutController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $goOut->setStatus($entityManager->getRepository(Status::class)->findOneBy(['libelle' => 'Annulée']));
+            $goOut->setStatus($entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::class::STATUS_CANCELED ]));
             $entityManager->flush();
 
             $this->addFlash('success', 'La sortie ' . $goOut->getName() . ' a bien été annulée.');

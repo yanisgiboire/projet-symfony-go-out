@@ -61,7 +61,7 @@ class GoOut
 
     #[ORM\ManyToOne(inversedBy: 'goOut')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Participant $participant = null;
+    private ?Participant $organizer = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $reason = null;
@@ -212,14 +212,14 @@ class GoOut
         return $this;
     }
 
-    public function getParticipant(): ?Participant
+    public function getOrganizer(): ?Participant
     {
-        return $this->participant;
+        return $this->organizer;
     }
 
-    public function setParticipant(?Participant $participant): static
+    public function setOrganizer(?Participant $organizer): static
     {
-        $this->participant = $participant;
+        $this->organizer = $organizer;
 
         return $this;
     }

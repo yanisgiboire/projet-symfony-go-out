@@ -78,12 +78,13 @@
 						<div class="card custom-card border">
 							<a href="{{ path('app_go_out_show', {'id': go_out.id}) }}" class="card-link">
 								<div class="card-header d-flex justify-content-between align-items-center">
-									<h4 class="card-title my-3">{{ go_out.name }}</h4>
-									<p class="card-text"><strong>Status : </strong>
-										{{ go_out.status.libelle }}
-									</p>
+									<h4 class="card-title" style="min-height: 2.3em">{{ go_out.name }}</h4>
 								</div>
 								<div class="card-body">
+									<img src="https://picsum.photos/id/{{go_out.id}}/200/100" class="card-img-top mb-3" style="min-height: 190px">
+									<p class="card-text text-warning"><strong>Status : </strong>
+										{{ go_out.status.libelle }}
+									</p>									
 									<p class="card-text"><strong>Date de début : </strong>
 										{{ go_out.startDateTime|format_datetime(locale='fr')  }}</p>
 									<p class="card-text"><strong>Durée : </strong>
@@ -91,9 +92,10 @@
 									<p class="card-text"><strong>Limite d'inscription : </strong>
 										{{ go_out.limitDateInscription|format_datetime(locale='fr') }}</p>
 									<p class="card-text"><strong>Nombre max de participant(s) : </strong>
-										{{ go_out.maxNbInscriptions }}</p>
+									{# recupere la somme de go_out_id = a l'id (dans la table ParticipantGoOut) #}
+										{{ go_out.participantGoOuts|length }} / {{ go_out.maxNbInscriptions }}</p>
 									<p class="card-text"><strong>Organisateur : </strong>
-										{{ go_out.participant.firstname }} {{ go_out.participant.surname }}
+										{{ go_out.organizer.firstname }} {{ go_out.organizer.surname }}
 									</p>
 									<p class="card-text"><strong>Site : </strong>
 										{{ go_out.site.name }}
