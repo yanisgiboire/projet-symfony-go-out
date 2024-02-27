@@ -6,6 +6,7 @@ use App\Entity\GoOut;
 use App\Entity\Participant;
 use App\Entity\ParticipantGoOut;
 use App\Entity\User;
+use App\Repository\ParticipantRepository;
 use App\Repository\SiteRepository;
 use App\Form\GoOutCancel;
 use App\Repository\ParticipantGoOutRepository;
@@ -42,20 +43,17 @@ class GoOutController extends AbstractController
     }
 
     #[Route('/new', name: 'app_go_out_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, ParticipantRepository $participantRepository): Response
     {
-
         $goOut = new GoOut();
 
         /** @var User $user */
         $user = $this->getUser();
-        $user->getParticipant();
 
         $form = $this->createForm(GoOutType::class, $goOut);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $goOut->setParticipant($entityManager->getRepository(Participant::class)->find($user));
+            $goOut->setParticipant($participantRepository->find($user->getParticipant()));
             $entityManager->persist($goOut);
             $entityManager->flush();
 
