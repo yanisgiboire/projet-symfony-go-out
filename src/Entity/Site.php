@@ -18,6 +18,7 @@ class Site
 
     #[ORM\Column(length: 50)]
     #[Assert\NotBlank(message:"Le nom ne peut pas être vide")]
+    #[Assert\Length(max: 50, maxMessage:"Le nom ne peut pas dépasser {{ limit }} caractères")]
     private ?string $name = null;
 
     #[ORM\OneToMany(targetEntity: Participant::class, mappedBy: 'site')]

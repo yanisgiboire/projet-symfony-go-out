@@ -20,6 +20,7 @@ class GoOut
 
     #[ORM\Column(length: 50)]
     #[Assert\NotBlank(message:"Le nom ne peut pas être vide")]
+    #[Assert\Length(max: 50, maxMessage:"Le nom ne peut pas dépasser {{ limit }} caractères")]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -44,6 +45,7 @@ class GoOut
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message:"La description ne peut pas être vide")]
+    #[Assert\Length(max: 255, maxMessage:"La description ne peut pas dépasser {{ limit }} caractères")]
     private ?string $description = null;
 
     #[ORM\OneToMany(targetEntity: ParticipantGoOut::class, mappedBy: 'goOut')]

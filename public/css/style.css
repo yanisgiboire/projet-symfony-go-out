@@ -178,6 +178,10 @@ input::placeholder {
   color: red;
 }
 
+input[type="text"], input[type="password"] {
+  margin: 0;
+}
+
 .place > div {
   width: 100%;
   margin: 10px;

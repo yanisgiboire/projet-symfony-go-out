@@ -9,7 +9,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 class LimitDateInscriptionValidator extends ConstraintValidator
 {
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         /* @var $constraint LimitDateInscription */
         $form = $this->context->getRoot();
