@@ -7,8 +7,13 @@ use App\Entity\Participant;
 use App\Entity\Place;
 use App\Entity\Site;
 use App\Entity\Status;
+use App\Validator\Constraints\LimitDateInscription;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Validator\Constraints\LimitDateInscription;
@@ -18,13 +23,20 @@ class GoOutType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
+            ->add('name', TextType::class, [
+                'label' => 'Nom de la sortie',
+                'attr' => ['placeholder' => 'ex: Brique rouge'],
+            ])
             ->add('startDateTime', DateTimeType::class, [
                 'widget' => 'single_text',
                 'html5' => true,
-                'attr' => ['min' => (new \DateTime())->format('Y-m-d\TH:i')],
+                'attr' => ['min' => (new \DateTime())->format('Y-m-d\TH:i'),],
+                'label' => 'Date et heure de début',
             ])
-            ->add('duration')
+            ->add('duration', NumberType::class, [
+                'label' => 'Durée (en minutes)',
+                'attr' => ['placeholder' => 'ex: 30'],
+            ])
             ->add('limitDateInscription', DateTimeType::class, [
                 'widget' => 'single_text',
                 'html5' => true,
@@ -35,20 +47,28 @@ class GoOutType extends AbstractType
                 'constraints' => [
                     new LimitDateInscription(),
                 ],
+                'label' => 'Date limite d\'inscription',
             ])
-            ->add('maxNbInscriptions')
-            ->add('description', null, [
-                'attr' => ['rows' => 5],
+            ->add('maxNbInscriptions', NumberType::class, [
+                'label' => 'Nombre maximum d\'inscriptions',
+                'attr' => ['placeholder' => 'ex: 10'],
+            ])
+            ->add('description', TextareaType::class, [
+                'label' => 'Description',
+                'attr' => ['placeholder' => 'ex: Venez nombreux pour une sortie inoubliable !'],
             ])
 
             ->add('place', EntityType::class, [
                 'class' => Place::class,
                 'choice_label' => 'name',
-
+                'label' => 'Lieu',
+                'attr' => ['class' => 'place'],
             ])
             ->add('site', EntityType::class, [
                 'class' => Site::class,
                 'choice_label' => 'name',
+                'label' => 'Site',
+                'attr' => ['class' => 'site'],
             ]);
     }
 
