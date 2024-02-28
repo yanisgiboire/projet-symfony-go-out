@@ -81,10 +81,23 @@
 									<h4 class="card-title" style="min-height: 2.3em">{{ go_out.name }}</h4>
 								</div>
 								<div class="card-body">
-									<img src="https://picsum.photos/id/{{go_out.id}}/200/100" class="card-img-top mb-3" style="min-height: 190px">
-									<p class="card-text text-warning"><strong>Status : </strong>
-										{{ go_out.status.libelle }}
-									</p>									
+									<img src="https://picsum.photos/id/{{go_out.id}}/200/100" class="card-img-top mb-3" style="min-height: 190px">			
+
+									{% if go_out.status %}
+										{% set statusClass = {
+											(status[0]): 'text-success',
+											(status[1]): 'text-success',
+											(status[2]): 'text-danger',
+											(status[3]): 'text-success',
+											(status[4]): 'text-danger',
+											(status[5]): 'text-danger',
+											(status[5]): 'text-danger',											
+										}[go_out.status.libelle] ?? '' %}
+
+										<p class="card-text h4 {{ statusClass }}"><strong>{{ go_out.status.libelle }}</strong></p>
+									{% endif %}
+
+
 									<p class="card-text"><strong>Date de début : </strong>
 										{{ go_out.startDateTime|format_datetime(locale='fr')  }}</p>
 									<p class="card-text"><strong>Durée : </strong>
