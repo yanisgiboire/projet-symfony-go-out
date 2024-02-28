@@ -13,7 +13,7 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									<label for="searchInput">Search</label>
-									<input type="text" id="searchInput" name="search" class="form-control" placeholder="Contains...">
+									<input type="text" id="searchInput" name="search" class="form-control" placeholder="Contains..." value="{{ searchParams.search ?? '' }}">
 								</div>
 							</div>
 
@@ -23,7 +23,7 @@
 									<select id="site" name="site" class="form-control">
 										<option value="">Select a site</option>
 										{% for site in sites %}
-											<option value="{{ site.id }}">{{ site.name }}</option>
+											<option value="{{ site.id }}" {% if searchParams.site is defined and searchParams.site == site.id %} selected {% endif %}>{{ site.name }}</option>
 										{% endfor %}
 									</select>
 								</div>
@@ -32,31 +32,31 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									<label for="startDatePicker">Start Date</label>
-									<input type="date" id="startDatePicker" name="startDate" class="form-control" placeholder="Start Date">
+									<input type="date" id="startDatePicker" name="startDate" class="form-control" placeholder="Start Date" value="{{ searchParams.startDate ?? '' }}">
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
 									<label for="endDatePicker">End Date</label>
-									<input type="date" id="endDatePicker" name="endDate" class="form-control" placeholder="End Date">
+									<input type="date" id="endDatePicker" name="endDate" class="form-control" placeholder="End Date" value="{{ searchParams.endDate ?? '' }}">
 								</div>
 							</div>
 							<div class="col-12 my-4">
 								<div class="btn-group-toggle space-between" data-toggle="buttons">
 									<label class="btn btn-custom">
-										<input type="checkbox" class="filter-checkbox" name="organizing">
+										<input type="checkbox" class="filter-checkbox" name="organizing" {% if searchParams is defined and searchParams.organizing is defined and searchParams.organizing == 'on' %} checked {% endif %}>
 										Which I am the organizer
 									</label>
 									<label class="btn btn-custom">
-										<input type="checkbox" class="filter-checkbox" name="registered">
+										<input type="checkbox" class="filter-checkbox" name="registered" {% if searchParams is defined and searchParams.registered is defined and searchParams.registered == 'on' %} checked {% endif %}>
 										Which i am registered for
 									</label>
 									<label class="btn btn-custom">
-										<input type="checkbox" class="filter-checkbox" name="notRegistered">
+										<input type="checkbox" class="filter-checkbox" name="notRegistered" {% if searchParams is defined and searchParams.notRegistered is defined and searchParams.notRegistered == 'on' %} checked {% endif %}>
 										Which i am not registered
 									</label>
 									<label class="btn btn-custom">
-										<input type="checkbox" class="filter-checkbox" name="completed">
+										<input type="checkbox" class="filter-checkbox" name="completed" {% if searchParams is defined and searchParams.completed is defined and searchParams.completed == 'on' %} checked {% endif %}>
 										Completed
 									</label>
 								</div>

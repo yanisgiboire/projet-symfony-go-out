@@ -25,8 +25,9 @@ use Doctrine\ORM\Mapping\Id;
 class GoOutController extends AbstractController
 {
     #[Route('/', name: 'app_go_out_index', methods: ['GET'])]
-    public function index(GoOutRepository $goOutRepository, SiteRepository $siteRepository, participantGoOutRepository $participantGoOutRepository ): Response
+    public function index(SessionInterface $session, GoOutRepository $goOutRepository, SiteRepository $siteRepository, participantGoOutRepository $participantGoOutRepository ): Response
     {
+        $searchParams = $session->get('search_params', []);
         $go_outs = $goOutRepository->findForIndex();
         $sites = $siteRepository->findAll();
         $allParticipant = $participantGoOutRepository->findAll();
@@ -34,7 +35,8 @@ class GoOutController extends AbstractController
         return $this->render('go_out/index.html.twig', [
             'go_outs' => $go_outs,
             'sites' => $sites,
-            'participantGoOut' => $allParticipant
+            'participantGoOut' => $allParticipant,
+            'searchParams' => $searchParams
         ]);
     }
 
@@ -64,7 +66,7 @@ class GoOutController extends AbstractController
     }
 
     #[Route('/search', name: 'app_go_out_search', methods: ['GET'])]
-    public function search(Request $request, SessionInterface $session, GoOutRepository $goOutRepository, SiteRepository $siteRepository): Response
+    public function search(Request $request, SessionInterface $session, GoOutRepository $goOutRepository, SiteRepository $siteRepository, participantGoOutRepository $participantGoOutRepository ): Response
     {
         $userID = $this->getUser()->getId();
         $search = $request->query->get('search');
@@ -96,10 +98,13 @@ class GoOutController extends AbstractController
         }
 
         $sites = $siteRepository->findAll();
+        $allParticipant = $participantGoOutRepository->findAll();
 
         return $this->render('go_out/index.html.twig', [
             'go_outs' => $go_outs,
             'sites' => $sites,
+            'participantGoOut' => $allParticipant,
+            'searchParams' => $searchParams
         ]);
     }
 
