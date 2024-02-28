@@ -33,16 +33,6 @@ class CheckGoOutStatusService
         $this->entityManager->flush();
     }
 
-//    public function updateStatus(): void
-//    {
-//        // si la date de début + la durée alors passe moi en terminé
-//        // si la date de début est égal à la date d'aujourd'hui alors passe moi en cours
-//        // Si la date limite d'inscription est inférieur à la date de d'aujourd'hui alors passe moi en ouvert
-//        // si la date limite d'inscription est supérieur alors passe moi en clôturé
-//        // si la date de début est inférieur à la date d'aujourd'hui alors passe moi en passée
-//        // si la date de début est supérieur à la date d'aujourd'hui alors passe moi en créée
-//    }
-
     public function updateStatus(): void
     {
         $today = new \DateTime();

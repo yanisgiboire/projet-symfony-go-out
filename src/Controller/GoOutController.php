@@ -31,7 +31,7 @@ class GoOutController extends BaseController
     {
         $searchParams = $session->get('search_params', []);
         $go_outs = $goOutRepository->findForIndex();
-//        $checkGoOutStatusService->updateStatus();
+        $checkGoOutStatusService->updateStatus();
         $sites = $siteRepository->findAll();
         $allParticipant = $participantGoOutRepository->findAll();
 
