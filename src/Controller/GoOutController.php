@@ -27,7 +27,7 @@ class GoOutController extends AbstractController
     #[Route('/', name: 'app_go_out_index', methods: ['GET'])]
     public function index(GoOutRepository $goOutRepository, SiteRepository $siteRepository ): Response
     {
-        $go_outs = $goOutRepository->findBytempo();
+        $go_outs = $goOutRepository->findForIndex();
         $sites = $siteRepository->findAll();
 
         return $this->render('go_out/index.html.twig', [

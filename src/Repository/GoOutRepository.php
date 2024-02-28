@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\GoOut;
+use App\Entity\Status;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -13,6 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method GoOut|null findOneBy(array $criteria, array $orderBy = null)
  * @method GoOut[]    findAll()
  * @method GoOut[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method GoOut[]    findBySearchParams()
  * @method GoOut[]    findBySearchParams($searchParams)
  */
 class GoOutRepository extends ServiceEntityRepository
@@ -24,16 +26,14 @@ class GoOutRepository extends ServiceEntityRepository
 
     private function createArchivedQueryBuilder()
     {
-        $statusArchived = 'Archivée';
-        return $this->createQueryBuilder('go_out')
-            ->join('go_out.status', 's')
-            ->andWhere('s.libelle <> :statusArchived')
-            ->setParameter('statusArchived', $statusArchived);
+        return $this->createQueryBuilder('go_out')->join('go_out.status', 's');
     }
 
     public function findForIndex()
     {
-        $queryBuilder = $this->createArchivedQueryBuilder();
+        $queryBuilder = $this->createArchivedQueryBuilder()
+            ->andWhere('s.libelle <> :STATUS_PASSED')
+            ->setParameter('STATUS_PASSED', Status::STATUS_PASSED);
 
         $monthAgoDate = new \DateTime();
         $monthAgoDate->modify('first day of last month')->setTime(0, 0, 0);
@@ -82,11 +82,13 @@ class GoOutRepository extends ServiceEntityRepository
         }
 
         if (isset($searchParams['organizing']) && !empty($searchParams['organizing']) && isset($searchParams['userID']) && !empty($searchParams['userID'])) {
+            //dd($searchParams['organizing']);
             $queryBuilder
-                ->join('go_out.participant', 'participant')
-                ->join('participant.user', 'organizer')
-                ->andWhere('organizer.id = :userID')
-                ->setParameter('userID', $searchParams['userID']);
+                ->join('go_out.organizer', 'organizer')
+                ->join('organizer.user', 'o')
+                ->andWhere('o.id = :userID')
+                ->setParameter('userID', $searchParams['userID'])
+                ;
         }
 
         if ((isset($searchParams['registered']) && !empty($searchParams['registered'])) || (isset($searchParams['notRegistered']) && !empty($searchParams['notRegistered']))) {
@@ -108,12 +110,15 @@ class GoOutRepository extends ServiceEntityRepository
         }
 
         if (isset($searchParams['completed']) && !empty($searchParams['completed'])) {
-            $statusCompleted = 'Passée';
             $queryBuilder
-                ->andWhere('s.libelle <> :statusCompleted')
-                ->setParameter('statusCompleted', $statusCompleted);
+                ->andWhere('s.libelle = :STATUS_PASSED')
+                ->setParameter('STATUS_PASSED', Status::STATUS_PASSED);
+        } else {
+            $queryBuilder
+                ->andWhere('s.libelle <> :STATUS_PASSED')
+                ->setParameter('STATUS_PASSED', Status::STATUS_PASSED);
         }
-        
+
         return $queryBuilder->getQuery()->getResult();
     }
 
