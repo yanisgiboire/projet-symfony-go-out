@@ -88,7 +88,7 @@
 									<p class="card-text"><strong>Date de début : </strong>
 										{{ go_out.startDateTime|format_datetime(locale='fr')  }}</p>
 									<p class="card-text"><strong>Durée : </strong>
-										{{ go_out.duration ? go_out.duration|date('H:i:s') : '' }}</p>
+										{{ go_out.duration ? go_out.duration|date('H:i') : '' }}</p>
 									<p class="card-text"><strong>Limite d'inscription : </strong>
 										{{ go_out.limitDateInscription|format_datetime(locale='fr') }}</p>
 									<p class="card-text"><strong>Nombre max de participant(s) : </strong>
