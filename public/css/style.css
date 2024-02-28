@@ -169,3 +169,16 @@ input:focus {
   color: #fff; /* Police blanche */
   border: 1px solid #fff; /* Bordure blanche de 1px */
 }
+
+#go_out_description {
+  height: 210px;
+}
+
+input::placeholder {
+  color: red;
+}
+
+.place > div {
+  width: 100%;
+  margin: 10px;
+}
