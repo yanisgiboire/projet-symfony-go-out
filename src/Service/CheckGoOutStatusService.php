@@ -17,7 +17,6 @@ class CheckGoOutStatusService
         $allGoOuts = $this->entityManager->getRepository(GoOut::class)->findAll();
 
         foreach ($allGoOuts as $goOut) {
-            // Vérifier si la sortie est expirée
             $endDateTime = $goOut->getStartDateTime();
             $duration = $goOut->getDuration();
             $interval = new \DateInterval('PT' . $duration . 'H');
@@ -28,6 +27,34 @@ class CheckGoOutStatusService
                 $goOut->setStatus($this->entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_ARCHIVED]));
                 $this->entityManager->persist($goOut);
 
+            }
+        }
+
+        $this->entityManager->flush();
+    }
+
+    public function updateStatus(): void
+    {
+        $today = new \DateTime();
+        $allGoOuts = $this->entityManager->getRepository(GoOut::class)->findAll();
+
+        foreach ($allGoOuts as $goOut) {
+            $startDate = $goOut->getStartDateTime();
+            $endDate = clone $startDate;
+            $endDate->modify('+' . $goOut->getDuration() . ' minutes');
+
+            if ($endDate <= $today) {
+                $goOut->setStatus($this->entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_PASSED]));
+            } elseif ($startDate === $today) {
+                $goOut->setStatus($this->entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_ACTIVITY_IN_PROGRESS]));
+            } elseif ($goOut->getLimitDateInscription() > $today) {
+                $goOut->setStatus($this->entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_OPENED]));
+            } elseif ($goOut->getLimitDateInscription() < $today) {
+                $goOut->setStatus($this->entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_CLOSED]));
+            } elseif ($startDate < $today) {
+                $goOut->setStatus($this->entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_PASSED]));
+            } elseif ($startDate > $today) {
+                $goOut->setStatus($this->entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_CREATED]));
             }
         }
 

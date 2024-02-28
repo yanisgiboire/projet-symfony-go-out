@@ -14,8 +14,6 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method GoOut|null findOneBy(array $criteria, array $orderBy = null)
  * @method GoOut[]    findAll()
  * @method GoOut[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- * @method GoOut[]    findBySearchParams()
- * @method GoOut[]    findBySearchParams($searchParams)
  */
 class GoOutRepository extends ServiceEntityRepository
 {
