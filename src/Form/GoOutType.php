@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\GoOut;
 use App\Entity\Place;
 use App\Entity\Site;
+use App\Service\DateService;
 use App\Validator\Constraints\LimitDateInscription;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -37,13 +38,6 @@ class GoOutType extends AbstractType
             ->add('limitDateInscription', DateTimeType::class, [
                 'widget' => 'single_text',
                 'html5' => true,
-                'attr' => [
-                    'min' => (new \DateTime())->format('Y-m-d\TH:i'),
-                    'max' => '{{ data.form.startDateTime.value }}',
-                ],
-                'constraints' => [
-                    new LimitDateInscription(),
-                ],
                 'label' => 'Date limite d\'inscription',
             ])
             ->add('maxNbInscriptions', NumberType::class, [

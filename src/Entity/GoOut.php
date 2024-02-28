@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator\Constraints as CustomAssert;
 
 #[ORM\Entity(repositoryClass: GoOutRepository::class)]
 class GoOut
@@ -32,6 +33,7 @@ class GoOut
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Assert\NotBlank(message:"La date limite d'inscription ne peut pas être vide")]
+    #[CustomAssert\LimitDateInscription]
     private ?\DateTimeInterface $limitDateInscription = null;
 
     #[ORM\Column]

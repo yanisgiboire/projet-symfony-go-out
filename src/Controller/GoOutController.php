@@ -55,16 +55,6 @@ class GoOutController extends AbstractController
             $goOut->setOrganizer($participantRepository->find($user->getParticipant()));
             $goOut->setStatus($entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_CREATED ]));
 
-            if ($goOut->getLimitDateInscription() >= $goOut->getStartDateTime()) {
-                $form->get('limitDateInscription')->addError(new FormError('La date limite d\'inscription doit être avant la date de début.'));
-
-
-                return $this->render('go_out/new.html.twig', [
-                    'go_out' => $goOut,
-                    'form' => $form->createView(),
-                ]);
-            }
-
             $entityManager->persist($goOut);
             $entityManager->flush();
 
