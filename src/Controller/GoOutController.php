@@ -14,6 +14,7 @@ use App\Form\GoOutType;
 use App\Repository\GoOutRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -50,7 +51,18 @@ class GoOutController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $goOut->setOrganizer($participantRepository->find($user->getParticipant()));
-            $goOut->setStatus($entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::class::STATUS_CREATED ]));
+            $goOut->setStatus($entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_CREATED ]));
+
+            if ($goOut->getLimitDateInscription() >= $goOut->getStartDateTime()) {
+                $form->get('limitDateInscription')->addError(new FormError('La date limite d\'inscription doit être avant la date de début.'));
+
+
+                return $this->render('go_out/new.html.twig', [
+                    'go_out' => $goOut,
+                    'form' => $form->createView(),
+                ]);
+            }
+
             $entityManager->persist($goOut);
             $entityManager->flush();
 

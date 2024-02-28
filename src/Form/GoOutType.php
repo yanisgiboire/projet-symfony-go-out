@@ -3,10 +3,8 @@
 namespace App\Form;
 
 use App\Entity\GoOut;
-use App\Entity\Participant;
 use App\Entity\Place;
 use App\Entity\Site;
-use App\Entity\Status;
 use App\Validator\Constraints\LimitDateInscription;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
