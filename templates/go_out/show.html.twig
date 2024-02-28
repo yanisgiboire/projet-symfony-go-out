@@ -42,7 +42,7 @@
                 <div class="card-body">
                     <p class="card-text">
                         <strong>Date de début : </strong>
-                        {{ go_out.startDateTime ? go_out.startDateTime|date('Y-m-d H:i:s') : '' }}</p>
+                        {{ go_out.startDateTime ? go_out.startDateTime|format_datetime(locale='fr') : '' }}</p>
                     <p class="card-text">
                         <strong>Durée : </strong>
                         {{ go_out.duration ? go_out.duration|date('H:i:s') : '' }}</p>

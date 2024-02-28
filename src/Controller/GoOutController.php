@@ -29,10 +29,12 @@ class GoOutController extends AbstractController
     {
         $go_outs = $goOutRepository->findForIndex();
         $sites = $siteRepository->findAll();
+        $allParticipant = $participantGoOutRepository->findAll();
 
         return $this->render('go_out/index.html.twig', [
             'go_outs' => $go_outs,
             'sites' => $sites,
+            'participantGoOut' => $allParticipant
         ]);
     }
 
@@ -48,6 +50,7 @@ class GoOutController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $goOut->setOrganizer($participantRepository->find($user->getParticipant()));
+            $goOut->setStatus($entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::class::STATUS_CREATED ]));
             $entityManager->persist($goOut);
             $entityManager->flush();
 

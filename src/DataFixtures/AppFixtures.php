@@ -13,6 +13,8 @@ use App\Factory\PlaceFactory;
 use App\Factory\SiteFactory;
 use App\Factory\StatusFactory;
 use App\Factory\UserFactory;
+use App\Service\CheckGoOutStatusService;
+use App\Service\StatusService;
 use Faker\Factory;
 use Faker\Generator;
 use Doctrine\Persistence\ObjectManager;
@@ -20,14 +22,9 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 
 class AppFixtures extends Fixture
 {
-    /**
-     * @var Generator
-     */
-    private Generator $faker;
 
-    public function __construct()
+    public function __construct(private CheckGoOutStatusService $checkGoOutStatusService)
     {
-        $this->faker = Factory::create('fr_FR');
     }
 
     public function load(ObjectManager $manager): void
@@ -40,12 +37,13 @@ class AppFixtures extends Fixture
         CityFactory::createMany(10);
         PlaceFactory::createMany(10);
 
-        StatusFactory::createOne(['libelle' => Status::class::STATUS_CREATED]);
-        StatusFactory::createOne(['libelle' => Status::class::STATUS_OPENED]);
-        StatusFactory::createOne(['libelle' => Status::class::STATUS_CLOSED]);
-        StatusFactory::createOne(['libelle' => Status::class::STATUS_ACTIVITY_IN_PROGRESS]);
-        StatusFactory::createOne(['libelle' => Status::class::STATUS_PASSED]);
-        StatusFactory::createOne(['libelle' => Status::class::STATUS_CANCELED]);
+        StatusFactory::createOne(['libelle' => Status::STATUS_CREATED]);
+        StatusFactory::createOne(['libelle' => Status::STATUS_OPENED]);
+        StatusFactory::createOne(['libelle' => Status::STATUS_CLOSED]);
+        StatusFactory::createOne(['libelle' => Status::STATUS_ACTIVITY_IN_PROGRESS]);
+        StatusFactory::createOne(['libelle' => Status::STATUS_PASSED]);
+        StatusFactory::createOne(['libelle' => Status::STATUS_CANCELED]);
+        StatusFactory::createOne(['libelle' => Status::STATUS_ARCHIVED]);
 
         $date = GoOutFactory::faker()->dateTimeBetween('-3month', '-2month');
         GoOutFactory::createOne([
@@ -69,12 +67,14 @@ class AppFixtures extends Fixture
             'startDateTime' => $date,
             'limitDateInscription' => (clone $date)->modify('-2 weeks'),
             'duration' => 60,
-            'status' => StatusFactory::find(['libelle' => 'Annulée']),
+            'status' => StatusFactory::find(['libelle' => Status::STATUS_CANCELED]),
         ]);
 
         GoOutFactory::createMany(20);
 
         ParticipantGoOutFactory::createMany(10);
+
+        $this->checkGoOutStatusService->checkGoOutStatus();
     }
 
 }
