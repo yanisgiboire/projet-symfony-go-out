@@ -6,12 +6,11 @@ use DateTime;
 
 class DateService
 {
-    public function generateLimitDate(DateTime $startDateTime): DateTime
+    public function __invoke(DateTime $date)
     {
-
-        $limitDate = clone $startDateTime;
-        $limitDate->modify('-1 day');
-
-        return $limitDate;
+        $now = new DateTime();
+        if ($date < $now) {
+            return 'La date limite d\'inscription doit être supérieure à la date actuelle';
+        }
     }
 }

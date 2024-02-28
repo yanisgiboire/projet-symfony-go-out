@@ -14,6 +14,7 @@ use App\Form\GoOutType;
 use App\Repository\GoOutRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -52,7 +53,8 @@ class GoOutController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $goOut->setOrganizer($participantRepository->find($user->getParticipant()));
-            $goOut->setStatus($entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::class::STATUS_CREATED ]));
+            $goOut->setStatus($entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_CREATED ]));
+
             $entityManager->persist($goOut);
             $entityManager->flush();
 

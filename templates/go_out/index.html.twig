@@ -88,15 +88,17 @@
 										{{ go_out.status.libelle }}
 									</p>									
 									<p class="card-text"><strong>Date de début : </strong>
-										{{ go_out.startDateTime|format_datetime(locale='fr')  }}</p>
+										{{ go_out.startDateTime|date('d/m/Y H:i', 'Europe/Paris')  }}</p>
 									<p class="card-text">
 										<strong>Durée :
 										</strong>
-										{{ go_out.duration ? go_out.duration|date('H:i:s') : '' }}</p>
+										{{ go_out.duration }} minute(s)</p>
 									<p class="card-text">
 										<strong>Limite d'inscription :
 										</strong>
-										{{ go_out.limitDateInscription|format_datetime(locale='fr') }}</p>
+										{{ go_out.limitDateInscription|date('d/m/Y H:i', 'Europe/Paris') }}
+
+									</p>
 									<p class="card-text"><strong>Nombre max de participant(s) : </strong>
 									{# recupere la somme de go_out_id = a l'id (dans la table ParticipantGoOut) #}
 										{{ go_out.participantGoOuts|length }} / {{ go_out.maxNbInscriptions }}</p>
