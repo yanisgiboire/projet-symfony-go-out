@@ -104,7 +104,7 @@
                     <a href="{{ path('app_participant_go_out_delete', {'id': go_out.id}) }}" class="btn btn-danger w-100 my-1">Remove from List</a>
                 {% else %}
                     {% if go_out.organizer.id != app.user.participant.id %}
-                        {% if go_out.status.libelle != "Activité en cours" and go_out.status.libelle != "Annulée" %}
+                        {% if go_out.status.libelle == status[1] %}
                             <a href="{{ path('app_participant_go_out_new', {'id': go_out.id}) }}" class="btn btn-primary w-100 my-1">Register</a>
                         {% endif %}
                     {% endif %}
