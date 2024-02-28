@@ -12,6 +12,7 @@ use App\Form\GoOutCancel;
 use App\Repository\ParticipantGoOutRepository;
 use App\Form\GoOutType;
 use App\Repository\GoOutRepository;
+use App\Service\CheckGoOutStatusService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -26,10 +27,11 @@ use Doctrine\ORM\Mapping\Id;
 class GoOutController extends AbstractController
 {
     #[Route('/', name: 'app_go_out_index', methods: ['GET'])]
-    public function index(SessionInterface $session, GoOutRepository $goOutRepository, SiteRepository $siteRepository, participantGoOutRepository $participantGoOutRepository ): Response
+    public function index(SessionInterface $session, GoOutRepository $goOutRepository, SiteRepository $siteRepository, participantGoOutRepository $participantGoOutRepository, CheckGoOutStatusService $checkGoOutStatusService ): Response
     {
         $searchParams = $session->get('search_params', []);
         $go_outs = $goOutRepository->findForIndex();
+//        $checkGoOutStatusService->updateStatus();
         $sites = $siteRepository->findAll();
         $allParticipant = $participantGoOutRepository->findAll();
 
