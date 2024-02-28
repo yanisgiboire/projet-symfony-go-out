@@ -18,14 +18,26 @@ class GoOutType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('startDateTime')
+            ->add('startDateTime', DateTimeType::class, [
+                'widget' => 'single_text',
+                'html5' => true,
+                'attr' => ['min' => (new \DateTime())->format('Y-m-d\TH:i')],
+            ])
             ->add('duration')
-            ->add('limitDateInscription')
+            ->add('limitDateInscription', DateTimeType::class, [
+                'widget' => 'single_text',
+                'html5' => true,
+                'attr' => [
+                    'min' => (new \DateTime())->format('Y-m-d\TH:i'),
+                    'max' => '{{ data.form.startDateTime.value }}',
+                ],
+                'constraints' => [
+                    new LimitDateInscription(),
+                ],
+            ])
             ->add('maxNbInscriptions')
-            ->add('description')
-            ->add('status', EntityType::class, [
-                'class' => Status::class,
-                'choice_label' => 'libelle',
+            ->add('description', null, [
+                'attr' => ['rows' => 5],
             ])
 
             ->add('place', EntityType::class, [
