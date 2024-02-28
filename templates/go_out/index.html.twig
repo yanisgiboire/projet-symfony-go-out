@@ -3,10 +3,7 @@
 {% block title %}GoOut index
 {% endblock %}
 
-
-
 {% block body %}
-
 	<div class="container">
 		<div class="row">
 			<div class="col-12 px-3">
@@ -47,19 +44,19 @@
 							<div class="col-12 my-4">
 								<div class="btn-group-toggle space-between" data-toggle="buttons">
 									<label class="btn btn-custom">
-										<input type="checkbox" class="filter-checkbox" name="filter1">
+										<input type="checkbox" class="filter-checkbox" name="organizing">
 										Which I am the organizer
 									</label>
 									<label class="btn btn-custom">
-										<input type="checkbox" class="filter-checkbox" name="filter2">
+										<input type="checkbox" class="filter-checkbox" name="registered">
 										Which i am registered for
 									</label>
 									<label class="btn btn-custom">
-										<input type="checkbox" class="filter-checkbox" name="filter3">
+										<input type="checkbox" class="filter-checkbox" name="notRegistered">
 										Which i am not registered
 									</label>
 									<label class="btn btn-custom">
-										<input type="checkbox" class="filter-checkbox" name="filter4">
+										<input type="checkbox" class="filter-checkbox" name="completed">
 										Completed
 									</label>
 								</div>
@@ -67,6 +64,11 @@
 							<div class="col-12">
 								<button type="submit" class="btn btn-login btn-lg btn-block w-100">GO</button>
 							</div>
+						</div>
+					</form>
+					<form action="{{ path('app_go_out_cancelSearch') }}" method="post">
+						<div class="col-12">
+							<button type="submit" class="btn btn-success btn-lg btn-block w-100">RAZ</button>
 						</div>
 					</form>
 				</div>
@@ -87,9 +89,13 @@
 									</p>									
 									<p class="card-text"><strong>Date de début : </strong>
 										{{ go_out.startDateTime|format_datetime(locale='fr')  }}</p>
-									<p class="card-text"><strong>Durée : </strong>
+									<p class="card-text">
+										<strong>Durée :
+										</strong>
 										{{ go_out.duration ? go_out.duration|date('H:i:s') : '' }}</p>
-									<p class="card-text"><strong>Limite d'inscription : </strong>
+									<p class="card-text">
+										<strong>Limite d'inscription :
+										</strong>
 										{{ go_out.limitDateInscription|format_datetime(locale='fr') }}</p>
 									<p class="card-text"><strong>Nombre max de participant(s) : </strong>
 									{# recupere la somme de go_out_id = a l'id (dans la table ParticipantGoOut) #}
@@ -97,10 +103,14 @@
 									<p class="card-text"><strong>Organisateur : </strong>
 										{{ go_out.organizer.firstname }} {{ go_out.organizer.surname }}
 									</p>
-									<p class="card-text"><strong>Site : </strong>
+									<p class="card-text">
+										<strong>Site :
+										</strong>
 										{{ go_out.site.name }}
 									</p>
-									<p class="card-text"><strong>Description : </strong>
+									<p class="card-text">
+										<strong>Description :
+										</strong>
 										{{ go_out.description|u.truncate(50, '...', false) }}
 									</p>
 								</div>
@@ -111,10 +121,9 @@
 					<p class="col-12">Come back soon</p>
 				{% endfor %}
 			</div>
-			</div>
 		</div>
-		<div class="create-event-button">
-			<a href="{{ path('app_go_out_new') }}" class="btn btn-success">Create new event</a>
-		</div>
-	{% endblock %}
-
+	</div>
+	<div class="create-event-button">
+		<a href="{{ path('app_go_out_new') }}" class="btn btn-success">Create new event</a>
+	</div>
+{% endblock %}

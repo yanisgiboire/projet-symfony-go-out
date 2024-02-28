@@ -25,16 +25,9 @@ use Doctrine\ORM\Mapping\Id;
 class GoOutController extends AbstractController
 {
     #[Route('/', name: 'app_go_out_index', methods: ['GET'])]
-    public function index(GoOutRepository $goOutRepository, SiteRepository $siteRepository, SessionInterface $session, ParticipantGoOutRepository $participantGoOutRepository): Response
+    public function index(GoOutRepository $goOutRepository, SiteRepository $siteRepository, participantGoOutRepository $participantGoOutRepository ): Response
     {
-        $searchParams = $session->get('search_params', []);
-
-        if (!empty($searchParams)) {
-            $go_outs = $goOutRepository->findBySearchParams($searchParams);
-        } else {
-            $go_outs = $goOutRepository->findAll();
-        }
-
+        $go_outs = $goOutRepository->findForIndex();
         $sites = $siteRepository->findAll();
         $allParticipant = $participantGoOutRepository->findAll();
 
@@ -71,17 +64,17 @@ class GoOutController extends AbstractController
     }
 
     #[Route('/search', name: 'app_go_out_search', methods: ['GET'])]
-    public function search(Request $request, SessionInterface $session): Response
+    public function search(Request $request, SessionInterface $session, GoOutRepository $goOutRepository, SiteRepository $siteRepository): Response
     {
         $userID = $this->getUser()->getId();
         $search = $request->query->get('search');
         $siteID = $request->query->get('site');
         $startDate = $request->query->get('startDate');
         $endDate = $request->query->get('endDate');
-        $organizing = $request->query->get('filter1');
-        $registered = $request->query->get('filter2');
-        $notRegistered = $request->query->get('filter3');
-        $completed = $request->query->get('filter4');
+        $organizing = $request->query->get('organizing');
+        $registered = $request->query->get('registered');
+        $notRegistered = $request->query->get('notRegistered');
+        $completed = $request->query->get('completed');
 
         $searchParams = [
             'userID' => $userID,
@@ -95,6 +88,25 @@ class GoOutController extends AbstractController
             'completed' => $completed,
         ];
         $session->set('search_params', $searchParams);
+        
+        if (!empty($searchParams)) {
+            $go_outs = $goOutRepository->findBySearchParams($searchParams);
+        } else {
+            $go_outs = $goOutRepository->findForIndex();
+        }
+
+        $sites = $siteRepository->findAll();
+
+        return $this->render('go_out/index.html.twig', [
+            'go_outs' => $go_outs,
+            'sites' => $sites,
+        ]);
+    }
+
+    #[Route('/cancelSearch', name: 'app_go_out_cancelSearch', methods: ['GET', 'POST'])]
+    public function cancelSearch(SessionInterface $session): Response
+    {
+        $session->remove('search_params');
 
         return $this->redirectToRoute('app_go_out_index');
     }
