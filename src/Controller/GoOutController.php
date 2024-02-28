@@ -37,7 +37,7 @@ class GoOutController extends BaseController
             'go_outs' => $go_outs,
             'sites' => $sites,
             'participantGoOut' => $allParticipant,
-            'searchParams' => $searchParams
+            'searchParams' => $searchParams,
             'status' => self::STATUS
         ]);
     }
