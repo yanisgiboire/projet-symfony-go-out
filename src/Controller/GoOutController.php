@@ -91,7 +91,7 @@ class GoOutController extends AbstractController
         ];
         $session->set('search_params', $searchParams);
         
-        if (!empty($searchParams)) {
+        if (!empty($search) || !empty($siteID) || !empty($startDate) || !empty($endDate) || !empty($organizing) || !empty($registered) || !empty($notRegistered) || !empty($completed)) {
             $go_outs = $goOutRepository->findBySearchParams($searchParams);
         } else {
             $go_outs = $goOutRepository->findForIndex();

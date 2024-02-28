@@ -115,14 +115,12 @@ class GoOutRepository extends ServiceEntityRepository
         }
 
         if (isset($searchParams['completed']) && !empty($searchParams['completed'])) {
-            $queryBuilder
-                ->andWhere('s.libelle = :STATUS_PASSED')
-                ->setParameter('STATUS_PASSED', Status::STATUS_PASSED);
+            $queryBuilder->andWhere('s.libelle = :STATUS_PASSED');
         } else {
-            $queryBuilder
-                ->andWhere('s.libelle <> :STATUS_PASSED')
-                ->setParameter('STATUS_PASSED', Status::STATUS_PASSED);
+            $queryBuilder->andWhere('s.libelle <> :STATUS_PASSED');
         }
+
+        $queryBuilder->setParameter('STATUS_PASSED', Status::STATUS_PASSED);
 
         return $queryBuilder->getQuery()->getResult();
     }
