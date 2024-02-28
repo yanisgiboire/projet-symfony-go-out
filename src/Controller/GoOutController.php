@@ -24,7 +24,7 @@ use App\Entity\Status;
 use Doctrine\ORM\Mapping\Id;
 
 #[Route('/goout')]
-class GoOutController extends AbstractController
+class GoOutController extends BaseController
 {
     #[Route('/', name: 'app_go_out_index', methods: ['GET'])]
     public function index(SessionInterface $session, GoOutRepository $goOutRepository, SiteRepository $siteRepository, participantGoOutRepository $participantGoOutRepository, CheckGoOutStatusService $checkGoOutStatusService ): Response
@@ -39,7 +39,8 @@ class GoOutController extends AbstractController
             'go_outs' => $go_outs,
             'sites' => $sites,
             'participantGoOut' => $allParticipant,
-            'searchParams' => $searchParams
+            'searchParams' => $searchParams,
+            'status' => self::STATUS
         ]);
     }
 
@@ -108,7 +109,8 @@ class GoOutController extends AbstractController
             'go_outs' => $go_outs,
             'sites' => $sites,
             'participantGoOut' => $allParticipant,
-            'searchParams' => $searchParams
+            'searchParams' => $searchParams,
+            'status' => self::STATUS
         ]);
     }
 
@@ -127,7 +129,8 @@ class GoOutController extends AbstractController
         $goOutParticipants = $participantGoOutRepository->findBy(['goOut' => $id]);
         return $this->render('go_out/show.html.twig', [
             'go_out' => $goOut,
-            'go_out_participants' => $goOutParticipants
+            'go_out_participants' => $goOutParticipants,
+            'status' => self::STATUS
         ]);
     }
 
