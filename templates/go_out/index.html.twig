@@ -76,7 +76,7 @@
 			<div class="row">
 				{% for go_out in go_outs %}
 					{% set libelle = go_out.status.libelle %}
-					<div class="col-12 col-md-12 col-lg-4 mb-4 ">
+					<div class="col-12 col-md-6 col-lg-4 mb-4 ">
 						<div class="card custom-card border">
 							<a href="{{ path('app_go_out_show', {'id': go_out.id}) }}" class="card-link">
 								<div class="card-header d-flex justify-content-between align-items-center">
