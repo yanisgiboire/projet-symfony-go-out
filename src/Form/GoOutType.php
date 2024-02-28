@@ -38,6 +38,7 @@ class GoOutType extends AbstractType
             ->add('limitDateInscription', DateTimeType::class, [
                 'widget' => 'single_text',
                 'html5' => true,
+                'attr' => ['min' => (new \DateTime())->format('Y-m-d\TH:i'),],
                 'label' => 'Date limite d\'inscription',
             ])
             ->add('maxNbInscriptions', NumberType::class, [
