@@ -81,6 +81,11 @@ class GoOutController extends BaseController
         $notRegistered = $request->query->get('notRegistered');
         $completed = $request->query->get('completed');
 
+        if ($registered === 'on' && $notRegistered === 'on') {
+            $registered = 'off';
+            $notRegistered = 'off';
+        }
+
         $searchParams = [
             'userID' => $userID,
             'search' => $search,
