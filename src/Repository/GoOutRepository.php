@@ -32,8 +32,9 @@ class GoOutRepository extends ServiceEntityRepository
     public function findForIndex()
     {
         $queryBuilder = $this->createArchivedQueryBuilder()
-            ->andWhere('s.libelle <> :STATUS_PASSED')
-            ->setParameter('STATUS_PASSED', Status::STATUS_PASSED);
+            ->andWhere('s.libelle not in (:STATUS_PASSED, :STATUS_CREATED)')
+            ->setParameter('STATUS_PASSED', Status::STATUS_PASSED)
+            ->setParameter('STATUS_CREATED', Status::STATUS_CREATED);
 
         $monthAgoDate = new \DateTime();
         $monthAgoDate->modify('first day of last month')->setTime(0, 0, 0);
@@ -82,13 +83,17 @@ class GoOutRepository extends ServiceEntityRepository
         }
 
         if (isset($searchParams['organizing']) && !empty($searchParams['organizing']) && isset($searchParams['userID']) && !empty($searchParams['userID'])) {
-            //dd($searchParams['organizing']);
             $queryBuilder
                 ->join('go_out.organizer', 'organizer')
                 ->join('organizer.user', 'o')
                 ->andWhere('o.id = :userID')
                 ->setParameter('userID', $searchParams['userID'])
                 ;
+        } else {
+            $queryBuilder
+                ->andWhere('s.libelle not in (:STATUS_PASSED, :STATUS_CREATED)')
+                ->setParameter('STATUS_PASSED', Status::STATUS_PASSED)
+                ->setParameter('STATUS_CREATED', Status::STATUS_CREATED);
         }
 
         if ((isset($searchParams['registered']) && !empty($searchParams['registered'])) || (isset($searchParams['notRegistered']) && !empty($searchParams['notRegistered']))) {
