@@ -91,8 +91,7 @@ class GoOutRepository extends ServiceEntityRepository
                 ;
         } else {
             $queryBuilder
-                ->andWhere('s.libelle not in (:STATUS_PASSED, :STATUS_CREATED)')
-                ->setParameter('STATUS_PASSED', Status::STATUS_PASSED)
+                ->andWhere('s.libelle <> :STATUS_CREATED')
                 ->setParameter('STATUS_CREATED', Status::STATUS_CREATED);
         }
 
@@ -115,6 +114,7 @@ class GoOutRepository extends ServiceEntityRepository
         }
 
         if (isset($searchParams['completed']) && !empty($searchParams['completed'])) {
+            //dd(Status::STATUS_PASSED);
             $queryBuilder->andWhere('s.libelle = :STATUS_PASSED');
         } else {
             $queryBuilder->andWhere('s.libelle <> :STATUS_PASSED');
