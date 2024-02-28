@@ -20,6 +20,20 @@
                                 {{ go_out.organizer.surname }}</a>
                         </p>
                     {% endif %}
+                        <p class="card-text">
+									{% if go_out.status %}
+										{% set statusClass = {
+											(status[0]): 'text-success',
+											(status[1]): 'text-success',
+											(status[2]): 'text-danger',
+											(status[3]): 'text-success',
+											(status[4]): 'text-danger',
+											(status[5]): 'text-danger',
+											(status[5]): 'text-danger',											
+										}[go_out.status.libelle] ?? '' %}
+
+										<p class="card-text h4 {{ statusClass }}"><strong>{{ go_out.status.libelle }}</strong></p>
+									{% endif %}                        </p>
                     <div class="d-flex align-items-center">
                     {% if go_out.organizer.id == app.user.participant.id %}
                         <div class="m-2">

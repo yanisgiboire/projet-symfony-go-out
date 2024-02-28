@@ -107,7 +107,8 @@ class GoOutController extends BaseController
             'go_outs' => $go_outs,
             'sites' => $sites,
             'participantGoOut' => $allParticipant,
-            'searchParams' => $searchParams
+            'searchParams' => $searchParams,
+            'status' => self::STATUS
         ]);
     }
 
@@ -126,7 +127,8 @@ class GoOutController extends BaseController
         $goOutParticipants = $participantGoOutRepository->findBy(['goOut' => $id]);
         return $this->render('go_out/show.html.twig', [
             'go_out' => $goOut,
-            'go_out_participants' => $goOutParticipants
+            'go_out_participants' => $goOutParticipants,
+            'status' => self::STATUS
         ]);
     }
 
