@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator\Constraints as CustomAssert;
 
 #[ORM\Entity(repositoryClass: GoOutRepository::class)]
 class GoOut
@@ -19,6 +20,7 @@ class GoOut
 
     #[ORM\Column(length: 50)]
     #[Assert\NotBlank(message:"Le nom ne peut pas être vide")]
+    #[Assert\Length(max: 50, maxMessage:"Le nom ne peut pas dépasser {{ limit }} caractères")]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -32,6 +34,7 @@ class GoOut
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Assert\NotBlank(message:"La date limite d'inscription ne peut pas être vide")]
+    #[CustomAssert\LimitDateInscription]
     private ?\DateTimeInterface $limitDateInscription = null;
 
     #[ORM\Column]
@@ -42,6 +45,7 @@ class GoOut
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message:"La description ne peut pas être vide")]
+    #[Assert\Length(max: 255, maxMessage:"La description ne peut pas dépasser {{ limit }} caractères")]
     private ?string $description = null;
 
     #[ORM\OneToMany(targetEntity: ParticipantGoOut::class, mappedBy: 'goOut')]

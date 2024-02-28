@@ -13,7 +13,7 @@ class Status
     const STATUS_CREATED = 'Créée';
     const STATUS_OPENED = 'Ouverte';
     const STATUS_CLOSED = 'Clôturée';
-    const STATUS_ACTIVITY_IN_PROGRESS = 'Activité en cours';
+    const STATUS_ACTIVITY_IN_PROGRESS = 'En cours';
     const STATUS_PASSED = 'Passée';
     const STATUS_CANCELED = 'Annulée';
     const STATUS_ARCHIVED = 'Archivée';

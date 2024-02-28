@@ -18,10 +18,12 @@ class Place
 
     #[ORM\Column(length: 50)]
     #[Assert\NotBlank(message:"Le nom de la place ne peut pas être vide")]
+    #[Assert\Length(max: 50, maxMessage:"Le nom de la place ne peut pas dépasser {{ limit }} caractères")]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message:"Le nom de la rue ne peut pas être vide")]
+    #[Assert\Length(max: 255, maxMessage:"Le nom de la rue ne peut pas dépasser {{ limit }} caractères")]
     private ?string $street = null;
 
     #[ORM\Column]

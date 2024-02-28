@@ -18,10 +18,12 @@ class City
 
     #[ORM\Column(length: 50)]
     #[Assert\NotBlank(message:"Le nom de la ville ne peut pas être vide")]
+    #[Assert\Length(max: 50, maxMessage:"Le nom de la ville ne peut pas dépasser {{ limit }} caractères")]
     private ?string $name = null;
 
     #[ORM\Column(length: 50)]
     #[Assert\NotBlank(message:"Le code postal ne peut pas être vide")]
+    #[Assert\Length(max: 50, maxMessage:"Le code postal ne peut pas dépasser {{ limit }} caractères")]
     private ?string $postalCode = null;
 
     #[ORM\OneToMany(targetEntity: Place::class, mappedBy: 'city')]

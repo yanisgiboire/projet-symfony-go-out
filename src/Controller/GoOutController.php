@@ -14,6 +14,7 @@ use App\Form\GoOutType;
 use App\Repository\GoOutRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -22,7 +23,7 @@ use App\Entity\Status;
 use Doctrine\ORM\Mapping\Id;
 
 #[Route('/goout')]
-class GoOutController extends AbstractController
+class GoOutController extends BaseController
 {
     #[Route('/', name: 'app_go_out_index', methods: ['GET'])]
     public function index(SessionInterface $session, GoOutRepository $goOutRepository, SiteRepository $siteRepository, participantGoOutRepository $participantGoOutRepository ): Response
@@ -36,7 +37,8 @@ class GoOutController extends AbstractController
             'go_outs' => $go_outs,
             'sites' => $sites,
             'participantGoOut' => $allParticipant,
-            'searchParams' => $searchParams
+            'searchParams' => $searchParams,
+            'status' => self::STATUS
         ]);
     }
 
@@ -52,7 +54,8 @@ class GoOutController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $goOut->setOrganizer($participantRepository->find($user->getParticipant()));
-            $goOut->setStatus($entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::class::STATUS_CREATED ]));
+            $goOut->setStatus($entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_CREATED ]));
+
             $entityManager->persist($goOut);
             $entityManager->flush();
 
@@ -104,7 +107,8 @@ class GoOutController extends AbstractController
             'go_outs' => $go_outs,
             'sites' => $sites,
             'participantGoOut' => $allParticipant,
-            'searchParams' => $searchParams
+            'searchParams' => $searchParams,
+            'status' => self::STATUS
         ]);
     }
 
@@ -123,7 +127,8 @@ class GoOutController extends AbstractController
         $goOutParticipants = $participantGoOutRepository->findBy(['goOut' => $id]);
         return $this->render('go_out/show.html.twig', [
             'go_out' => $goOut,
-            'go_out_participants' => $goOutParticipants
+            'go_out_participants' => $goOutParticipants,
+            'status' => self::STATUS
         ]);
     }
 

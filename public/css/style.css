@@ -73,7 +73,7 @@ input:focus {
 
 .date-item {
   position: absolute;
-  top: 0;
+  top: 50px;
   right: 0;
   margin-right: 20px;
   margin-top: 20px;
@@ -176,6 +176,10 @@ input:focus {
 
 input::placeholder {
   color: red;
+}
+
+input[type="text"], input[type="password"] {
+  margin: 0;
 }
 
 .place > div {

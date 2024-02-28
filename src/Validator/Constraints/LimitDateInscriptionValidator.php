@@ -2,30 +2,25 @@
 
 namespace App\Validator\Constraints;
 
+use App\Entity\GoOut;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use App\Entity\GoOut;
 
 class LimitDateInscriptionValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+
+    public function validate($value, Constraint $constraint): void
     {
-        if (null === $value || '' === $value) {
+        /* @var $constraint LimitDateInscription */
+        $form = $this->context->getRoot();
+        $data = $form->getData();
+
+        if (!$data instanceof GoOut) {
             return;
         }
 
-        // Récupérer les données soumises au validateur
-        $formData = $this->context->getObject();
-
-        // Assurez-vous que formData est bien un objet GoOut
-        if (!$formData instanceof GoOut) {
-            return;
-        }
-
-        // Récupérer la valeur de startDateTime à partir des données du formulaire
-        $startDateTime = $formData->getStartDateTime();
-
-        if ($value < $startDateTime) {
+        $startDate = $data->getStartDateTime();
+        if ($value >= $startDate) {
             $this->context->buildViolation($constraint->message)
                 ->addViolation();
         }
