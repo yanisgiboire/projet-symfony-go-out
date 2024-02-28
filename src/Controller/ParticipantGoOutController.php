@@ -40,6 +40,8 @@ class ParticipantGoOutController extends AbstractController
         if ($participant) {
             if (($goOut->getMaxNbInscriptions() > count($goOut->getParticipantGoOuts()))) {
                 if ($goOut->getLimitDateInscription()->format('Y-m-d') > (new \DateTime())->format('Y-m-d')) {
+                    if ($goOut->getOrganizer() === $participantRepository->find($user->getParticipant())) {
+
                     $participantGoOut = new ParticipantGoOut();
                     $participantGoOut->setParticipant($participant);
                     $participantGoOut->setGoOut($goOut);
@@ -51,18 +53,16 @@ class ParticipantGoOutController extends AbstractController
 
                     return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
                 }
-                if ($goOut->getOrganizer() === $participantRepository->find($user->getParticipant())) {
                     $this->addFlash('error', 'Vous ne pouvez pas vous inscrire à une sortie que vous avez créée.');
                     return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
                 }
+                $this->addFlash('error', 'La date d\'inscriptions a été dépassé.');
+                return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
+            }
                 $this->addFlash('error', 'Le nombre maximum d\'inscriptions a été atteint.');
                 return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
 
             }
-            $this->addFlash('error', 'Le nombre maximum d\'inscriptions a été atteint.');
-
-            return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
-        }
         $this->addFlash('error', 'Vous ne pouvez pas vous inscrire à une sortie si vous n\'êtes pas inscrit.');
         return $this->redirectToRoute('app_login');
 
