@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\GoOut;
 use App\Entity\Participant;
-use App\Entity\ParticipantGoOut;
 use App\Entity\User;
 use App\Repository\ParticipantRepository;
 use App\Repository\SiteRepository;
@@ -14,15 +13,12 @@ use App\Form\GoOutType;
 use App\Repository\GoOutRepository;
 use App\Service\CheckGoOutStatusService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Status;
-use Doctrine\ORM\Mapping\Id;
 
 #[Route('/goout')]
 class GoOutController extends BaseController
@@ -174,7 +170,7 @@ class GoOutController extends BaseController
     }
 
     #[Route('/{id}/cancel', name: 'app_go_out_cancel', methods: ['GET', 'POST'])]
-    public function cancel(Request $request, GoOut $goOut, EntityManagerInterface $entityManager, User $user): Response
+    public function cancel(Request $request, GoOut $goOut, EntityManagerInterface $entityManager): Response
     {
         $currentUser = $this->getUser();
 
