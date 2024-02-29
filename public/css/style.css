@@ -148,9 +148,6 @@ input:focus {
 
 }
 
-.btn-custom input {
-  display: none;
-}
 
 .btn-custom:hover {
   background-color: #ffffff;
