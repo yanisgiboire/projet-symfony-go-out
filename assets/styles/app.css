@@ -160,3 +160,7 @@ body { background: linear-gradient(-45deg, #ce6e51, #b4255c, #127599, #0ca17e);
   margin-left: auto;
   margin-right: auto;
 }
+
+.custom-placeholder::placeholder {
+  color: #ffffff; /* Couleur du texte du placeholder */
+}
