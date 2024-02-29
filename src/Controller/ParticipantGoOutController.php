@@ -28,7 +28,7 @@ class ParticipantGoOutController extends AbstractController
     }
 
     #[Route('/new/{id}', name: 'app_participant_go_out_new', methods: ['GET', 'POST'])]
-    public function new(EntityManagerInterface $entityManager, GoOut $goOut, ParticipantRepository $participantRepository, StatusRepository $statusRepository): Response
+    public function new(EntityManagerInterface $entityManager, GoOut $goOut, ParticipantRepository $participantRepository, StatusRepository $statusRepository, ParticipantGoOutRepository $participantGoOutRepository): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
