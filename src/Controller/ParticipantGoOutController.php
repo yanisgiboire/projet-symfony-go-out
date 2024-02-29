@@ -26,7 +26,7 @@ class ParticipantGoOutController extends AbstractController
     }
 
     #[Route('/new/{id}', name: 'app_participant_go_out_new', methods: ['GET', 'POST'])]
-    public function new(EntityManagerInterface $entityManager, GoOut $goOut, ParticipantRepository $participantRepository): Response
+    public function new(EntityManagerInterface $entityManager, GoOut $goOut, ParticipantGoOutRepository $participantGoOutRepository, ParticipantRepository $participantRepository): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -35,8 +35,18 @@ class ParticipantGoOutController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $participant = $user->getParticipant();
-
         if ($participant) {
+
+            $participantGoOut = $participantGoOutRepository->findOneBy([
+                'participant' => $participant,
+                'goOut' => $goOut,
+            ]);
+
+            if ($participantGoOut) {
+                $this->addFlash('error', 'Vous êtes déjà inscrit à cette sortie.');
+                return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
+            }
+
             if (($goOut->getMaxNbInscriptions() > count($goOut->getParticipantGoOuts()))) {
                 if ($goOut->getLimitDateInscription()->format('Y-m-d') > (new \DateTime())->format('Y-m-d')) {
                     if ($goOut->getOrganizer() === $participantRepository->find($user->getParticipant())) {
@@ -59,8 +69,8 @@ class ParticipantGoOutController extends AbstractController
             }
                 $this->addFlash('error', 'Le nombre maximum d\'inscriptions a été atteint.');
                 return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
-
             }
+
         $this->addFlash('error', 'Vous ne pouvez pas vous inscrire à une sortie si vous n\'êtes pas inscrit.');
         return $this->redirectToRoute('app_login');
 
