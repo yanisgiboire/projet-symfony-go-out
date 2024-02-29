@@ -71,10 +71,10 @@
                         {{ go_out.startDateTime|date('d/m/Y H:i', 'Europe/Paris') }}</p>
                     <p class="card-text">
                         <strong>Durée : </strong>
-                        {{ go_out.duration ? go_out.duration|date('H:i:s') : '' }}</p>
+                        {{ go_out.duration }} minute(s)</p>
                     <p class="card-text">
                         <strong>Limite de date d'inscription : </strong>
-                        {{ go_out.limitDateInscription|date('d/m/Y H:i', 'Europe/Paris') }}</p>
+                        {{ go_out.limitDateInscription|date('d/m/Y', 'Europe/Paris') }}</p>
                     <p class="card-text">
                         <strong>Nombre max de participant(s) : </strong>
                         {{ go_out.maxNbInscriptions }}</p>
