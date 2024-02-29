@@ -28,8 +28,9 @@ class CheckExpiredGoOutCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $this->checkGoOutStatusService->checkGoOutStatus();
+        $this->checkGoOutStatusService->updateStatus();
 
-        $io->success('Vérification des sorties expirées et réalisées depuis plus d\'un mois terminée.');
+        $io->success('Vérification des sorties et mise à jour des status.');
 
         return Command::SUCCESS;
     }

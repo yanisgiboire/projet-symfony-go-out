@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\GoOut;
 use App\Entity\ParticipantGoOut;
+use App\Entity\Status;
 use App\Form\ParticipantGoOutType;
 use App\Repository\ParticipantGoOutRepository;
+use App\Repository\StatusRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +28,7 @@ class ParticipantGoOutController extends AbstractController
     }
 
     #[Route('/new/{id}', name: 'app_participant_go_out_new', methods: ['GET', 'POST'])]
-    public function new(EntityManagerInterface $entityManager, GoOut $goOut, ParticipantRepository $participantRepository): Response
+    public function new(EntityManagerInterface $entityManager, GoOut $goOut, ParticipantRepository $participantRepository, StatusRepository $statusRepository): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -48,6 +50,10 @@ class ParticipantGoOutController extends AbstractController
                     $participantGoOut->setGoOut($goOut);
 
                     $entityManager->persist($participantGoOut);
+
+                    if (count($goOut->getParticipantGoOuts()) + 1 >= $goOut->getMaxNbInscriptions()) {
+                        $goOut->setStatus($statusRepository->findOneBy(['libelle' => Status::STATUS_CLOSED ]));
+                    }
                     $entityManager->flush();
 
                     $this->addFlash('success', 'Vous êtes inscrit à la sortie ' . $goOut->getName() . '.');
@@ -59,7 +65,6 @@ class ParticipantGoOutController extends AbstractController
             }
                 $this->addFlash('error', 'Le nombre maximum d\'inscriptions a été atteint.');
                 return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
-
             }
         $this->addFlash('error', 'Vous ne pouvez pas vous inscrire à une sortie si vous n\'êtes pas inscrit.');
         return $this->redirectToRoute('app_login');
@@ -95,7 +100,7 @@ class ParticipantGoOutController extends AbstractController
     }
 
     #[Route('/remove/{id}', name: 'app_participant_go_out_delete', methods: ['GET', 'POST'])]
-    public function remove(EntityManagerInterface $entityManager, GoOut $goOut, ParticipantGoOutRepository $participantGoOutRepository): Response
+    public function remove(EntityManagerInterface $entityManager, GoOut $goOut, ParticipantGoOutRepository $participantGoOutRepository, StatusRepository $statusRepository): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -108,6 +113,9 @@ class ParticipantGoOutController extends AbstractController
             $participantGoOut = $participantGoOutRepository->findOneBy(['participant' => $user->getParticipant(), 'goOut' => $goOut]);
             if ($participantGoOut) {
                 $entityManager->remove($participantGoOut);
+                if (count($goOut->getParticipantGoOuts()) + 1 >= $goOut->getMaxNbInscriptions()) {
+                    $goOut->setStatus($statusRepository->findOneBy(['libelle' => Status::STATUS_OPENED ]));
+                }
                 $entityManager->flush();
 
                 $this->addFlash('success', 'Vous vous êtes désinscrit de la sortie ' . $goOut->getName() . '.');
@@ -118,5 +126,4 @@ class ParticipantGoOutController extends AbstractController
 
         return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
     }
-
 }

@@ -47,12 +47,14 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-center">
-                    {% if go_out.organizer.id == app.user.participant.id %}
-                        <div class="m-2">
-                            <a href="{{ path('app_go_out_edit', {'id': go_out.id}) }}" class="btn btn-primary w-100 my-1">
-                                <i class="fa-solid fa-pen"></i>
-                            </a>
-                        </div>
+                    {% if go_out.organizer.id == app.user.participant.id  %}
+                        {% if go_out.status.libelle != status[1] %}
+                            <div class="m-2">
+                                <a href="{{ path('app_go_out_edit', {'id': go_out.id}) }}" class="btn btn-primary w-100 my-1">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+                            </div>
+                        {% endif %}
                         {% if go_out.status.libelle == "Annulée" %}
                             <p class="px-1">Sortie annulée</p>
                         {% else %}
@@ -61,6 +63,11 @@
                                 <i class="fa-solid fa-ban"></i>
                             </a>
                         </div>
+                            {% if go_out.status.libelle != status[1]  %}
+                            <div>
+                                <a href="{{ path('app_go_out_publish', {'id': go_out.id}) }}" class="btn btn-secondary w-100 my-1">Publier</a>
+                            </div>
+                                {% endif %}
                         {% endif %}
                     {% endif %}
                     </div>
@@ -110,6 +117,7 @@
                     {% endif %}
                 {% endif %}
                 <a href="{{ path('app_go_out_index') }}" class="btn btn-secondary w-100 my-1">Back to list</a>
+
             </div>
             </div>
         </div>
