@@ -149,6 +149,7 @@ body { background: linear-gradient(-45deg, #ce6e51, #b4255c, #127599, #0ca17e);
 }
 
 .flashBase {
+  position: absolute;
   top: 100px;
   display: flex;
   justify-content: center;
@@ -157,7 +158,7 @@ body { background: linear-gradient(-45deg, #ce6e51, #b4255c, #127599, #0ca17e);
   font-weight: bold;
   border-radius: 10px;
   padding: 10px;
-  margin-left: auto;
+  margin-left: 40%;
   margin-right: auto;
 }
 
