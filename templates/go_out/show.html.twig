@@ -5,58 +5,127 @@
 
 {% block body %}
 
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-9 card custom-card">
-                <div class="card-header">
-                    <h4 class="card-title text-center my-3">{{ go_out.name }}</h4>
-                </div>
-                <div class="card-body">
-                    <p class="card-text">
-                        <strong>Id:</strong>
-                        {{ go_out.id }}</p>
-                    <p class="card-text">
-                        <strong>Start Date:</strong>
-                        {{ go_out.startDateTime ? go_out.startDateTime|date('Y-m-d H:i:s') : '' }}</p>
-                    <p class="card-text">
-                        <strong>Duration:</strong>
-                        {{ go_out.duration ? go_out.duration|date('H:i:s') : '' }}</p>
-                    <p class="card-text">
-                        <strong>Limit Date for Inscription:</strong>
-                        {{ go_out.limitDateInscription ? go_out.limitDateInscription|date('Y-m-d') : '' }}</p>
-                    <p class="card-text">
-                        <strong>Max Number of Inscriptions:</strong>
-                        {{ go_out.maxNbInscriptions }}</p>
-                    <p class="card-text">
-                        <strong>Description:</strong>
-                        {{ go_out.description }}</p>
+	<div class="container">
+		<div class="row justify-content-center">
+         <a href="{{ path('app_go_out_index') }}" class="btn btn-secondary py-1 my-3" style="width: fit-content;"><i class="fa-solid fa-arrow-left"></i> Retour à la liste</a>
+			<div class="col-md-12 card custom-card">
+				<div class="card-header justify-content-between align-items-center">
+					<div class="row">
+						<div class="col-12 col-md-3 text-center">
+							<p class="card-text my-4 h4">
+								{% if go_out.status %}
+									{% set statusClass = {
+                                        (status[0]): 'text-success',
+                                        (status[1]): 'text-success',
+                                        (status[2]): 'text-danger',
+                                        (status[3]): 'text-success',
+                                        (status[4]): 'text-danger',
+                                        (status[5]): 'text-danger',
+                                        (status[5]): 'text-danger',                                            
+                                    }[go_out.status.libelle] ?? '' %}
 
-                    <h2>Participants</h2>
-                   <ul>
-                    {% set hasCurrentUser = false %}
-                    {% for participant in go_out_participants %}
-                        <a href="{{ path('app_go_out_show_participant', {'id': participant.participant.id }) }}">
-                            <li>{{ participant.participant.surname }}</li>
-                        </a>
-                        {% if app.user and participant.participant.surname == app.user.participant.surname %}
-                            {% set hasCurrentUser = true %}
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="card-footer my-2">
-                {% if go_out.participant.id == app.user.id %}
-                    <a href="{{ path('app_go_out_edit', {'id': go_out.id}) }}" class="btn btn-secondary w-100 my-1">Edit</a>
-                {% endif %}
-                {% if hasCurrentUser %}
-                    <a href="{{ path('app_participant_go_out_delete', {'id': go_out.id}) }}" class="btn btn-danger w-100 my-1">Remove from List</a>
-                {% else %}
-                <a href="{{ path('app_participant_go_out_new', {'id': go_out.id}) }}" class="btn btn-primary w-100 my-1">Register</a>
-                {% endif %}
-                <a href="{{ path('app_go_out_index') }}" class="btn btn-secondary w-100 my-1">Back to list</a>
-            </div>
-            </div>
-        </div>
-    </div>
+									<p class="card-text h4 {{ statusClass }}">
+										<strong>{{ go_out.status.libelle }}</strong>
+									</p>
+								{% endif %}
+							</p>
+						</div>
+
+						<div class="col-12 col-md-6 my-1">
+							<h4 class="card-title text-center my-3">{{ go_out.name }}</h4>
+						</div>
+
+						<div class="col-12 col-md-3 my-4 h5 text-center">
+							{% if go_out.organizer.id == app.user.participant.id %}
+								<p class="card-text">
+									<strong>Vous êtes organisateur</strong>
+								</p>
+							{% else %}
+								<p class="card-text">
+									<strong>Organisateur :
+									</strong>
+									<a href="{{ path('app_go_out_show_participant', {'id': go_out.organizer.id }) }}">
+										{{ go_out.organizer.surname }}</a>
+								</p>
+							{% endif %}
+						</div>
+					</div>
+					<div class="d-flex align-items-center">
+						{% if go_out.organizer.id == app.user.participant.id %}
+							<div class="m-2">
+								<a href="{{ path('app_go_out_edit', {'id': go_out.id}) }}" class="btn btn-primary w-100 my-1">
+									<i class="fa-solid fa-pen"></i>
+								</a>
+							</div>
+							{% if go_out.status.libelle == "Annulée" %}
+								<p class="px-1">Sortie annulée</p>
+							{% else %}
+								<div class="m-2">
+									<a href="{{ path('app_go_out_cancel', {'id': go_out.id}) }}" class="btn btn-danger w-100 my-1">
+										<i class="fa-solid fa-ban"></i>
+									</a>
+								</div>
+							{% endif %}
+						{% endif %}
+					</div>
+				</div>
+				<div class="card-body">
+					<p class="card-text">
+						<strong>Date de début :
+						</strong>
+						{{ go_out.startDateTime|date('d/m/Y H:i', 'Europe/Paris') }}</p>
+					<p class="card-text">
+						<strong>Durée :
+						</strong>
+						{{ go_out.duration }}
+						minute(s)</p>
+					<p class="card-text">
+						<strong>Limite de date d'inscription :
+						</strong>
+						{{ go_out.limitDateInscription|date('d/m/Y', 'Europe/Paris') }}</p>
+					<p class="card-text">
+						<strong>Description :
+						</strong>
+						{{ go_out.description }}</p>
+
+					<h4 class="mt-5 text-center">Participants :
+						{{ go_out_participants|length }}
+						/
+						{{ go_out.maxNbInscriptions }}</h4>
+					<div class="row justify-content-center">
+						{% set hasCurrentUser = false %}
+						{% for participant in go_out_participants %}
+							<div class="col-6 col-md-3 my-4 d-flex justify-content-center">
+								<a href="{{ path('app_go_out_show_participant', {'id': participant.participant.id }) }}" class="text-decoration-none">
+									<div class="circle-container">
+										<div class="circle-content text-bold rounded-circle d-flex justify-content-center align-items-center">
+											{{ participant.participant.surname }}
+										</div>
+									</div>
+								</a>
+								{% if app.user and participant.participant.surname == app.user.participant.surname %}
+									{% set hasCurrentUser = true %}
+								{% endif %}
+							</div>
+						{% endfor %}
+					</div>
+
+
+				</div>
+				<div class="card-footer my-2">
+					{% if hasCurrentUser %}
+						<a href="{{ path('app_participant_go_out_delete', {'id': go_out.id}) }}" class="btn btn-danger w-100 my-1">Remove from List</a>
+					{% else %}
+						{% if go_out.organizer.id != app.user.participant.id %}
+							{% if go_out.status.libelle == status[1] %}
+								<a href="{{ path('app_participant_go_out_new', {'id': go_out.id}) }}" class="btn btn-primary w-100 my-1">Register</a>
+							{% endif %}
+						{% endif %}
+					{% endif %}
+					
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
 

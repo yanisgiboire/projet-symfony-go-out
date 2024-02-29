@@ -21,19 +21,23 @@ class Participant
 
     #[ORM\Column(length: 50)]
     #[Assert\NotBlank(message:"Le nom de famille ne peut pas être vide")]
+    #[Assert\Length(max: 50, maxMessage:"Le nom de famille ne peut pas dépasser {{ limit }} caractères")]
     private ?string $surname = null;
 
     #[ORM\Column(length: 50)]
     #[Assert\NotBlank(message:"Le prénom ne peut pas être vide")]
+    #[Assert\Length(max: 50, maxMessage:"Le prénom ne peut pas dépasser {{ limit }} caractères")]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 50)]
     #[Assert\NotBlank(message:"Le numéro de téléphone ne peut pas être vide")]
+    #[Assert\Length(max: 50, maxMessage:"Le numéro de téléphone ne peut pas dépasser {{ limit }} caractères")]
     private ?string $phoneNumber = null;
 
     #[ORM\Column(length: 50, unique: true)]
     #[Assert\NotBlank(message:"L'email ne peut pas être vide")]
     #[Assert\Email(message:"L'email '{{ value }}' n'est pas valide.")]
+    #[Assert\Length(max: 50, maxMessage:"L'email ne peut pas dépasser {{ limit }} caractères")]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -181,7 +185,7 @@ class Participant
     {
         if (!$this->goOut->contains($goOut)) {
             $this->goOut->add($goOut);
-            $goOut->setParticipant($this);
+            $goOut->setOrganizer($this);
         }
 
         return $this;
@@ -191,8 +195,8 @@ class Participant
     {
         if ($this->goOut->removeElement($goOut)) {
             // set the owning side to null (unless already changed)
-            if ($goOut->getParticipant() === $this) {
-                $goOut->setParticipant(null);
+            if ($goOut->getOrganizer() === $this) {
+                $goOut->setOrganizer(null);
             }
         }
 

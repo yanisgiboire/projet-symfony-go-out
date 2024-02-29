@@ -1,0 +1,15 @@
+{% block body %}
+        {% for label,messages in app.flashes %}
+            {% for message in messages %}
+                <div class="toast flashBase" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-body text-center">
+                    {{ message }}
+                </div>
+                </div>
+                <script>
+                    $('.toast').toast();
+                    $('.toast').toast('show');
+                </script>
+            {% endfor %}
+        {% endfor %}
+{% endblock %}

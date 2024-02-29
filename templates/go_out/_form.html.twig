@@ -1,4 +1,21 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+
+    <div class="d-flex text-white">
+        <div class="w-50 m-2">
+            {{ form_row(form.name) }}
+            {{ form_row(form.description) }}
+        </div>
+        <div class="w-50 m-2">
+            {{ form_row(form.startDateTime) }}
+            {{ form_row(form.limitDateInscription) }}
+            {{ form_row(form.duration) }}
+            {{ form_row(form.maxNbInscriptions) }}
+            {{ form_errors(form) }}
+        </div>
+    </div>
+    <div class="d-flex w-100 place site">
+        {{ form_row(form.site) }}
+        {{ form_row(form.place) }}
+    </div>
     <button class="btn btn-primary w-100 my-1">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
