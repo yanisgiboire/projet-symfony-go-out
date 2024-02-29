@@ -74,7 +74,7 @@ class GoOutController extends BaseController
     #[Route('/search', name: 'app_go_out_search', methods: ['GET'])]
     public function search(Request $request, SessionInterface $session, GoOutRepository $goOutRepository, SiteRepository $siteRepository, participantGoOutRepository $participantGoOutRepository): Response
     {
-        $userID = $this->getUser()->getId();
+        $userID = $this->getUser();
         $search = $request->query->get('search');
         $siteID = $request->query->get('site');
         $startDate = $request->query->get('startDate');
