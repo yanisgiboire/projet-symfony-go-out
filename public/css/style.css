@@ -186,3 +186,28 @@ input[type="text"], input[type="password"] {
   width: 100%;
   margin: 10px;
 }
+
+.circle-container {
+  width: 150px; /* Largeur fixe */
+  height: 150px; /* Hauteur fixe */
+  border: 3px solid #ccc; /* Bordure épaisse */
+  border-radius: 50%; /* Rend les coins ronds */
+  overflow: hidden; /* Masque le contenu débordant */
+}
+
+.circle-content {
+  width: 100%; /* Prend la largeur de son conteneur */
+  height: 100%; /* Prend la hauteur de son conteneur */
+  background-color: rgb(201, 27, 70); /* Couleur de fond au survol */
+  color: #fff; /* Couleur du texte au survol */
+  font-weight: 700; /* Police en gras */
+  transition: all 0.3s ease; /* Animation de transition fluide */
+  text-align: center; /* Centre le texte */
+  line-height: 150px; /* Centre le texte verticalement */
+}
+
+.circle-content:hover {
+  background-color: #fff; /* Couleur de fond blanche */
+  color: rgb(201, 27, 70); /* Couleur du texte */
+  
+}
