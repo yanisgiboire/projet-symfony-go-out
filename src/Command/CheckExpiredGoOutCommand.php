@@ -32,6 +32,10 @@ class CheckExpiredGoOutCommand extends Command
 
         $io->success('Vérification des sorties et mise à jour des status.');
 
+        $this->checkGoOutStatusService->updateStatus();
+
+        $io->success('Vérification des status terminée.');
+
         return Command::SUCCESS;
     }
 }

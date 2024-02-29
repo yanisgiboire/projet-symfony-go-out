@@ -49,19 +49,14 @@ class CheckGoOutStatusService
             $endDate = clone $startDate;
             $endDate->modify('+' . $goOut->getDuration() . ' minutes');
 
-            if ($endDate <= $today) {
+            if ($endDate < $today) {
                 $goOut->setStatus($this->entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_PASSED]));
             } elseif ($startDate === $today) {
                 $goOut->setStatus($this->entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_ACTIVITY_IN_PROGRESS]));
-            } elseif ($goOut->getLimitDateInscription() < $today) {
+            } elseif ($goOut->getMaxRegistrations() === count($goOut->getParticipantGoOuts()->toArray()) && $goOut->getStatus()->getLibelle() === Status::STATUS_OPENED) {
                 $goOut->setStatus($this->entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_CLOSED]));
-            } elseif ($startDate < $today) {
-                $goOut->setStatus($this->entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_PASSED]));
-            } elseif ($startDate > $today) {
-                $goOut->setStatus($this->entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_CREATED]));
             }
         }
-
         $this->entityManager->flush();
     }
 }
