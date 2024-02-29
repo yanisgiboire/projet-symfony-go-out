@@ -100,8 +100,6 @@
 												<strong>{{ go_out.status.libelle }}</strong>
 											</p>
 										{% endif %}
-
-
 										<p class="card-text">
 											<strong>Date de début :
 											</strong>
@@ -113,7 +111,7 @@
 										<p class="card-text">
 											<strong>Limite d'inscription :
 											</strong>
-											{{ go_out.limitDateInscription|format_datetime(locale='fr') }}</p>
+											{{ go_out.limitDateInscription|date('d/m/Y', 'Europe/Paris') }}</p>
 										<p class="card-text">
 											<strong>Nombre max de participant(s) :
 											</strong>
