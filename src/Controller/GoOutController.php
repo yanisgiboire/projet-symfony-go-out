@@ -83,6 +83,18 @@ class GoOutController extends BaseController
         $registered = $request->query->get('registered');
         $notRegistered = $request->query->get('notRegistered');
         $completed = $request->query->get('completed');
+        $reset = $request->query->get('reset');
+
+        if ($reset === true || $reset === 'true' || $reset === 'on' || $reset === 1 || $reset === '1') {
+            $search = null;
+            $siteID = null;
+            $startDate = null;
+            $endDate = null;
+            $organizing = null;
+            $registered = null;
+            $notRegistered = null;
+            $completed = null;
+        }
 
         if ($registered === 'on' && $notRegistered === 'on') {
             $registered = 'off';
@@ -118,13 +130,13 @@ class GoOutController extends BaseController
         ]);
     }
 
-    #[Route('/cancelSearch', name: 'app_go_out_cancelSearch', methods: ['GET', 'POST'])]
-    public function cancelSearch(SessionInterface $session): Response
-    {
-        $session->remove('search_params');
+    // #[Route('/cancelSearch', name: 'app_go_out_cancelSearch', methods: ['GET', 'POST'])]
+    // public function cancelSearch(SessionInterface $session): Response
+    // {
+    //     $session->remove('search_params');
 
-        return $this->redirectToRoute('app_go_out_index');
-    }
+    //     return $this->redirectToRoute('app_go_out_index');
+    // }
 
     #[Route('/{id}', name: 'app_go_out_show', methods: ['GET'])]
     public function show(Request $request, GoOut $goOut, ParticipantGoOutRepository $participantGoOutRepository): Response
