@@ -149,7 +149,7 @@ body { background: linear-gradient(-45deg, #ce6e51, #b4255c, #127599, #0ca17e);
 }
 
 .flashBase {
-  position: fixed;
+  position: absolute;
   top: 100px;
   display: flex;
   justify-content: center;
@@ -158,9 +158,10 @@ body { background: linear-gradient(-45deg, #ce6e51, #b4255c, #127599, #0ca17e);
   font-weight: bold;
   border-radius: 10px;
   padding: 10px;
-  background-color: #bcd4f073;
-  border: 1px solid #ffffff;
-  transition: top 0.5s ease;
-  margin-left: auto; /* Centre horizontalement en poussant le côté gauche à l'extrémité droite */
-  margin-right: auto; /* Centre horizontalement en poussant le côté droit à l'extrémité gauche */
+  margin-left: 40%;
+  margin-right: auto;
+}
+
+.custom-placeholder::placeholder {
+  color: #ffffff; /* Couleur du texte du placeholder */
 }
