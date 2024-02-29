@@ -30,8 +30,9 @@ class GoOutController extends BaseController
     #[Route('/', name: 'app_go_out_index', methods: ['GET'])]
     public function index(SessionInterface $session, GoOutRepository $goOutRepository, SiteRepository $siteRepository, participantGoOutRepository $participantGoOutRepository, CheckGoOutStatusService $checkGoOutStatusService ): Response
     {
+        $userID = $this->getUser()->getId();
         $searchParams = $session->get('search_params', []);
-        $go_outs = $goOutRepository->findForIndex();
+        $go_outs = $goOutRepository->findForIndex($userID);
         $checkGoOutStatusService->updateStatus();
         $sites = $siteRepository->findAll();
         $allParticipant = $participantGoOutRepository->findAll();
@@ -105,7 +106,7 @@ class GoOutController extends BaseController
         if (!empty($search) || !empty($siteID) || !empty($startDate) || !empty($endDate) || !empty($organizing) || !empty($registered) || !empty($notRegistered) || !empty($completed)) {
             $go_outs = $goOutRepository->findBySearchParams($searchParams);
         } else {
-            $go_outs = $goOutRepository->findForIndex();
+            $go_outs = $goOutRepository->findForIndex($userID);
         }
 
         $sites = $siteRepository->findAll();
