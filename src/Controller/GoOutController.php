@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping\Id;
 class GoOutController extends BaseController
 {
     #[Route('/', name: 'app_go_out_index', methods: ['GET'])]
-    public function index(SessionInterface $session, GoOutRepository $goOutRepository, SiteRepository $siteRepository, participantGoOutRepository $participantGoOutRepository, CheckGoOutStatusService $checkGoOutStatusService ): Response
+    public function index(SessionInterface $session, GoOutRepository $goOutRepository, SiteRepository $siteRepository, participantGoOutRepository $participantGoOutRepository, CheckGoOutStatusService $checkGoOutStatusService): Response
     {
         $userID = $this->getUser()->getId();
         $searchParams = $session->get('search_params', []);
@@ -58,7 +58,7 @@ class GoOutController extends BaseController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $goOut->setOrganizer($participantRepository->find($user->getParticipant()));
-            $goOut->setStatus($entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_CREATED ]));
+            $goOut->setStatus($entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_CREATED]));
 
             $entityManager->persist($goOut);
             $entityManager->flush();
@@ -73,7 +73,7 @@ class GoOutController extends BaseController
     }
 
     #[Route('/search', name: 'app_go_out_search', methods: ['GET'])]
-    public function search(Request $request, SessionInterface $session, GoOutRepository $goOutRepository, SiteRepository $siteRepository, participantGoOutRepository $participantGoOutRepository ): Response
+    public function search(Request $request, SessionInterface $session, GoOutRepository $goOutRepository, SiteRepository $siteRepository, participantGoOutRepository $participantGoOutRepository): Response
     {
         $userID = $this->getUser()->getId();
         $search = $request->query->get('search');
@@ -84,6 +84,18 @@ class GoOutController extends BaseController
         $registered = $request->query->get('registered');
         $notRegistered = $request->query->get('notRegistered');
         $completed = $request->query->get('completed');
+        $reset = $request->query->get('reset');
+
+        if ($reset === true || $reset === 'true' || $reset === 'on' || $reset === 1 || $reset === '1') {
+            $search = null;
+            $siteID = null;
+            $startDate = null;
+            $endDate = null;
+            $organizing = null;
+            $registered = null;
+            $notRegistered = null;
+            $completed = null;
+        }
 
         if ($registered === 'on' && $notRegistered === 'on') {
             $registered = 'off';
@@ -102,7 +114,7 @@ class GoOutController extends BaseController
             'completed' => $completed,
         ];
         $session->set('search_params', $searchParams);
-        
+
         if (!empty($search) || !empty($siteID) || !empty($startDate) || !empty($endDate) || !empty($organizing) || !empty($registered) || !empty($notRegistered) || !empty($completed)) {
             $go_outs = $goOutRepository->findBySearchParams($searchParams);
         } else {
@@ -110,24 +122,22 @@ class GoOutController extends BaseController
         }
 
         $sites = $siteRepository->findAll();
-        $allParticipant = $participantGoOutRepository->findAll();
 
         return $this->render('go_out/index.html.twig', [
             'go_outs' => $go_outs,
             'sites' => $sites,
-            'participantGoOut' => $allParticipant,
             'searchParams' => $searchParams,
             'status' => self::STATUS
         ]);
     }
 
-    #[Route('/cancelSearch', name: 'app_go_out_cancelSearch', methods: ['GET', 'POST'])]
-    public function cancelSearch(SessionInterface $session): Response
-    {
-        $session->remove('search_params');
+    // #[Route('/cancelSearch', name: 'app_go_out_cancelSearch', methods: ['GET', 'POST'])]
+    // public function cancelSearch(SessionInterface $session): Response
+    // {
+    //     $session->remove('search_params');
 
-        return $this->redirectToRoute('app_go_out_index');
-    }
+    //     return $this->redirectToRoute('app_go_out_index');
+    // }
 
     #[Route('/{id}', name: 'app_go_out_show', methods: ['GET'])]
     public function show(Request $request, GoOut $goOut, ParticipantGoOutRepository $participantGoOutRepository): Response
@@ -175,7 +185,7 @@ class GoOutController extends BaseController
     }
 
     #[Route('/{id}/cancel', name: 'app_go_out_cancel', methods: ['GET', 'POST'])]
-    public function cancel(Request $request, GoOut $goOut, EntityManagerInterface $entityManager, User $user): Response
+    public function cancel(Request $request, GoOut $goOut, EntityManagerInterface $entityManager): Response
     {
         $currentUser = $this->getUser();
 
@@ -187,7 +197,7 @@ class GoOutController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $goOut->setStatus($entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::class::STATUS_CANCELED ]));
+            $goOut->setStatus($entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_CANCELED]));
             $entityManager->flush();
 
             $this->addFlash('success', 'La sortie ' . $goOut->getName() . ' a bien été annulée.');

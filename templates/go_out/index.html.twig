@@ -65,9 +65,9 @@
 								<button type="submit" class="btn btn-login btn-lg btn-block w-100">Filtrer</button>
 							</div>
 							<div class="col-12 col-md-3">
-								<form action="{{ path('app_go_out_cancelSearch') }}" method="post">
-									<button type="submit" class="btn btn-secondary btn-lg btn-block w-100">Réinitialiser</button>
-								</form>
+								{# <form action="{{ path('app_go_out_cancelSearch') }}" method="post"> #}
+									<button type="submit" name="reset" value="1" class="btn btn-secondary btn-lg btn-block w-100">Réinitialiser</button>
+								{# </form> #}
 							</div>
 						</div>
 					</form>
