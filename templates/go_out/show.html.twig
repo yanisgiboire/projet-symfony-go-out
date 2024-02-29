@@ -118,7 +118,7 @@
 					{% else %}
 						{% if go_out.organizer.id != app.user.participant.id %}
 							{% if go_out.status.libelle == status[1] %}
-								<a href="{{ path('app_participant_go_out_new', {'id': go_out.id}) }}" class="btn btn-primary w-100 my-1">Register</a>
+								<a href="{{ path('app_participant_go_out_new', {'id': go_out.id}) }}" class="btn btn-primary-custom-red w-100 my-1">Register</a>
 							{% endif %}
 						{% endif %}
 					{% endif %}

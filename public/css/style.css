@@ -113,6 +113,16 @@ input:focus {
   }
 }
 
+.btn-primary-custom-red {
+  background-color: rgb(201, 27, 70);
+  color: #ffffff;
+}
+
+.btn-primary-custom-red:hover {
+  background-color: rgb(129, 18, 46);
+  color: #ffffff;
+}
+
 .btn-custom {
   display: inline-block;
   background-color: transparent;
