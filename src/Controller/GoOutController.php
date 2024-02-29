@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\GoOut;
 use App\Entity\Participant;
-use App\Entity\ParticipantGoOut;
 use App\Entity\User;
 use App\Repository\ParticipantRepository;
 use App\Repository\SiteRepository;
@@ -12,17 +11,15 @@ use App\Form\GoOutCancel;
 use App\Repository\ParticipantGoOutRepository;
 use App\Form\GoOutType;
 use App\Repository\GoOutRepository;
+use App\Repository\StatusRepository;
 use App\Service\CheckGoOutStatusService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Status;
-use Doctrine\ORM\Mapping\Id;
 
 #[Route('/goout')]
 class GoOutController extends BaseController
@@ -32,7 +29,6 @@ class GoOutController extends BaseController
     {
         $searchParams = $session->get('search_params', []);
         $go_outs = $goOutRepository->findForIndex();
-        $checkGoOutStatusService->updateStatus();
         $sites = $siteRepository->findAll();
         $allParticipant = $participantGoOutRepository->findAll();
 
@@ -150,6 +146,21 @@ class GoOutController extends BaseController
         ]);
     }
 
+    #[Route('/{id}/publish', name: 'app_go_out_publish', methods: ['GET', 'POST'])]
+    public function publish(GoOut $goOut, StatusRepository $statusRepository,  EntityManagerInterface $entityManager): Response
+    {
+        $currentUser = $this->getUser();
+
+        if ($currentUser !== $goOut->getOrganizer()->getUser()) {
+            throw new AccessDeniedException("Vous n'êtes pas autorisé à accéder à cette page.");
+        }
+
+        $goOut->setStatus($statusRepository->findOneBy(['libelle' => Status::STATUS_OPENED ]));
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_go_out_show', ['id' => $goOut->getId()], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/profile/participant/{id}', name: 'app_go_out_show_participant', methods: ['GET'])]
     public function showParticipant(Participant $participant): Response
     {
@@ -165,6 +176,11 @@ class GoOutController extends BaseController
 
         if ($currentUser !== $goOut->getOrganizer()->getUser()) {
             throw new AccessDeniedException("Vous n'êtes pas autorisé à accéder à cette page.");
+        }
+
+        if ($goOut->getStatus()->getLibelle() !== Status::STATUS_CREATED) {
+            $this->addFlash('error', 'Vous ne pouvez pas modifier une sortie dont le statut n\'est pas "Créé".');
+            return $this->redirectToRoute('app_go_out_index');
         }
 
         $form = $this->createForm(GoOutType::class, $goOut);

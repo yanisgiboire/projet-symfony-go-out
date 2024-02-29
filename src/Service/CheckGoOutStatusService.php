@@ -3,12 +3,17 @@
 namespace App\Service;
 
 use App\Entity\GoOut;
+use App\Entity\ParticipantGoOut;
 use App\Entity\Status;
+use App\Repository\GoOutRepository;
+use App\Repository\ParticipantGoOutRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CheckGoOutStatusService
 {
-    public function __construct(private readonly EntityManagerInterface $entityManager)
+    public function __construct(private readonly EntityManagerInterface $entityManager,
+                                private ParticipantGoOutRepository $participantGoOutRepository,
+                                private GoOutRepository $goOutRepository)
     {
     }
 
@@ -38,6 +43,7 @@ class CheckGoOutStatusService
         $today = new \DateTime();
         $allGoOuts = $this->entityManager->getRepository(GoOut::class)->findAll();
 
+
         foreach ($allGoOuts as $goOut) {
             $startDate = $goOut->getStartDateTime();
             $endDate = clone $startDate;
@@ -47,8 +53,6 @@ class CheckGoOutStatusService
                 $goOut->setStatus($this->entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_PASSED]));
             } elseif ($startDate === $today) {
                 $goOut->setStatus($this->entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_ACTIVITY_IN_PROGRESS]));
-            } elseif ($goOut->getLimitDateInscription() > $today) {
-                $goOut->setStatus($this->entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_OPENED]));
             } elseif ($goOut->getLimitDateInscription() < $today) {
                 $goOut->setStatus($this->entityManager->getRepository(Status::class)->findOneBy(['libelle' => Status::STATUS_CLOSED]));
             } elseif ($startDate < $today) {

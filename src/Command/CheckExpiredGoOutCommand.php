@@ -2,17 +2,11 @@
 
 namespace App\Command;
 
-use App\Entity\GoOut;
 use App\Service\CheckGoOutStatusService;
-use App\Service\StatusService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Entity\Sortie;
-use App\Entity\Status;
-use SebastianBergmann\Environment\Console;
 
 class CheckExpiredGoOutCommand extends Command
 {
@@ -34,8 +28,9 @@ class CheckExpiredGoOutCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $this->checkGoOutStatusService->checkGoOutStatus();
+        $this->checkGoOutStatusService->updateStatus();
 
-        $io->success('Vérification des sorties expirées et réalisées depuis plus d\'un mois terminée.');
+        $io->success('Vérification des sorties et mise à jour des status.');
 
         return Command::SUCCESS;
     }
