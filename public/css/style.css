@@ -211,3 +211,21 @@ input[type="text"], input[type="password"] {
   color: rgb(201, 27, 70); /* Couleur du texte */
   
 }
+
+.flashBase {
+  position: absolute;
+  top: 100px;
+  display: flex;
+  justify-content: center;
+  font-size: 15px;
+  z-index: 2;
+  font-weight: bold;
+  border-radius: 10px;
+  padding: 10px;
+  margin-left: 40%;
+  margin-right: auto;
+}
+
+.custom-placeholder::placeholder {
+  color: #ffffff; /* Couleur du texte du placeholder */
+}
