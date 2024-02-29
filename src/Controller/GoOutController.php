@@ -29,7 +29,7 @@ class GoOutController extends BaseController
     {
         $userID = $this->getUser()->getId();
         $searchParams = $session->get('search_params', []);
-        $go_outs = $goOutRepository->findForIndex();
+        $go_outs = $goOutRepository->findForIndex($userID);
         $sites = $siteRepository->findAll();
         $allParticipant = $participantGoOutRepository->findAll();
 
@@ -126,14 +126,6 @@ class GoOutController extends BaseController
             'status' => self::STATUS
         ]);
     }
-
-    // #[Route('/cancelSearch', name: 'app_go_out_cancelSearch', methods: ['GET', 'POST'])]
-    // public function cancelSearch(SessionInterface $session): Response
-    // {
-    //     $session->remove('search_params');
-
-    //     return $this->redirectToRoute('app_go_out_index');
-    // }
 
     #[Route('/{id}', name: 'app_go_out_show', methods: ['GET'])]
     public function show(Request $request, GoOut $goOut, ParticipantGoOutRepository $participantGoOutRepository): Response
