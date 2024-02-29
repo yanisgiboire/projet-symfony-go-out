@@ -147,20 +147,3 @@ body { background: linear-gradient(-45deg, #ce6e51, #b4255c, #127599, #0ca17e);
   transform-origin: 2vw 16vh;
   box-shadow: 76vmin 0 10.30162722201863vmin currentColor;
 }
-
-.flashBase {
-  position: fixed;
-  top: 100px;
-  display: flex;
-  justify-content: center;
-  font-size: 15px;
-  z-index: 2;
-  font-weight: bold;
-  border-radius: 10px;
-  padding: 10px;
-  background-color: #bcd4f073;
-  border: 1px solid #ffffff;
-  transition: top 0.5s ease;
-  margin-left: auto; /* Centre horizontalement en poussant le côté gauche à l'extrémité droite */
-  margin-right: auto; /* Centre horizontalement en poussant le côté droit à l'extrémité gauche */
-}

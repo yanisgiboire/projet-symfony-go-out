@@ -113,6 +113,16 @@ input:focus {
   }
 }
 
+.btn-primary-custom-red {
+  background-color: rgb(201, 27, 70);
+  color: #ffffff;
+}
+
+.btn-primary-custom-red:hover {
+  background-color: rgb(129, 18, 46);
+  color: #ffffff;
+}
+
 .btn-custom {
   display: inline-block;
   background-color: transparent;
@@ -125,17 +135,19 @@ input:focus {
 }
 
 .btn-custom.active {
-  background-color:rgb(201, 27, 70);
+  background-color: #ffffff;
   border-color: #ffffff;
   border: 3px solid #ffffff;
-  color: #ffffff;
+
 }
 
 .btn-custom.active:hover {
-  background-color: rgb(201, 27, 70);
+  background-color: transparent;
   border-color: rgb(255, 255, 255);
   color: #ffffff;
+
 }
+
 
 .btn-custom:hover {
   background-color: #ffffff;
@@ -185,4 +197,47 @@ input[type="text"], input[type="password"] {
 .place > div {
   width: 100%;
   margin: 10px;
+}
+
+.circle-container {
+  width: 150px; /* Largeur fixe */
+  height: 150px; /* Hauteur fixe */
+  border: 3px solid #ccc; /* Bordure épaisse */
+  border-radius: 50%; /* Rend les coins ronds */
+  overflow: hidden; /* Masque le contenu débordant */
+}
+
+.circle-content {
+  width: 100%; /* Prend la largeur de son conteneur */
+  height: 100%; /* Prend la hauteur de son conteneur */
+  background-color: rgb(201, 27, 70); /* Couleur de fond au survol */
+  color: #fff; /* Couleur du texte au survol */
+  font-weight: 700; /* Police en gras */
+  transition: all 0.3s ease; /* Animation de transition fluide */
+  text-align: center; /* Centre le texte */
+  line-height: 150px; /* Centre le texte verticalement */
+}
+
+.circle-content:hover {
+  background-color: #fff; /* Couleur de fond blanche */
+  color: rgb(201, 27, 70); /* Couleur du texte */
+  
+}
+
+.flashBase {
+  position: absolute;
+  top: 100px;
+  display: flex;
+  justify-content: center;
+  font-size: 15px;
+  z-index: 2;
+  font-weight: bold;
+  border-radius: 10px;
+  padding: 10px;
+  margin-left: 40%;
+  margin-right: auto;
+}
+
+.custom-placeholder::placeholder {
+  color: #ffffff; /* Couleur du texte du placeholder */
 }
