@@ -15,6 +15,7 @@ use App\Repository\GoOutRepository;
 use App\Service\CheckGoOutStatusService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -150,6 +151,12 @@ class GoOutController extends BaseController
     #[Route('/{id}/edit', name: 'app_go_out_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, GoOut $goOut, EntityManagerInterface $entityManager): Response
     {
+        $currentUser = $this->getUser();
+
+        if ($currentUser !== $goOut->getOrganizer()->getUser()) {
+            throw new AccessDeniedException("Vous n'êtes pas autorisé à accéder à cette page.");
+        }
+
         $form = $this->createForm(GoOutType::class, $goOut);
         $form->handleRequest($request);
 
@@ -167,8 +174,14 @@ class GoOutController extends BaseController
     }
 
     #[Route('/{id}/cancel', name: 'app_go_out_cancel', methods: ['GET', 'POST'])]
-    public function cancel(Request $request, GoOut $goOut, EntityManagerInterface $entityManager): Response
+    public function cancel(Request $request, GoOut $goOut, EntityManagerInterface $entityManager, User $user): Response
     {
+        $currentUser = $this->getUser();
+
+        if ($currentUser !== $goOut->getOrganizer()->getUser()) {
+            throw new AccessDeniedException("Vous n'êtes pas autorisé à accéder à cette page.");
+        }
+
         $form = $this->createForm(GoOutCancel::class, $goOut);
         $form->handleRequest($request);
 
