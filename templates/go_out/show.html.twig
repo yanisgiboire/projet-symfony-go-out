@@ -10,8 +10,8 @@
             <div class="col-md-12 card custom-card">
                 <div class="card-header justify-content-between align-items-center">
                     <div class="row">
-                        <div class="col-12 col-md-3">
-                            <p class="card-text">
+                        <div class="col-12 col-md-3 text-center">
+                            <p class="card-text my-4 h4">
                                 {% if go_out.status %}
                                     {% set statusClass = {
                                         (status[0]): 'text-success',
@@ -28,11 +28,11 @@
                             </p>
                         </div>
 
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-6 my-1">
                             <h4 class="card-title text-center my-3">{{ go_out.name }}</h4>
                         </div>
 
-                        <div class="col-12 col-md-3 my-3">
+                        <div class="col-12 col-md-3 my-4 h5 text-center">
                             {% if go_out.organizer.id == app.user.participant.id %}
                                 <p class="card-text">
                                     <strong>Vous êtes organisateur</strong>

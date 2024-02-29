@@ -89,38 +89,49 @@ class GoOutRepository extends ServiceEntityRepository
                 ;
         } else {
             $queryBuilder
-                ->andWhere('s.libelle not in (:STATUS_PASSED, :STATUS_CREATED)')
-                ->setParameter('STATUS_PASSED', Status::STATUS_PASSED)
+                ->andWhere('s.libelle <> :STATUS_CREATED')
                 ->setParameter('STATUS_CREATED', Status::STATUS_CREATED);
         }
 
-        if ((isset($searchParams['registered']) && !empty($searchParams['registered'])) || (isset($searchParams['notRegistered']) && !empty($searchParams['notRegistered']))) {
+        
+
+        if ((isset($searchParams['registered']) && !empty($searchParams['registered']) && $searchParams['registered'] === 'on') || (isset($searchParams['notRegistered']) && !empty($searchParams['notRegistered']) && $searchParams['notRegistered'] === 'on')) {
             $queryBuilder
                 ->join('go_out.participantGoOuts', 'pgo')
                 ->join('pgo.participant', 'p');
+            
+                if (isset($searchParams['registered']) && !empty($searchParams['registered']) && isset($searchParams['userID']) && !empty($searchParams['userID'])) {
+                    $queryBuilder
+                        ->andWhere('p.id = :userID')
+                        ->setParameter('userID', $searchParams['userID']);
+                }
+
+                if (isset($searchParams['notRegistered']) && !empty($searchParams['notRegistered']) && isset($searchParams['userID']) && !empty($searchParams['userID'])) {
+                    $queryBuilder
+                        ->andWhere('p.id <> :userID')
+                        ->setParameter('userID', $searchParams['userID']);
+                }
         }
 
-        if (isset($searchParams['registered']) && !empty($searchParams['registered']) && isset($searchParams['userID']) && !empty($searchParams['userID'])) {
-            $queryBuilder
-                ->andWhere('p.id = :userID')
-                ->setParameter('userID', $searchParams['userID']);
-        }
+        // if (isset($searchParams['registered']) && !empty($searchParams['registered']) && isset($searchParams['userID']) && !empty($searchParams['userID'] && $searchParams['registered'] = 'on')) {
+        //     $queryBuilder
+        //         ->andWhere('p.id = :userID')
+        //         ->setParameter('userID', $searchParams['userID']);
+        // }
 
-        if (isset($searchParams['notRegistered']) && !empty($searchParams['notRegistered']) && isset($searchParams['userID']) && !empty($searchParams['userID'])) {
-            $queryBuilder
-                ->andWhere('p.id <> :userID')
-                ->setParameter('userID', $searchParams['userID']);
-        }
+        // if (isset($searchParams['notRegistered']) && !empty($searchParams['notRegistered']) && $searchParams['notRegistered'] = 'on' && isset($searchParams['userID']) && !empty($searchParams['userID'])) {
+        //     $queryBuilder
+        //         ->andWhere('p.id <> :userID')
+        //         ->setParameter('userID', $searchParams['userID']);
+        // }
 
         if (isset($searchParams['completed']) && !empty($searchParams['completed'])) {
-            $queryBuilder
-                ->andWhere('s.libelle = :STATUS_PASSED')
-                ->setParameter('STATUS_PASSED', Status::STATUS_PASSED);
+            $queryBuilder->andWhere('s.libelle = :STATUS_PASSED');
         } else {
-            $queryBuilder
-                ->andWhere('s.libelle <> :STATUS_PASSED')
-                ->setParameter('STATUS_PASSED', Status::STATUS_PASSED);
+            $queryBuilder->andWhere('s.libelle <> :STATUS_PASSED');
         }
+
+        $queryBuilder->setParameter('STATUS_PASSED', Status::STATUS_PASSED);
 
         return $queryBuilder->getQuery()->getResult();
     }

@@ -12,16 +12,16 @@
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
-									<label for="searchInput">Search</label>
-									<input type="text" id="searchInput" name="search" class="form-control" placeholder="Contains..." value="{{ searchParams.search ?? '' }}">
+									<label for="searchInput">Recherche</label>
+									<input type="text" id="searchInput" name="search" class="form-control" placeholder="Contient..." value="{{ searchParams.search ?? '' }}">
 								</div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="form-group">
-									<label for="site">Select a site :</label>
+									<label for="site">Sélectionnez un site :</label>
 									<select id="site" name="site" class="form-control">
-										<option value="">Select a site</option>
+										<option value="">Sélectionnez un site</option>
 										{% for site in sites %}
 											<option value="{{ site.id }}" {% if searchParams.site is defined and searchParams.site == site.id %} selected {% endif %}>{{ site.name }}</option>
 										{% endfor %}
@@ -31,62 +31,62 @@
 
 							<div class="col-md-6">
 								<div class="form-group">
-									<label for="startDatePicker">Start Date</label>
-									<input type="date" id="startDatePicker" name="startDate" class="form-control" placeholder="Start Date" value="{{ searchParams.startDate ?? '' }}">
+									<label for="startDatePicker">Date de début</label>
+									<input type="date" id="startDatePicker" name="startDate" class="form-control" placeholder="Date de début" value="{{ searchParams.startDate ?? '' }}">
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<label for="endDatePicker">End Date</label>
-									<input type="date" id="endDatePicker" name="endDate" class="form-control" placeholder="End Date" value="{{ searchParams.endDate ?? '' }}">
+									<label for="endDatePicker">Date de fin</label>
+									<input type="date" id="endDatePicker" name="endDate" class="form-control" placeholder="Date de fin" value="{{ searchParams.endDate ?? '' }}">
 								</div>
 							</div>
 							<div class="col-12 my-4">
 								<div class="btn-group-toggle space-between" data-toggle="buttons">
 									<label class="btn btn-custom">
 										<input type="checkbox" class="filter-checkbox" name="organizing" {% if searchParams is defined and searchParams.organizing is defined and searchParams.organizing == 'on' %} checked {% endif %}>
-										Which I am the organizer
+										Dont je suis l'organisateur
 									</label>
 									<label class="btn btn-custom">
 										<input type="checkbox" class="filter-checkbox" name="registered" {% if searchParams is defined and searchParams.registered is defined and searchParams.registered == 'on' %} checked {% endif %}>
-										Which i am registered for
+										Pour lesquels je suis inscrit
 									</label>
 									<label class="btn btn-custom">
 										<input type="checkbox" class="filter-checkbox" name="notRegistered" {% if searchParams is defined and searchParams.notRegistered is defined and searchParams.notRegistered == 'on' %} checked {% endif %}>
-										Which i am not registered
+										Pour lesquels je ne suis pas inscrit
 									</label>
 									<label class="btn btn-custom">
 										<input type="checkbox" class="filter-checkbox" name="completed" {% if searchParams is defined and searchParams.completed is defined and searchParams.completed == 'on' %} checked {% endif %}>
-										Completed
+										Terminés
 									</label>
 								</div>
 							</div>
-							<div class="col-12">
-								<button type="submit" class="btn btn-login btn-lg btn-block w-100">GO</button>
+							<div class="col-12 col-md-9">
+								<button type="submit" class="btn btn-login btn-lg btn-block w-100">Filtrer</button>
+							</div>
+							<div class="col-12 col-md-3">
+								<form action="{{ path('app_go_out_cancelSearch') }}" method="post">
+									<button type="submit" class="btn btn-secondary btn-lg btn-block w-100">Réinitialiser</button>
+								</form>
 							</div>
 						</div>
 					</form>
-					<form action="{{ path('app_go_out_cancelSearch') }}" method="post">
-						<div class="col-12">
-							<button type="submit" class="btn btn-success btn-lg btn-block w-100">RAZ</button>
-						</div>
-					</form>
 				</div>
-			</div>
-			<div class="row">
-				{% for go_out in go_outs %}
-					{% set libelle = go_out.status.libelle %}
-					<div class="col-12 col-md-6 col-lg-4 mb-4 ">
-						<div class="card custom-card border">
-							<a href="{{ path('app_go_out_show', {'id': go_out.id}) }}" class="card-link">
-								<div class="card-header d-flex justify-content-between align-items-center">
-									<h4 class="card-title" style="min-height: 2.3em">{{ go_out.name }}</h4>
-								</div>
-								<div class="card-body">
-									<img src="https://picsum.photos/id/{{go_out.id}}/200/100" class="card-img-top mb-3" style="min-height: 190px">			
 
-									{% if go_out.status %}
-										{% set statusClass = {
+				<div class="row">
+					{% for go_out in go_outs %}
+						{% set libelle = go_out.status.libelle %}
+						<div class="col-12 col-md-6 col-lg-4 mb-4 ">
+							<div class="card custom-card border">
+								<a href="{{ path('app_go_out_show', {'id': go_out.id}) }}" class="card-link">
+									<div class="card-header d-flex justify-content-between align-items-center">
+										<h4 class="card-title" style="min-height: 2.3em">{{ go_out.name }}</h4>
+									</div>
+									<div class="card-body">
+										<img src="https://picsum.photos/id/{{go_out.id}}/200/100" class="card-img-top mb-3" style="min-height: 190px">
+
+										{% if go_out.status %}
+											{% set statusClass = {
 											(status[0]): 'text-success',
 											(status[1]): 'text-success',
 											(status[2]): 'text-danger',
@@ -96,44 +96,59 @@
 											(status[5]): 'text-danger',											
 										}[go_out.status.libelle] ?? '' %}
 
-										<p class="card-text h5 {{ statusClass }}"><strong>{{ go_out.status.libelle }}</strong></p>
-									{% endif %}
+											<p class="card-text h5 {{ statusClass }}">
+												<strong>{{ go_out.status.libelle }}</strong>
+											</p>
+										{% endif %}
 
 
-									<p class="card-text"><strong>Date de début : </strong>
-										{{ go_out.startDateTime|date('d/m/Y H:i', 'Europe/Paris')  }}</p>
-									<p class="card-text">
-										<strong>Durée :</strong>
-										{{ go_out.duration }} minute(s)</p>
-									<p class="card-text"><strong>Limite d'inscription : </strong>
-										{{ go_out.limitDateInscription|date('d/m/Y', 'Europe/Paris') }}</p>
-									<p class="card-text"><strong>Nombre max de participant(s) : </strong>
-									{# recupere la somme de go_out_id = a l'id (dans la table ParticipantGoOut) #}
-										{{ go_out.participantGoOuts|length }} / {{ go_out.maxNbInscriptions }}</p>
-									<p class="card-text"><strong>Organisateur : </strong>
-										{{ go_out.organizer.firstname }} {{ go_out.organizer.surname }}
-									</p>
-									<p class="card-text">
-										<strong>Site :
-										</strong>
-										{{ go_out.site.name }}
-									</p>
-									<p class="card-text">
-										<strong>Description :
-										</strong>
-										{{ go_out.description|u.truncate(50, '...', false) }}
-									</p>
-								</div>
-							</a>
+										<p class="card-text">
+											<strong>Date de début :
+											</strong>
+											{{ go_out.startDateTime|date('d/m/Y H:i', 'Europe/Paris')  }}</p>
+										<p class="card-text">
+											<strong>Durée :</strong>
+											{{ go_out.duration }}
+											minute(s)</p>
+										<p class="card-text">
+											<strong>Limite d'inscription :
+											</strong>
+											{{ go_out.limitDateInscription|date('d/m/Y', 'Europe/Paris') }}</p>
+										<p class="card-text">
+											<strong>Nombre max de participant(s) :
+											</strong>
+											{# recupere la somme de go_out_id = a l'id (dans la table ParticipantGoOut) #}
+											{{ go_out.participantGoOuts|length }}
+											/
+											{{ go_out.maxNbInscriptions }}</p>
+										<p class="card-text">
+											<strong>Organisateur :
+											</strong>
+											{{ go_out.organizer.firstname }}
+											{{ go_out.organizer.surname }}
+										</p>
+										<p class="card-text">
+											<strong>Site :
+											</strong>
+											{{ go_out.site.name }}
+										</p>
+										<p class="card-text">
+											<strong>Description :
+											</strong>
+											{{ go_out.description|u.truncate(50, '...', false) }}
+										</p>
+									</div>
+								</a>
+							</div>
 						</div>
-					</div>
-				{% else %}
-					<p class="col-12">Come back soon</p>
-				{% endfor %}
+					{% else %}
+						<p class="col-12">Come back soon</p>
+					{% endfor %}
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="create-event-button">
-		<a href="{{ path('app_go_out_new') }}" class="btn btn-success">Create new event</a>
-	</div>
-{% endblock %}
+		<div class="create-event-button">
+			<a href="{{ path('app_go_out_new') }}" class="btn btn-success">Create new event</a>
+		</div>
+	{% endblock %}
+
