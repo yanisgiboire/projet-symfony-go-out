@@ -125,16 +125,21 @@ input:focus {
 }
 
 .btn-custom.active {
-  background-color:rgb(201, 27, 70);
+  background-color: #ffffff;
   border-color: #ffffff;
   border: 3px solid #ffffff;
-  color: #ffffff;
+
 }
 
 .btn-custom.active:hover {
-  background-color: rgb(201, 27, 70);
+  background-color: transparent;
   border-color: rgb(255, 255, 255);
   color: #ffffff;
+
+}
+
+.btn-custom input {
+  display: none;
 }
 
 .btn-custom:hover {
