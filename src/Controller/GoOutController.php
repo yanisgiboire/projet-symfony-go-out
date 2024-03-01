@@ -26,7 +26,8 @@ class GoOutController extends BaseController
 {
     #[Route('/', name: 'app_go_out_index', methods: ['GET'])]
     public function index(SessionInterface $session, GoOutRepository $goOutRepository, SiteRepository $siteRepository, participantGoOutRepository $participantGoOutRepository, CheckGoOutStatusService $checkGoOutStatusService): Response
-    {
+    {   
+        /** @var User $user */
         $userID = $this->getUser()->getId();
         $searchParams = $session->get('search_params', []);
         $go_outs = $goOutRepository->findForIndex($userID);
