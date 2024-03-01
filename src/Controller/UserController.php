@@ -2,17 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Participant;
 use App\Entity\User;
-use App\Form\ParticipantType;
 use App\Form\PasswordUserType;
 use App\Form\UserType;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
