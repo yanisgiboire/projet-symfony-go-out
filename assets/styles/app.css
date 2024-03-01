@@ -147,3 +147,18 @@ body { background: linear-gradient(-45deg, #ce6e51, #b4255c, #127599, #0ca17e);
   transform-origin: 2vw 16vh;
   box-shadow: 76vmin 0 10.30162722201863vmin currentColor;
 }
+
+#login input {
+  margin: 10px 0px;
+}
+
+.surname-show {
+  height: 100%;
+  width: 100%;
+  /* word-break: auto-phrase; */
+  /* width: 250px; */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 10px;
+}
